@@ -312,32 +312,83 @@ public class SlidePuzzle {
 			return false;
 
 		}
+		
+		public static boolean confereTabuleiro(int[][] tabuleiro) {
+			int[][] tabuleiroCorrigido;
+			
+			tabuleiroCorrigido = criaTabuleiro();
+			
+			boolean conferencia = false;
+			
+			conferindo:
+			for (int linha = 0; linha < 3; linha ++) {
+				for (int coluna = 0; coluna < 3; coluna ++) {
+					if(tabuleiro[linha][coluna] == tabuleiroCorrigido[linha][coluna]) {
+						conferencia = true;
+					} else {
+						conferencia = false;
+						break conferindo;
+					}
+				}
+			}
+			
+			return conferencia;			
+		}
+		
+		public static void encerraPartida(int[][] tabuleiro) {
+			limpaConsole();
+			
+			imprimeLinha(25);
+			
+			System.out.println("PARABENS!! VOCE COMPLETOU O JOGO");
+			
+			imprimeTabuleiro(tabuleiro);
+			
+			imprimeLinha(25);
+			
+			System.out.print("Pressione ENTER para continuar...");
+			
+			Scanner scan = new Scanner(System.in);
+			
+			String espera = scan.nextLine();
+			
+			limpaConsole();
+			
+			menu();
+		}
 
 		public static void comecarJogo() {
 			int[][] tabuleiro = criaTabuleiro();
 			tabuleiro = embaralhaTabuleiro(tabuleiro);
 			imprimeTabuleiro(tabuleiro);
-			/*
-			 * int jogada = lerJogada();
-			 * System.out.println(jogada);
-			 */
-
+			
 			 int jogada = lerJogada();
 			 int mudancas = 0;
+			 boolean finalizar = false;
+			 
 			 while(jogada != 9) {
 				moverPeca(tabuleiro, jogada);
-				mudancas++;
+				finalizar = confereTabuleiro(tabuleiro);
+				
+				if(finalizar) {
+					encerraPartida(tabuleiro);
+					return;
+					
+				} else {
+				
+					mudancas++;
 
-				if (mudancas == 20) {
-					limpaConsole();
-					imprimeTabuleiro(tabuleiro);
-					boolean continuar = continuarJogo();
-					if (continuar) {
-						break;
+					if (mudancas == 20) {
+						limpaConsole();
+						imprimeTabuleiro(tabuleiro);
+						boolean continuar = continuarJogo();
+						if (continuar) {
+							break;
+						}
+						mudancas = 0;
 					}
-					mudancas = 0;
+					jogada = lerJogada();
 				}
-				jogada = lerJogada();
 			 }
 			 limpaConsole();
 			 menu();
@@ -350,7 +401,7 @@ public class SlidePuzzle {
 			int escolha = 0;
 
 			while (true) {
-				System.out.print("Deseja continuar o jogo ou comecar um novo? (1 - Sim ou 2 - Nao): ");
+				System.out.print("Deseja continuar o jogo ou comecar um novo? (1 - Continuar ou 2 - Novo Jogo): ");
 				escolha = scan.nextInt();
 				if (escolha == 1) {
 					return false;
