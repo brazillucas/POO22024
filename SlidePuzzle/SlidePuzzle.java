@@ -104,7 +104,9 @@ public class SlidePuzzle {
 			//faz a troca dos dois numeros
 			tabuleiro[linha2][coluna2] = tabuleiro[linha1][coluna1];
 			tabuleiro[linha1][coluna1] = temporario;
-
+			
+			System.out.println("Mudou");
+			
 			//Retorna o tabuleiro com 2 pecas com as posicoes trocas
 			return tabuleiro;
 		}
@@ -119,7 +121,7 @@ public class SlidePuzzle {
 			/*Inteira pela quantidade de vezes definidas pela
 			 * dificuldade selecionada
 			 */
-			for (int vezes = 0; vezes <= dificuldade;vezes++) {
+			for (int vezes = 0; vezes < dificuldade;vezes++) {
 				tabuleiro = trocaPecas(tabuleiro, true, 0, 0, 0);
 			}
 
@@ -326,7 +328,7 @@ public class SlidePuzzle {
 				moverPeca(tabuleiro, jogada);
 				mudancas++;
 
-				if (mudancas == 2) {
+				if (mudancas == 20) {
 					limpaConsole();
 					imprimeTabuleiro(tabuleiro);
 					boolean continuar = continuarJogo();
