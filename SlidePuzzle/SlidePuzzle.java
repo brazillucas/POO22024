@@ -201,11 +201,11 @@ public class SlidePuzzle {
 			System.out.println("		1.2 - Medio");
 			System.out.println("		1.3 - Dificil");
 			
-			System.out.println("2 - Em cada rodava, digite o numero da peca que deseja mover\n");
-			System.out.println("	Lembre-se: so eh possivel mmovimentar as pecas que estao ao lado do espaco em braco\n");
-			System.out.println("3 - O objetivo do jogo eh movimentar as pecas ate que o tabuleiro esteja ordenado da maneira correta (1 a 8 com espaco vazio no final\n");
-			System.out.println("4 -Para ganhar o jogo, eh preciso que os numero sejam ordenados da primeira casa superior esquerda para a direita, de cima para baixo, e que a ultima casa esteja em branco.\n");
-			System.out.println("5 - Caso queria, voce pode selecionar para comecar um novo jogo ou trocar o nivel de dificuldade.");
+			System.out.println("2 - Em cada rodada, digite o numero da peca que deseja mover\n");
+			System.out.println("	Lembre-se: so e possivel movimentar as pecas que estao ao lado do espaco em braco\n");
+			System.out.println("3 - O objetivo do jogo e movimentar as pecas ate que o tabuleiro esteja ordenado da maneira correta (1 a 8 com espaco vazio no final\n");
+			System.out.println("4 -Para ganhar o jogo, e preciso que os numeros sejam ordenados da primeira casa superior esquerda para a direita, de cima para baixo, e que a ultima casa esteja em branco.\n");
+			System.out.println("5 - Caso queira, voce pode selecionar para comecar um novo jogo ou trocar o nivel de dificuldade.");
 
 			imprimeLinha(25);
 			System.out.print("Pressione ENTER para voltar ao menu...");
@@ -289,7 +289,7 @@ public class SlidePuzzle {
 			imprimeTabuleiro(tabuleiro);
 		}
 
-		//Recebe a linha, a jogada e o tabuleiro para comparar\
+		//Recebe a linha, a jogada e o tabuleiro para comparar
 		//se ao redor do valor da jogada realmente esta vazio
 		public static boolean validaJogada(int linha, int coluna, int jogada, int[][]tabuleiro) {
 			if (linha == 0 && coluna == 0) {
