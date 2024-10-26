@@ -1,20 +1,30 @@
 import java.util.*;
-import javax.swing.*;
-import java.awt.event.*;
 
 public class SlidePuzzle {
 
+		/**
+		 * Imprime uma mensagem de bem vindo
+		 */
 		public static void bemVindo() {
 			System.out.println("Bem vinde ao nosso jogo!");
 
 		}
 
+		/**
+		 * Finaliza a execucao do programa
+		 * @return 0, retorna vazio para finalizar o programa
+		 */
 		public static void encerraJogo() {
 			System.out.println("Obrigado por utilizar nosso programa!");
 			System.out.println("Programa encerrando...");
 			return;
 		}
 
+		/**
+		 * Imprime uma linha formada pelo caractere "="
+		 * @param quantidade
+		 * @return 
+		 */
 		public static void imprimeLinha(int quantidade) {
 			for (int contador = 0; contador <= quantidade; contador++) {
 				System.out.print("=");
@@ -22,6 +32,10 @@ public class SlidePuzzle {
 			System.out.println("");
 		}
 
+		/**
+		 * Cria uma matriz 3x3 para ser o tabuleiro do jogo
+		 * @return tabuleiro O tabuleiro que sera usado no jogo
+		 */
 		public static int[][] criaTabuleiro() {
 			int[][] tabuleiro = new int[3][3];
 			int numero = 1;
@@ -37,7 +51,16 @@ public class SlidePuzzle {
 			return tabuleiro;
 		}
 
-		//imprime o tabuleiro em forma de quadrado
+		/**
+		 * Imprime o tabuleiro usando alguns caracteres
+		 * especiais para dar a impressao de um quadrado.
+		 * 
+		 * @param tabuleiro A matriz 3x3 que contem as pecas do jogo
+		 * 					para a impressao.
+		 * 					Cada posicao da matriz eh um numero inteiro.
+		 * 					O valor 0 representa uma celula vazia.
+		 * @return 
+		 */
 		public static void imprimeTabuleiro(int[][] tabuleiro) {
 			//Intera linha por linha para imprimir o conteudo
 			for (int linha = 0; linha < 3; linha++) {
@@ -45,13 +68,17 @@ public class SlidePuzzle {
 				System.out.println(" +---+---+---+");
 				//Intera por coluna para imprimir o conteudo da celula
 				for (int coluna = 0; coluna < 3; coluna++) {
-					//verifica se a posicao contem o espaco vazio
+					/**
+					 * verifica se a posicao contem o espaco vazio
+					 * Se tiver imprime o espaco vazio e a barra vertical
+					*/
 					if (tabuleiro[linha][coluna] == 0) {
-						//Se tiver imprime o espaco vazio e a barra vertical
 						System.out.print(" |  ");
 					} else {
-						//Se contem outro numero na celular, imprimi uma barra vertical
-						//E depois imprime a celular
+						/**
+						 * Se contem outro numero na celula, imprimi uma barra vertical
+						 * E depois imprime a celular
+						 */
 						System.out.print(" | "+tabuleiro[linha][coluna]);
 					}
 				}
@@ -63,7 +90,7 @@ public class SlidePuzzle {
 		}
 
 		//Recebe o tabuleiro e troca pecas aleatorias de lugar
-		public static int[][] trocaPecas(int[][] tabuleiro, boolean trocarZeros, int linha, int coluna, int jogada) {
+		public static int[][] trocaPecas(int[][] tabuleiro, boolean trocarZeros, int linha, int coluna) {
 			//Acha a linha e a coluna da celula vazia
 			int linha1 = 0;
 			int coluna1 = 0;
@@ -90,7 +117,7 @@ public class SlidePuzzle {
 				while(podeMudar == false) {
 					linha2 = aleatorio.nextInt(3);
 					coluna2 = aleatorio.nextInt(3);
-					podeMudar = validaJogada(linha2, coluna2, tabuleiro[linha2][coluna2], tabuleiro);
+					podeMudar = validaJogada(linha2, coluna2, tabuleiro);
 				}
 			} else {
 				linha2 = linha;
@@ -120,7 +147,7 @@ public class SlidePuzzle {
 			 * dificuldade selecionada
 			 */
 			for (int vezes = 0; vezes < dificuldade;vezes++) {
-				tabuleiro = trocaPecas(tabuleiro, true, 0, 0, 0);
+				tabuleiro = trocaPecas(tabuleiro, true, 0, 0);
 			}
 
 			//Retorna o tabuleiro embaralhado
@@ -148,27 +175,31 @@ public class SlidePuzzle {
 
 			switch(opc) {
 				case 0:
-					/* Caso o usuario queira encerrar o programa, chama
+					/**
+					 * Caso o usuario queira encerrar o programa, chama
 					 * a funcao encerraJogo() que ira finalizar o jogo
 					 */
 					encerraJogo();
 					break;
 				case 1:
-					/* Caso o usuario queira jogar uma partida, chama
+					/**
+					 * Caso o usuario queira jogar uma partida, chama
 					 * a funcao comecarJogo() que ira executar a logica
 					 * do jogo
 					 */
 					comecarJogo();
 					return;
 				case 2:
-					/* Caso o usuario queira ler as instrucoes, chama
+					/**
+					 * Caso o usuario queira ler as instrucoes, chama
 					 * a funcao mostrarInstrucoes() que ira listar as
 					 * instrucoes necessarias para jogar
 					 */
 					mostrarInstrucoes();
 					return;
 				default:
-					/* Em caso de nao usar uma das opcoes validas, a
+					/**
+					 * Em caso de nao usar uma das opcoes validas, a
 					 * tela e limpa e um aviso aparece para o usuario
 					 * logo em seguida eh chamado o menu() novamente,
 					 * assim o jogador pode continuar tentando acertar
@@ -217,8 +248,15 @@ public class SlidePuzzle {
 
 		}
 
+		/**
+		 * Le um numero que sera retornado e usado para definir o nivel de
+		 * dificuldade do jogo.
+		 * 
+		 * @return 20, 40 ou 80, que sera usado para definir quantas trocas
+		 * 			de posicoes das pecas serao efetuadas.
+		 */
 		public static int selecionarDificuldade() {
-		    Scanner scan = new Scanner(System.in);
+			Scanner scan = new Scanner(System.in);
 
 			limpaConsole();
 			imprimeLinha(10);
@@ -248,6 +286,11 @@ public class SlidePuzzle {
 
 		}
 
+		/**
+		 * Le o numero da tecla que o programa deve tentar mover de lugar
+		 * 
+		 * @return A entrada que o usuario colocar depois da impressao.
+		 */
 		public static int lerJogada() {
 
 			Scanner scan = new Scanner(System.in);
@@ -256,8 +299,8 @@ public class SlidePuzzle {
 			return scan.nextInt();
 		}
 
-		public static void moverPeca(int[][] tabuleiro, int jogada) {
 
+		public static void moverPeca(int[][] tabuleiro, int jogada) {
 
 			if (jogada < 1 || jogada > 8) {
 				limpaConsole();
@@ -272,9 +315,9 @@ public class SlidePuzzle {
 					
 					if (tabuleiro[linha][coluna] == jogada) {
 						
-						if (validaJogada(linha, coluna, jogada, tabuleiro) == true) {
+						if (validaJogada(linha, coluna, tabuleiro) == true) {
 							limpaConsole();
-							tabuleiro = trocaPecas(tabuleiro, false, linha, coluna, jogada);
+							tabuleiro = trocaPecas(tabuleiro, false, linha, coluna);
 							break tab;
 						}
 						
@@ -289,9 +332,16 @@ public class SlidePuzzle {
 			imprimeTabuleiro(tabuleiro);
 		}
 
-		//Recebe a linha, a jogada e o tabuleiro para comparar
-		//se ao redor do valor da jogada realmente esta vazio
-		public static boolean validaJogada(int linha, int coluna, int jogada, int[][]tabuleiro) {
+		/**
+		 * Recebe a linha, a jogada e o tabuleiro para comparar
+		 * se ao redor do valor da jogada realmente esta vazio
+		 * @param linha A linha da posicao do valor a ser mudado
+		 * @param coluna A coluna da posicao do valor a ser mudado
+		 * @param tabuleiro A matriz com os valores onde a funcao ira
+		 * 					procurar a celula vazia para fazer as comparacoes
+		 * @return Falso ou verdadeiro, para saber se a mudanca e valida ou nao
+		 */
+		public static boolean validaJogada(int linha, int coluna, int[][]tabuleiro) {
 			if (linha == 0 && coluna == 0) {
 				if(tabuleiro[linha+1][coluna] == 0 || tabuleiro[linha][coluna+1] == 0) {
 					return true;
@@ -351,21 +401,27 @@ public class SlidePuzzle {
 		}
 		
 		public static boolean confereTabuleiro(int[][] tabuleiro) {
-			int[][] tabuleiroCorrigido;
+			int tabuleiroCorrigido[] = new int[9];
 			
-			tabuleiroCorrigido = criaTabuleiro();
-			
+			for (int i = 0; i < 8; i++) {
+				tabuleiroCorrigido[i] = i+1;
+			}
+
+			tabuleiroCorrigido[8] = 0;
+
+			int contador = 0;
 			boolean conferencia = false;
 			
 			conferindo:
 			for (int linha = 0; linha < 3; linha ++) {
 				for (int coluna = 0; coluna < 3; coluna ++) {
-					if(tabuleiro[linha][coluna] == tabuleiroCorrigido[linha][coluna]) {
+					if(tabuleiro[linha][coluna] == tabuleiroCorrigido[contador]) {
 						conferencia = true;
 					} else {
 						conferencia = false;
 						break conferindo;
 					}
+					contador++;
 				}
 			}
 			
@@ -466,7 +522,6 @@ public class SlidePuzzle {
 		}
 		
 		public static void main (String[] args) {
-		    Scanner scan = new Scanner(System.in);
 		    
 		    int[][] tabuleiro = criaTabuleiro();
 		    
