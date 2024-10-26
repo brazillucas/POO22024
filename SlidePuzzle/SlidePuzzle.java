@@ -3,6 +3,11 @@ import java.util.*;
 public class SlidePuzzle {
 
 		/**
+		 * Declara uma variavel de scanner global
+		 */
+		static Scanner scan = new Scanner(System.in);
+
+		/**
 		 * Imprime uma mensagem de bem vindo
 		 */
 		public static void bemVindo() {
@@ -227,11 +232,9 @@ public class SlidePuzzle {
 		 * @return A entrada que o usuario digirar depois da mensagem exibida
 		 */
 		public static int lerOpcao() {
-
-		    Scanner scan = new Scanner(System.in);
-
 			System.out.print("Opcao Selecionada: ");
-			return scan.nextInt();
+			int opc = scan.nextInt();
+			return opc; 
 		}
 
 		/**
@@ -242,7 +245,6 @@ public class SlidePuzzle {
 		 * @return 
 		 */
 		public static void mostrarInstrucoes () {
-			Scanner scan = new Scanner(System.in);
 
 			limpaConsole();
 			
@@ -283,7 +285,6 @@ public class SlidePuzzle {
 		 * 			de posicoes das pecas serao efetuadas.
 		 */
 		public static int selecionarDificuldade() {
-			Scanner scan = new Scanner(System.in);
 
 			limpaConsole();
 			imprimeLinha(10);
@@ -310,7 +311,6 @@ public class SlidePuzzle {
 				}
 			}
 
-
 		}
 
 		/**
@@ -320,10 +320,10 @@ public class SlidePuzzle {
 		 */
 		public static int lerJogada() {
 
-			Scanner scan = new Scanner(System.in);
-
 			System.out.print("Selecione a peca que quer mover (Caso queira sair, digite 9): ");
-			return scan.nextInt();
+			int jog = scan.nextInt();
+			return jog;
+			
 		}
 
 
@@ -499,11 +499,14 @@ public class SlidePuzzle {
 			
 			System.out.print("Pressione ENTER para continuar...");
 			
-			Scanner scan = new Scanner(System.in);
-			
 			String espera = scan.nextLine();
 			
-			limpaConsole();
+			/*
+			 * conferir essa parte do codigo
+			 * descobrir porque nao esta parando para esperar
+			 * o usuario digitar
+			 */
+			// limpaConsole();
 			
 			menu();
 		}
@@ -564,8 +567,6 @@ public class SlidePuzzle {
 		 * 			valor escolhido pelo usuario
 		 */
 		public static boolean continuarJogo() {
-			Scanner scan = new Scanner(System.in);
-
 			int escolha = 0;
 
 			while (true) {
@@ -599,8 +600,7 @@ public class SlidePuzzle {
 		    imprimeTabuleiro(tabuleiro);
 		    
 			bemVindo();
-			menu();
-			
+			menu();			
 			
 		}
 
