@@ -1,3 +1,11 @@
+/**
+ * Classe SlidePuzzle
+ * Executa um jogo de quebra-cabecas com um tabuleiro 3x3.
+ * 
+ * @author Lucas e Maria Luisa
+ *
+ */
+
 import java.util.*;
 
 public class SlidePuzzle {
@@ -17,7 +25,6 @@ public class SlidePuzzle {
 
 		/**
 		 * Imprime uma mensagem de despedida e finaliza a execucao do programa
-		 * @return
 		 */
 		public static void encerraJogo() {
 			System.out.println("Obrigado por utilizar nosso programa!");
@@ -27,8 +34,7 @@ public class SlidePuzzle {
 
 		/**
 		 * Imprime uma linha formada pelo caractere "="
-		 * @param quantidade
-		 * @return 
+		 * @param quantidade Quantas vezes deve ser impresso o caractere da linha
 		 */
 		public static void imprimeLinha(int quantidade) {
 			for (int contador = 0; contador <= quantidade; contador++) {
@@ -64,7 +70,6 @@ public class SlidePuzzle {
 		 * 					para a impressao.
 		 * 					Cada posicao da matriz eh um numero inteiro.
 		 * 					O valor 0 representa uma celula vazia.
-		 * @return 
 		 */
 		public static void imprimeTabuleiro(int[][] tabuleiro) {
 			//Intera linha por linha para imprimir o conteudo
@@ -190,8 +195,6 @@ public class SlidePuzzle {
 		 * de erro eh exibida e a funcao menu() eh chamada
 		 * novamente. Evitando a necessidade de um loop
 		 * na chamada da funcao, ao usar recursividade.
-		 * 
-		 * @return 
 		 */
 		public static void menu() {
 			
@@ -277,7 +280,6 @@ public class SlidePuzzle {
 		 * Depois de exibir as regras, aguarda a confirmacao
 		 * do usuario, a partir dessa confirmacao, limpa a tela
 		 * E chama novamente o menu()
-		 * @return 
 		 */
 		public static void mostrarInstrucoes () {
 
@@ -362,7 +364,6 @@ public class SlidePuzzle {
 		 * @param tabuleiro A matriz 3x3 que contem os valores a serem trocados
 		 * @param jogada O valor que deve estar do lado de um espaco vazio
 		 * 				para ser trocado
-		 * @return 
 		 */
 		public static void moverPeca(int[][] tabuleiro, int jogada) {
 
@@ -521,8 +522,6 @@ public class SlidePuzzle {
 		/**
 		 * Limpa o buffer do scan, garantindo que nao vai ser feita uma
 		 * Leitura falsa (de lixo) para dentro da variavel
-		 * 
-		 * @return
 		 */
 		public static void limpaBuffer() {
 			// Limpa o buffer do Scanner antes de ler a entrada do usuário
@@ -536,8 +535,6 @@ public class SlidePuzzle {
 		 * Quando o usuario decide continuar, chama o menu() novamente.
 		 * @param tabuleiro Uma matriz 3x3 que a essa altura deve
 		 * 					estar ordenada.
-		 * 
-		 * @return
 		 */
 		public static void encerraPartida(int[][] tabuleiro) {
 			
@@ -566,8 +563,6 @@ public class SlidePuzzle {
 		 * Inicia o jogo de fato. criando um tabuleiro, embaralhando ele
 		 * Imprime o tabuleiro para o jogador e depois entra num loop
 		 * Lendo as jogadas que serao feitas pelo programa
-		 * 
-		 * @return 
 		 */
 		public static void comecarJogo() {
 			int[][] tabuleiro = criaTabuleiro();
@@ -664,8 +659,6 @@ public class SlidePuzzle {
 		/**
 		 * Imprime dois caracteres que limpam a tela do console.
 		 * Usado para manter um padrao limpo nas telas do jogo.
-		 * 
-		 * @return
 		 */
 		public static void limpaConsole() {
 			System.out.print("\033\143");
@@ -675,9 +668,8 @@ public class SlidePuzzle {
 		/**
 		 * Comeca o programa, criando um tabuleiro de exemplo, imprimindo
 		 * ele e chamando o menu() para o usuario
-		 * @param args
-		 * 
-		 * @return 
+		* @param args este parâmetro serve para caso o programa precise
+					  receber algum valor como argumento.
 		 */
 		public static void main (String[] args) {
 		    
