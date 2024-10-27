@@ -369,8 +369,9 @@ public class SlidePuzzle {
 		 * 					serem trocados.
 		 * @param jogada O valor da peca que o usuario deseja mover
 		 * 				 para o espaco vazio.
+		 * @return Verdadeiro ou falso, a depender se a peca foi movida ou nao.
 		 */
-		public static void moverPeca(int[][] tabuleiro, int jogada) {
+		public static boolean moverPeca(int[][] tabuleiro, int jogada) {
 
 			/**
 			 * Verifica se o valor a ser trocado nao eh maior
@@ -381,9 +382,9 @@ public class SlidePuzzle {
 				limparConsole();
 				System.out.println("Peca incorreta, tente novamente!");
 				imprimirTabuleiro(tabuleiro);
-				return;
+				return false;
 			} else if (jogada == 9) {
-				return;
+				return false;
 			}
 
 			/**
@@ -391,7 +392,6 @@ public class SlidePuzzle {
 			 * Caso a troca de pecas seja valida e seja efetivada, o
 			 * loop seja interrompido
 			 */
-			tab:
 			for (int linha = 0; linha < 3; linha++) {
 				for (int coluna = 0; coluna < 3; coluna++) {
 					
@@ -404,7 +404,8 @@ public class SlidePuzzle {
 						if (validarJogada(linha, coluna, tabuleiro) == true) {
 							limparConsole();
 							tabuleiro = trocaPecas(tabuleiro, false, linha, coluna);
-							break tab;
+							imprimirTabuleiro(tabuleiro);
+							return true;
 						}
 						/**
 						 * Caso a jogada nao seja valida, limpa a tela
@@ -422,6 +423,7 @@ public class SlidePuzzle {
 			 * jogador saber qual o estado atual do jogo
 			 */
 			imprimirTabuleiro(tabuleiro);
+			return false;
 		}
 
 		/**
@@ -568,7 +570,7 @@ public class SlidePuzzle {
 			 */
 			while(true) {
 				jogada = encerrarPartida(jogada);
-				moverPeca(tabuleiro, jogada);
+				boolean mudouPecas = moverPeca(tabuleiro, jogada);
 				
 				/**
 				 * A cada tentativa de mudanca de peca o programa verifica se ja
@@ -580,13 +582,16 @@ public class SlidePuzzle {
 					break;
 
 				} else {
-					jogadas++;
+					if (mudouPecas) {
+						jogadas++;
+					}
+					
 					System.out.println("Jogadas: " + jogadas);
 					
 					/** A cada 20 jogadas, o programa pergunta se o jogador quer
 					 * parar ali e comecar um novo jogo
 					 */				
-					if ((jogadas % 5) == 0) {
+					if ((jogadas % 20) == 0) {
 						
 						limparConsole();
 						imprimirTabuleiro(tabuleiro);
@@ -595,6 +600,10 @@ public class SlidePuzzle {
 						
 						if (continuar) {
 							break;
+						} else {
+							limparConsole();
+							imprimirTabuleiro(tabuleiro);
+							System.out.println("Jogadas: " + jogadas);
 						}
 					}
 					
