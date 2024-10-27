@@ -619,6 +619,16 @@ public class SlidePuzzle {
 
 		}
 
+		/**
+		 * Recebe uma jogada e verifica se ela e igual a 9 (comando de saida).
+		 * Se for, pergunta se o jogador deseja sair do jogo
+		 * ou continuar jogando.
+		 * Caso não deseje sair, pede para o jogador escolher
+		 * uma nova peca para mover.
+		 * @param jogada O ultimo numero escolhido pelo jogador.
+		 * @return O numero inteiro escolhido pelo jogador antes da chamada
+		 * 			do metodo, ou um novo numero.
+		 */
 		private static int encerrarPartida(int jogada) {
 			if (jogada == 9) {
 				System.out.print("Tem certeza que deseja sair? (S - Sim ou Qualquer Tecla - Nao) ");
