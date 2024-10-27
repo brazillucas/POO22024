@@ -16,13 +16,13 @@ public class SlidePuzzle {
 		}
 
 		/**
-		 * Finaliza a execucao do programa
-		 * @return 0, retorna vazio para finalizar o programa
+		 * Imprime uma mensagem de despedida e finaliza a execucao do programa
+		 * @return
 		 */
 		public static void encerraJogo() {
 			System.out.println("Obrigado por utilizar nosso programa!");
 			System.out.println("Programa encerrando...");
-			return;
+			System.exit(0);
 		}
 
 		/**
@@ -95,6 +95,22 @@ public class SlidePuzzle {
 		}
 
 		//Recebe o tabuleiro e troca pecas aleatorias de lugar
+		/**
+		 * Troca duas pecas do tabuleiro conforme indicado pelo usuario
+		 * Se for uma troca ao criar o tabuleiro, gera duas coordenadas
+		 * aleatorias que estejam do lado da celula vazia para trocar
+		 * 
+		 * @param tabuleiro A matriz 3x3 onde ira ocorrer a troca
+		 * @param trocarZeros Um booleano que indica se eh uma troca de
+		 * 					  inicio de partida ou uma troca no meio da
+		 * 					  partida.
+		 * @param linha A linha onde esta o valor que o usuario deseja
+		 * 				trocar de lugar.
+		 * @param coluna A coluna onde esta o valor que o usuario deseja
+		 * 				trocar de lugar.
+		 * 
+		 * @return O tabuleiro, agora com a duas pecas trocadas.
+		 */
 		public static int[][] trocaPecas(int[][] tabuleiro, boolean trocarZeros, int linha, int coluna) {
 			//Acha a linha e a coluna da celula vazia
 			int linha1 = 0;
@@ -142,6 +158,13 @@ public class SlidePuzzle {
 		}
 
 		//Recebe o tabuleiro e retorna ele embaralhado segundo a dificuldade
+		/**
+		 * Embaralha o tabuleiro criado no inicio de cada partida com o
+		 * Auxilio da funcao selecionarDificuldade()
+		 * @param tabuleiro A matriz 3x3 que contem os numeros que devem ser 
+		 * 					trocados na execucao da funcao.
+		 * @return O tabuleiro embaralhado conforme a dificuldade escolhida.
+		 */
 		public static int[][] embaralhaTabuleiro(int[][] tabuleiro) {
 			/*Chama a funcao selecionarDificulade() para definir quantas
 			 * trocas devem ser realizadas no tabuleiro
@@ -179,13 +202,14 @@ public class SlidePuzzle {
 		    System.out.println("2 - Instrucoes");
 		    imprimeLinha(25);
 			
+			System.out.print("Opcao Selecionada: ");
 			/* Cria uma variavel que sera usada no Switch abaixo
 			 * Essa variavel e iniciada recebendo o retorno da
 			 * funcao lerOpcao(); que retorna um numero
 			 */
-		    int opc = lerOpcao();
+		    int opcao = lerOpcao();
 
-			switch(opc) {
+			switch(opcao) {
 				case 0:
 					/**
 					 * Caso o usuario queira encerrar o programa, chama
@@ -200,7 +224,7 @@ public class SlidePuzzle {
 					 * do jogo
 					 */
 					comecarJogo();
-					return;
+					break;
 				case 2:
 					/**
 					 * Caso o usuario queira ler as instrucoes, chama
@@ -208,7 +232,7 @@ public class SlidePuzzle {
 					 * instrucoes necessarias para jogar
 					 */
 					mostrarInstrucoes();
-					return;
+					break;
 				default:
 					/**
 					 * Em caso de nao usar uma das opcoes validas, a
@@ -221,7 +245,7 @@ public class SlidePuzzle {
 					System.out.println("Opcao invalida!");
 					System.out.println("Reinsira um numero valido.");
 					menu();
-					return;
+					break;
 			}
 		}
 
@@ -232,8 +256,19 @@ public class SlidePuzzle {
 		 * @return A entrada que o usuario digirar depois da mensagem exibida
 		 */
 		public static int lerOpcao() {
-			System.out.print("Opcao Selecionada: ");
-			int opc = scan.nextInt();
+			int opc;
+			/**
+			 * Le a opcao selecionada e caso nao esteja no formado correto
+			 * Chama novamente a funcao recursivamente ate opter uma
+			 * Entrada no formato correto
+			 */
+			try {
+				opc = scan.nextInt();
+			} catch (Exception e) {
+				System.out.println("Entrada invalida!! Digite um numero inteiro:");
+				limpaBuffer();
+				opc = lerOpcao();
+			}
 			return opc; 
 		}
 
@@ -248,30 +283,34 @@ public class SlidePuzzle {
 
 			limpaConsole();
 			
-			System.out.println("1 - Para comecar, voce precisa escolher um nivel de dificuldade.");
+			System.out.println("1 - No inicio de cada partida, voce precisa\nescolher um nivel de dificuldade.");
 			System.out.println("As dificuldades se dividem nos seguintes niveis:");
-			System.out.println("	1.1 - Facil");
-			System.out.println("	1.2 - Medio");
-			System.out.println("	1.3 - Dificil");
+			System.out.println("	1 - Facil");
+			System.out.println("	2 - Medio");
+			System.out.println("	3 - Dificil\n");
 			
-			System.out.println("2 - Em cada rodada, digite o numero da peca que deseja mover\n");
+			System.out.println("2 - Em cada rodada, digite o numero da peca que deseja mover");
 			System.out.println("Lembre-se: so e possivel movimentar as pecas \nque estao ao lado do espaco em braco\n");
+
 			System.out.println("3 - O objetivo do jogo eh:");
-			System.out.println("- movimentar as pecas ate que o tabuleiro esteja ordenado");
+			System.out.println("- movimentar as pecas ate que o tabuleiro esteja ordenado.");
 			System.out.println("A maneira correta eh: 1 a 8, com espaco vazio no final\n");
-			System.out.println("4 -Para ganhar o jogo, eh preciso que os numeros sejam ordenados");
+
+			System.out.println("4 -Para ganhar o jogo, eh preciso que os numeros sejam ordenados:");
 			System.out.println("	Da primeira casa superior esquerda para a direita");
-			System.out.println("De cima para baixo, e que a ultima casa esteja em branco.\n");
-			System.out.println("5 - Caso queira, voce pode selecionar para comecar um novo jogo \nou trocar o nivel de dificuldade.");
+			System.out.println("	De cima para baixo, e que a ultima casa esteja em branco.\n");
+
+			System.out.println("5 - A cada 20 jogadas o jogo te perguntara se deseja \ncontinuar jogando.");
+			System.out.println("Caso queira, voce pode selecionar para comecar um novo jogo \nou trocar o nivel de dificuldade.");
 
 			imprimeLinha(25);
 			System.out.print("Pressione ENTER para voltar ao menu...");
 
-			String descarte = scan.nextLine();
+			limpaBuffer();
+			limpaBuffer();
 
 			limpaConsole();
 			menu();
-
 		}
 
 		/**
@@ -297,7 +336,9 @@ public class SlidePuzzle {
 
 			while(true) {
 
+				System.out.print("Opcao Selecionada: ");
 				int dificuldade = lerOpcao();
+				
 				switch(dificuldade) {
 					case 1:
 						return 20;
@@ -312,20 +353,6 @@ public class SlidePuzzle {
 			}
 
 		}
-
-		/**
-		 * Le o numero da peca que o programa deve tentar mover de lugar
-		 * 
-		 * @return A entrada que o usuario colocar depois da impressao.
-		 */
-		public static int lerJogada() {
-
-			System.out.print("Selecione a peca que quer mover (Caso queira sair, digite 9): ");
-			int jog = scan.nextInt();
-			return jog;
-			
-		}
-
 
 		/**
 		 * Move a peca no tabuleiro (uma matriz 3x3) de lugar
@@ -458,6 +485,17 @@ public class SlidePuzzle {
 		}
 		
 
+		/**
+		 * Gera um vetor ordenado para conferir se o tabuleiro esta na ordem
+		 * correta (1 a 8) e depois compara com o tabuleiro para verificar
+		 * se esta ordenado tambem
+		 * 
+		 * @param tabuleiro A matrix 3x3 usada como tabuleiro de jogo e que aqui
+		 * 					sera verificada para saber se o jogador ja conseguiu
+		 *
+		 *  @return Um valor booleano para indicar se o tabuleiro o tabuleiro
+		 * 			ja esta ordenado.
+		 */
 		public static boolean confereTabuleiro(int[][] tabuleiro) {
 			int tabuleiroCorrigido[] = new int[9];
 			
@@ -468,25 +506,41 @@ public class SlidePuzzle {
 			tabuleiroCorrigido[8] = 0;
 
 			int contador = 0;
-			boolean conferencia = false;
 			
-			conferindo:
 			for (int linha = 0; linha < 3; linha ++) {
 				for (int coluna = 0; coluna < 3; coluna ++) {
-					if(tabuleiro[linha][coluna] == tabuleiroCorrigido[contador]) {
-						conferencia = true;
-					} else {
-						conferencia = false;
-						break conferindo;
+					if(tabuleiro[linha][coluna] != tabuleiroCorrigido[contador]) {
+						return false;
 					}
 					contador++;
 				}
 			}
-			
-			return conferencia;			
+			return true;
 		}
 		
+		/**
+		 * Limpa o buffer do scan, garantindo que nao vai ser feita uma
+		 * Leitura falsa (de lixo) para dentro da variavel
+		 * 
+		 * @return
+		 */
+		public static void limpaBuffer() {
+			// Limpa o buffer do Scanner antes de ler a entrada do usuário
+			scan.nextLine();
+		}
+
+		/**
+		 * Finaliza partida atual
+		 * Imprime o tabuleiro e uma mensagem de parabens para
+		 * O jogador, por ter completado o tabuleiro.
+		 * Quando o usuario decide continuar, chama o menu() novamente.
+		 * @param tabuleiro Uma matriz 3x3 que a essa altura deve
+		 * 					estar ordenada.
+		 * 
+		 * @return
+		 */
 		public static void encerraPartida(int[][] tabuleiro) {
+			
 			limpaConsole();
 			
 			imprimeLinha(25);
@@ -497,64 +551,76 @@ public class SlidePuzzle {
 			
 			imprimeLinha(25);
 			
+			limpaBuffer();
+
 			System.out.print("Pressione ENTER para continuar...");
+    		
+			limpaBuffer();
 			
-			String espera = scan.nextLine();
-			
-			/*
-			 * conferir essa parte do codigo
-			 * descobrir porque nao esta parando para esperar
-			 * o usuario digitar
-			 */
-			// limpaConsole();
+			limpaConsole();
 			
 			menu();
 		}
 
+		/**
+		 * Inicia o jogo de fato. criando um tabuleiro, embaralhando ele
+		 * Imprime o tabuleiro para o jogador e depois entra num loop
+		 * Lendo as jogadas que serao feitas pelo programa
+		 * 
+		 * @return 
+		 */
 		public static void comecarJogo() {
 			int[][] tabuleiro = criaTabuleiro();
 			tabuleiro = embaralhaTabuleiro(tabuleiro);
+			
 			limpaConsole();
 			imprimeTabuleiro(tabuleiro);
 			
-			 int jogada = lerJogada();
-			 int jogadas = 0;
-			 boolean finalizar = false;
-			 
-			 while(jogada != 9) {
-				moverPeca(tabuleiro, jogada);
+			System.out.print("Selecione a peca que quer mover (Caso queira sair, digite 9): ");
+			int jogada = lerOpcao();
+			int jogadas = 0;
+
+			/** intera enquanto o jogador informar uma pessa pra mexer, quando informar
+			 *  o codigo de sair, o loop Finaliza
+			 */
+			while(jogada != 9) {
+			moverPeca(tabuleiro, jogada);
+			
+			/**
+			 * A cada tentativa de mudanca de peca o programa verifica se ja
+			 * esta com a matriz ordenada, se estiver, chama o metodo 
+			 * encerraPartida().
+			 */
+			if(confereTabuleiro(tabuleiro)) {
+				encerraPartida(tabuleiro);
+				break;
+
+			} else {
 				
-				finalizar = confereTabuleiro(tabuleiro);
+				jogadas++;
+				System.out.println("Jogadas: " + jogadas);
 				
-				if(finalizar) {
-					encerraPartida(tabuleiro);
-					return;
+				/** A cada 20 jogadas, o programa pergunta se o jogador quer
+				 * parar ali e comecar um novo jogo
+				 */				
+				if ((jogadas % 20) == 0) {
 					
-				} else {
-					
-					
-						jogadas++;
+					limpaConsole();
+					imprimeTabuleiro(tabuleiro);
 					System.out.println("Jogadas: " + jogadas);
+					boolean continuar = continuarJogo();
 					
-					if ((jogadas % 20) == 0) {
-						
-						limpaConsole();
-						
-						imprimeTabuleiro(tabuleiro);
-											
-						System.out.println("Jogadas: " + jogadas);
-						
-						boolean continuar = continuarJogo();
-						
-						if (continuar) {
-							break;
-						}
+					if (continuar) {
+						break;
 					}
-					jogada = lerJogada();
 				}
-			 }
-			 limpaConsole();
-			 menu();
+				limpaBuffer();
+				System.out.print("Selecione a peca que quer mover (Caso queira sair, digite 9): ");
+				jogada = lerOpcao();
+			}
+			}
+			limpaConsole();
+			menu();
 
 		}
 
@@ -567,17 +633,29 @@ public class SlidePuzzle {
 		 * 			valor escolhido pelo usuario
 		 */
 		public static boolean continuarJogo() {
-			int escolha = 0;
+			String escolha;
 
 			while (true) {
-				System.out.print("Deseja continuar o jogo ou comecar um novo? (1 - Continuar ou 2 - Novo Jogo): ");
-				escolha = scan.nextInt();
-				if (escolha == 1) {
-					return false;
-				} else if (escolha == 2) {
-					return true;
-				} else {
-					System.out.println("Opcao invalida!");
+				limpaBuffer();
+
+				System.out.print("Deseja continuar o jogo ou comecar um novo? (C - Continuar ou N - Novo Jogo): ");
+				
+				escolha = scan.nextLine();
+
+				switch (escolha) {
+					case "C" -> {
+                                            return false;
+                                }
+					case "c" -> {
+                                            return false;
+                                }
+					case "N" -> {
+                                            return true;
+                                }
+					case "n" -> {
+                                            return true;
+                                }
+					default -> System.out.println("Opcao invalida! Pressione ENTER...");
 				}
 			}
 
@@ -586,12 +664,21 @@ public class SlidePuzzle {
 		/**
 		 * Imprime dois caracteres que limpam a tela do console.
 		 * Usado para manter um padrao limpo nas telas do jogo.
+		 * 
+		 * @return
 		 */
 		public static void limpaConsole() {
 			System.out.print("\033\143");
 
 		}
 		
+		/**
+		 * Comeca o programa, criando um tabuleiro de exemplo, imprimindo
+		 * ele e chamando o menu() para o usuario
+		 * @param args
+		 * 
+		 * @return 
+		 */
 		public static void main (String[] args) {
 		    
 		    int[][] tabuleiro = criaTabuleiro();
@@ -600,7 +687,7 @@ public class SlidePuzzle {
 		    imprimeTabuleiro(tabuleiro);
 		    
 			bemVindo();
-			menu();			
+			menu();
 			
 		}
 
