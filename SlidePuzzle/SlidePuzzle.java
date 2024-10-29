@@ -614,7 +614,9 @@ public class SlidePuzzle {
 							break;
 						}
 					}
-
+					
+					
+					System.out.println("Jogadas: " + jogadas);
 					System.out.print("Selecione a peca que quer mover (Caso queira sair, digite 9): ");
 					jogada = lerOpcao();
 
