@@ -229,37 +229,40 @@ public class SlidePuzzle {
 			 */
 		    int opcao = lerOpcao();
 
-			switch(opcao) {
-				case 0 -> /**
+			switch(opcao){
+				case 0:
+					/**
 					 * Caso o usuario queira encerrar o programa, chama
 					 * a funcao encerraJogo() que ira finalizar o jogo
 					 */
 					encerraJogo();
-				case 1 -> /**
+				case 1:
+					 /**
 					 * Caso o usuario queira jogar uma partida, chama
 					 * a funcao comecarJogo() que ira executar a logica
 					 * do jogo
 					 */
 					comecarJogo();
-				case 2 -> /**
+				case 2:
+					/**
 					 * Caso o usuario queira ler as instrucoes, chama
 					 * a funcao mostrarInstrucoes() que ira listar as
 					 * instrucoes necessarias para jogar
 					 */
 					mostrarInstrucoes();
-				default -> {
-							/**
-							 * Em caso de nao usar uma das opcoes validas, a
-							 * tela e limpa e um aviso aparece para o usuario
-							 * logo em seguida eh chamado o menu() novamente,
-							 * assim o jogador pode continuar tentando
-							 * acertar ou sair do jogo.
-							 */
-							limparConsole();
-							System.out.println("Opcao nao encontrada!");
-							System.out.println("Reinsira uma opcao valida.");
-							menu();
-                        }
+				default:
+						/**
+						 * Em caso de nao usar uma das opcoes validas, a
+						 * tela e limpa e um aviso aparece para o usuario
+						 * logo em seguida eh chamado o menu() novamente,
+						 * assim o jogador pode continuar tentando
+						 * acertar ou sair do jogo.
+						 */
+						limparConsole();
+						System.out.println("Opcao nao encontrada!");
+						System.out.println("Reinsira uma opcao valida.");
+						menu();
+				}
 			}
 		}
 
@@ -353,14 +356,15 @@ public class SlidePuzzle {
 				int dificuldade = lerOpcao();
 		
 				return switch (dificuldade) {
-					case 1 -> 20;
-					case 2 -> 40;
-					case 3 -> 80;
-					default -> {
+					case 1:
+						return 20;
+					case 2:
+						return 40;
+					case 3:
+						return 80;
+					default:
 						System.out.println("Opcao invalida!");
-						yield -1; // Usamos yield para retornar um valor e continuar o loop
-					}
-				};
+				}
 			}
 
 		}
@@ -587,6 +591,7 @@ public class SlidePuzzle {
 				} else {
 					if (mudouPecas == true) {
 						jogadas++;
+						System.out.println("Aumentou as jogadas");
 					}
 					
 					System.out.println("Jogadas: " + jogadas);
@@ -605,6 +610,7 @@ public class SlidePuzzle {
 							limparConsole();
 							imprimirTabuleiro(tabuleiro);
 							jogada++;
+							System.out.println("Aumentou as jogadas");
 							System.out.println("Jogadas: " + jogadas);
 							
 							
