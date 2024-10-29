@@ -184,25 +184,31 @@ public class SlidePuzzle {
 			int linhaMudanca = -1;
 			int colunaMudanca = -1;
 			boolean podeMudar = false;
+			boolean embaralhou = true;
 
 			// Embaralha o tabuleiro até que ele não retorne ordenado
 			do {
-				// Gera dois numeros aleatorios para selecionar a celula a ser trocada
-				// e valida se a jogada pode ser feita. Se nao puder, gera novos numeros.
-				while(podeMudar == false) {
-					linhaMudanca = aleatorio.nextInt(3);
-					colunaMudanca = aleatorio.nextInt(3);
-					// Confirma e o movimento pode ser feito
-					podeMudar = validarJogada(linhaMudanca, colunaMudanca, tabuleiro);
-				}
-
 				//Chama a funcao trocaPecas() para efetivar o
 				//embalhamento do tabuleiro
 				for (int vezes = 0; vezes < dificuldade;vezes++) {
+
+					// Gera dois numeros aleatorios para selecionar a celula a ser trocada
+					// e valida se a jogada pode ser feita. Se nao puder, gera novos numeros.
+					while(podeMudar == false) {
+						linhaMudanca = aleatorio.nextInt(3);
+						colunaMudanca = aleatorio.nextInt(3);
+						//System.out.println("Linha escolhida: " + linhaMudanca);
+						//System.out.println("Coluna escolhida: " + colunaMudanca);
+						// Confirma e o movimento pode ser feito
+						podeMudar = validarJogada(linhaMudanca, colunaMudanca, tabuleiro);
+					}
+					podeMudar = false;
+					
 					tabuleiro = trocaPecas(tabuleiro, linhaMudanca, colunaMudanca);
 				}
+				embaralhou = conferirTabuleiro(tabuleiro);
 			//Verifica se o tabuleiro continua ordenado, se estiver, embaralha novamente
-			} while (conferirTabuleiro(tabuleiro) == true);
+			} while (embaralhou == true);
 
 			//Retorna o tabuleiro embaralhado
 			return tabuleiro;
