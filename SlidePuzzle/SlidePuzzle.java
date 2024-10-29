@@ -263,7 +263,6 @@ public class SlidePuzzle {
 						System.out.println("Reinsira uma opcao valida.");
 						menu();
 				}
-			}
 		}
 
 		/**
@@ -324,6 +323,7 @@ public class SlidePuzzle {
 			imprimeLinha(25);
 			System.out.print("Pressione ENTER para voltar ao menu...");
 
+			//Espera o usuario dar um comando para sair da tela de instrucoes
 			limparBuffer();
 
 			limparConsole();
@@ -355,7 +355,7 @@ public class SlidePuzzle {
 				System.out.print("Opcao Selecionada: ");
 				int dificuldade = lerOpcao();
 		
-				return switch (dificuldade) {
+				switch (dificuldade) {
 					case 1:
 						return 20;
 					case 2:
@@ -569,6 +569,7 @@ public class SlidePuzzle {
 			
 			System.out.print("Selecione a peca que quer mover (Caso queira sair, digite 9): ");
 			int jogada = lerOpcao();
+			jogada = fecharPartida(jogada);
 			int jogadas = 0;
 			
 
@@ -576,7 +577,6 @@ public class SlidePuzzle {
 			 *  o codigo de sair, o loop Finaliza
 			 */
 			while(true) {
-				jogada = fecharPartida(jogada);
 				boolean mudouPecas = moverPeca(tabuleiro, jogada);
 				
 				/**
@@ -591,10 +591,9 @@ public class SlidePuzzle {
 				} else {
 					if (mudouPecas == true) {
 						jogadas++;
-						System.out.println("Aumentou as jogadas");
 					}
 					
-					System.out.println("Jogadas: " + jogadas);
+					//System.out.println("Jogadas: " + jogadas);
 					
 					/** A cada 20 jogadas, o programa pergunta se o jogador quer
 					 * parar ali e comecar um novo jogo
@@ -609,12 +608,9 @@ public class SlidePuzzle {
 						if (continuar == true) {
 							limparConsole();
 							imprimirTabuleiro(tabuleiro);
-							jogada++;
-							System.out.println("Aumentou as jogadas");
-							System.out.println("Jogadas: " + jogadas);
-							
-							
+							jogadas++;
 						} else {
+							jogadas++;
 							break;
 						}
 					}
@@ -635,13 +631,14 @@ public class SlidePuzzle {
 		 * Se for, pergunta se o jogador deseja sair do jogo
 		 * ou continuar jogando.
 		 * @param jogada O ultimo numero escolhido pelo jogador.
-		 * @return O numero inteiro escolhido pelo jogador antes da chamada
+		 * @return jogada O numero inteiro escolhido pelo jogador antes da chamada
 		 * 			do metodo.
 		 */
 		private static int fecharPartida(int jogada) {
 			if (jogada == 9) {
 				System.out.print("Tem certeza que deseja sair? (S - Sim ou Qualquer Tecla - Nao) ");
 				String escolha = scan.nextLine().toUpperCase();
+				//limparBuffer();
 
 				if (escolha.equals("S")) {
 					limparConsole();
@@ -669,13 +666,12 @@ public class SlidePuzzle {
 				String escolha = scan.nextLine().toUpperCase();
 
 				switch (escolha) {
-					case "C" -> {
-								return true;
-					}
-					case "N" -> {
-								return false;
-					}
-					default -> System.out.println("Opcao invalida! Pressione ENTER...");
+					case "C":
+						return true;
+					case "N":
+						return false;
+					default:
+						System.out.println("Opcao invalida! Pressione ENTER...");
 				}
 			}
 
