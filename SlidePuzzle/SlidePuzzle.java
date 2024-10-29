@@ -138,7 +138,7 @@ public class SlidePuzzle {
 				}
 			}
 
-			System.out.println("Peca que vai mudar: " + tabuleiro [linha][coluna]);
+			System.out.println("Peca que mudou: " + tabuleiro [linha][coluna]);
 
 			//Recebe temporariamente o numero que sera trocado
 			int temporario = tabuleiro[linha][coluna];
@@ -282,7 +282,7 @@ public class SlidePuzzle {
 					limparBuffer();
 					entradaValida = true;
 				} catch (Exception e) {
-					System.out.println("Entrada invalida!! Digite um numero inteiro:");
+					System.out.print("Entrada invalida!! Digite um numero inteiro: ");
 					limparBuffer();
 				}
 			}
@@ -601,10 +601,12 @@ public class SlidePuzzle {
 						System.out.println("Jogadas: " + jogadas);
 						boolean continuar = continuarJogo();
 						
-						if (continuar) {
+						if (continuar == true) {
 							limparConsole();
 							imprimirTabuleiro(tabuleiro);
+							jogada++;
 							System.out.println("Jogadas: " + jogadas);
+							
 							
 						} else {
 							break;
@@ -626,11 +628,9 @@ public class SlidePuzzle {
 		 * Recebe uma jogada e verifica se ela e igual a 9 (comando de saida).
 		 * Se for, pergunta se o jogador deseja sair do jogo
 		 * ou continuar jogando.
-		 * Caso não deseje sair, pede para o jogador escolher
-		 * uma nova peca para mover.
 		 * @param jogada O ultimo numero escolhido pelo jogador.
 		 * @return O numero inteiro escolhido pelo jogador antes da chamada
-		 * 			do metodo, ou um novo numero.
+		 * 			do metodo.
 		 */
 		private static int fecharPartida(int jogada) {
 			if (jogada == 9) {
