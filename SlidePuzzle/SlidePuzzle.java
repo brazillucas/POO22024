@@ -8,6 +8,13 @@
 
 import java.util.*;
 
+/**
+ * Um jogo 'racha-cuca" que consiste em um tabuleiro de 8 pecas
+ * dividido em 3 linhas e 3 colunas.
+ * O Objetivo e deixar o tabuleiro ordenado mudando apenas as
+ * pecas que possuem um espaco vazio ao seu lado de lugar.
+ * Quando o jogo estiver ordenado a partida chega ao fim.
+ */
 public class SlidePuzzle {
 
 		/**
@@ -108,17 +115,14 @@ public class SlidePuzzle {
 
 		/**
 		 * Troca duas pecas do tabuleiro de posicao.
-		 * Se "trocarZeros" for "true", seleciona aleatoriamente duas posições adjacentes
-		 * ao espaço vazio para trocar. Caso contrário, troca a peça na posicao
- 		 * especificada por "linha" e "coluna" com o espaço vazio.
+		 * Troca a peça na posicao especificada por
+		 * "linha" e "coluna" com o espaço vazio.
 		 * 
 		 * @param tabuleiro A matriz 3x3 onde ira ocorrer a troca.
-		 * @param trocarZeros Indica se a troca e aleatória (true) ou
-		 * 					  definida pelo usuário (false).
 		 * @param linha A linha do valor que o usuario deseja trocar
-		 * 				de lugar (relevante apenas se trocarZeros for false).
+		 * 				de lugar.
 		 * @param coluna A coluna do valor que o usuario deseja trocar
-		 * 				de lugar (relevante apenas se trocarZeros for false).
+		 * 				de lugar.
 		 * 
 		 * @return O tabuleiro, agora com as duas pecas trocadas.
 		 */
