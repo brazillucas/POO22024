@@ -174,7 +174,9 @@ public class SlidePuzzle {
 			/*Chama a funcao selecionarDificulade() para definir quantas
 			 * trocas devem ser realizadas no tabuleiro
 			 */
-			int dificuldade = selecionarDificuldade();
+
+
+			 int dificuldade = selecionarDificuldade();
 
 			//Gera um construtor de numero aleatorio
 			Random aleatorio = new Random();
@@ -185,6 +187,7 @@ public class SlidePuzzle {
 			int colunaMudanca = -1;
 			boolean podeMudar = false;
 			boolean embaralhou = true;
+			int ultimaMudanca = -1;
 
 			// Embaralha o tabuleiro até que ele não retorne ordenado
 			do {
@@ -197,10 +200,23 @@ public class SlidePuzzle {
 					while(podeMudar == false) {
 						linhaMudanca = aleatorio.nextInt(3);
 						colunaMudanca = aleatorio.nextInt(3);
-						//System.out.println("Linha escolhida: " + linhaMudanca);
-						//System.out.println("Coluna escolhida: " + colunaMudanca);
+
 						// Confirma e o movimento pode ser feito
 						podeMudar = validarJogada(linhaMudanca, colunaMudanca, tabuleiro);
+
+						/**
+						 * Verifica se a célula escolhida para mudar nao e a mesma que foi
+						 * mudada na ultima iteracao.
+						 * Se for diferente, salva o valor da peca que mudou de posicao
+						 * dentro da variavel ultimaMudanca. Senao, continua sorteando
+						 * numeros aleatorios.
+						 */
+						
+						if (tabuleiro[linhaMudanca][colunaMudanca] == ultimaMudanca) {
+							podeMudar = false;
+						} else if (podeMudar == true) {
+							ultimaMudanca = tabuleiro[linhaMudanca][colunaMudanca];
+						}
 					}
 					podeMudar = false;
 					
