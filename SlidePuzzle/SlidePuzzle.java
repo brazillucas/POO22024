@@ -632,8 +632,7 @@ public class SlidePuzzle {
 							break;
 						}
 					}
-					
-					
+
 					System.out.println("Jogadas: " + jogadas);
 					System.out.print("Selecione a peca que quer mover (Caso queira sair, digite 9): ");
 					jogada = lerOpcao();
@@ -657,15 +656,12 @@ public class SlidePuzzle {
 			if (jogada == 9) {
 				System.out.print("Tem certeza que deseja sair? (S - Sim ou Qualquer Tecla - Nao) ");
 				String escolha = scan.nextLine().toUpperCase();
-				//limparBuffer();
 
 				if (escolha.equals("S")) {
 					limparConsole();
 					menu();
 				}
-
 			}
-			
 			return jogada;
 		}
 
@@ -678,7 +674,7 @@ public class SlidePuzzle {
 		 * 			valor escolhido pelo usuario
 		 */
 		public static boolean continuarJogo() {
-			
+
 			while (true) {
 				System.out.print("Deseja continuar o jogo ou comecar um novo? (C - Continuar ou N - Novo Jogo): ");
 
@@ -693,7 +689,6 @@ public class SlidePuzzle {
 						System.out.println("Opcao invalida! Pressione ENTER...");
 				}
 			}
-
 		}
 
 		/**
@@ -702,7 +697,6 @@ public class SlidePuzzle {
 		 */
 		public static void limparConsole() {
 			System.out.print("\033\143");
-
 		}
 		
 		/**
@@ -712,15 +706,13 @@ public class SlidePuzzle {
 					  receber algum valor como argumento.
 		 */
 		public static void main (String[] args) {
-		    
+
 		    int[][] tabuleiro = criarTabuleiro();
-		    
+
 		    System.out.println("Referencia");
 		    imprimirTabuleiro(tabuleiro);
-		    
+
 			bemVindo();
 			menu();
-			
 		}
-
 }
