@@ -415,12 +415,13 @@ public class SlidePuzzle {
 			 * que o valor maximo presente no tabuleiro (8) ou
 			 * menor que o valor minimo (0)
 			 */
-			if (jogada < 1 || jogada > 8 && jogada != 9) {
+			if (jogada < 1 || jogada > 9) {
 				limparConsole();
 				System.out.println("Peca incorreta, tente novamente!");
 				imprimirTabuleiro(tabuleiro);
 				return false;
-			} else if (jogada == 9) {
+			}
+			if (jogada == 9) {
 				return false;
 			}
 
