@@ -564,11 +564,11 @@ public class SlidePuzzle {
 			imprimeLinha(25);
 
 			System.out.print("Pressione ENTER para continuar...");
-    		
+
 			limparBuffer();
 			
 			limparConsole();
-			
+
 			menu();
 		}
 
@@ -583,22 +583,22 @@ public class SlidePuzzle {
 		public static void comecarJogo() {
 			int[][] tabuleiro = criarTabuleiro();
 			tabuleiro = embaralharTabuleiro(tabuleiro);
-			
+
 			limparConsole();
 			imprimirTabuleiro(tabuleiro);
-			
+
 			System.out.print("Selecione a peca que quer mover (Caso queira sair, digite 9): ");
 			int jogada = lerOpcao();
 			jogada = fecharPartida(jogada);
 			int jogadas = 0;
-			
+
 
 			/** intera enquanto o jogador informar uma pessa pra mexer, quando informar
 			 *  o codigo de sair, o loop Finaliza
 			 */
 			while(true) {
 				boolean mudouPecas = moverPeca(tabuleiro, jogada);
-				
+
 				/**
 				 * A cada tentativa de mudanca de peca o programa verifica se ja
 				 * esta com a matriz ordenada, se estiver, chama o metodo 
@@ -612,9 +612,7 @@ public class SlidePuzzle {
 					if (mudouPecas == true) {
 						jogadas++;
 					}
-					
-					//System.out.println("Jogadas: " + jogadas);
-					
+
 					/** A cada 20 jogadas, o programa pergunta se o jogador quer
 					 * parar ali e comecar um novo jogo
 					 */
@@ -645,7 +643,6 @@ public class SlidePuzzle {
 			}
 			limparConsole();
 			menu();
-
 		}
 
 		/**
