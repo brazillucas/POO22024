@@ -479,7 +479,7 @@ public class SlidePuzzle {
 			}
 
 			// Verifica se a posicao de baixo e valida e esta vazia
-			if (linha < 3 && tabuleiro[linha+1][coluna] == 0) {
+			if (linha < 2 && tabuleiro[linha+1][coluna] == 0) {
 				return true;
 			}
 
@@ -489,7 +489,7 @@ public class SlidePuzzle {
 			}
 
 			// Verifica se a posicao a direira e valida e esta vazia
-			if (coluna < 3 && tabuleiro[linha][coluna + 1] == 0) {
+			if (coluna < 2 && tabuleiro[linha][coluna + 1] == 0) {
 				return true;
 			}
 
