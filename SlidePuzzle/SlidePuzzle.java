@@ -44,7 +44,7 @@ public class SlidePuzzle {
 		 * Imprime uma linha formada pelo caractere "=" para separar
 		 * as mensagens exibidas ao usuario
 		 * @param quantidade Quantas vezes deve ser impresso o caractere
-		 * 					 para formar a linha
+		 * para formar a linha
 		 */
 		public static void imprimeLinha(int quantidade) {
 			for (int contador = 0; contador <= quantidade; contador++) {
@@ -178,10 +178,8 @@ public class SlidePuzzle {
 
 			 int dificuldade = selecionarDificuldade();
 
-			//Gera um construtor de numero aleatorio
+			//Instancia um gerador de numero aleatorio
 			Random aleatorio = new Random();
-			//Gera 2 numeros aleatorios que serao usados para
-			//Selecionar a celula a ser trocada
 
 			int linhaMudanca = -1;
 			int colunaMudanca = -1;
@@ -422,11 +420,6 @@ public class SlidePuzzle {
 				return false;
 			}
 
-			/**
-			 * Rotula o loop que roda o tabuleiro como "tab" para que
-			 * Caso a troca de pecas seja valida e seja efetivada, o
-			 * loop seja interrompido
-			 */
 			for (int linha = 0; linha < 3; linha++) {
 				for (int coluna = 0; coluna < 3; coluna++) {
 					
