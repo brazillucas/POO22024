@@ -552,24 +552,14 @@ public class SlidePuzzle {
 		 * 					estar ordenada.
 		 */
 		public static void encerrarPartida(int[][] tabuleiro) {
-			
+
 			limparConsole();
-			
 			imprimeLinha(25);
-			
 			System.out.println("PARABENS!! VOCE COMPLETOU O JOGO");
-			
 			imprimirTabuleiro(tabuleiro);
-			
 			imprimeLinha(25);
-
 			System.out.print("Pressione ENTER para continuar...");
-
 			limparBuffer();
-			
-			limparConsole();
-
-			menu();
 		}
 
 		/**
