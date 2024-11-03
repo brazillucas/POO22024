@@ -676,7 +676,8 @@ public class SlidePuzzle {
 					case "N":
 						return false;
 					default:
-						System.out.println("Opcao invalida! Pressione ENTER...");
+						System.out.print("Opcao invalida! Pressione ENTER...");
+						limparBuffer();
 				}
 			}
 		}
