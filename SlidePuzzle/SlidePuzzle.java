@@ -260,6 +260,7 @@ public class SlidePuzzle {
 					 * a funcao encerraJogo() que ira finalizar o jogo
 					 */
 					encerraJogo();
+					break;
 				case 1:
 					 /**
 					 * Caso o usuario queira jogar uma partida, chama
@@ -267,6 +268,7 @@ public class SlidePuzzle {
 					 * do jogo
 					 */
 					comecarJogo();
+					break;
 				case 2:
 					/**
 					 * Caso o usuario queira ler as instrucoes, chama
@@ -274,6 +276,7 @@ public class SlidePuzzle {
 					 * instrucoes necessarias para jogar
 					 */
 					mostrarInstrucoes();
+					break;
 				default:
 						/**
 						 * Em caso de nao usar uma das opcoes validas, a
@@ -286,6 +289,7 @@ public class SlidePuzzle {
 						System.out.println("Opcao nao encontrada!");
 						System.out.println("Reinsira uma opcao valida.");
 						menu();
+						break;
 				}
 		}
 
