@@ -642,7 +642,7 @@ public class SlidePuzzle {
 		 * @return jogada O numero inteiro escolhido pelo jogador antes da chamada
 		 * 			do metodo.
 		 */
-		private static int fecharPartida(int jogada) {
+		public static int fecharPartida(int jogada) {
 			if (jogada == 9) {
 				System.out.print("Tem certeza que deseja sair? (S - Sim ou Qualquer Tecla - Nao) ");
 				String escolha = scan.nextLine().toUpperCase();
