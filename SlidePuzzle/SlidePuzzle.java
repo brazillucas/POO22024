@@ -689,12 +689,11 @@ public class SlidePuzzle {
 		public static void limparConsole() {
 			System.out.print("\033\143");
 		}
-		
+
 		/**
 		 * Comeca o programa, criando um tabuleiro de exemplo, imprimindo
 		 * ele e chamando o menu() para o usuario
-		* @param args este parâmetro serve para caso o programa precise
-					  receber algum valor como argumento.
+		* @param args este parâmetro é um padrão do Java.
 		 */
 		public static void main (String[] args) {
 
