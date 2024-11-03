@@ -472,17 +472,13 @@ public class SlidePuzzle {
 		 */
 		public static boolean validarJogada(int linha, int coluna, int[][]tabuleiro) {
 
-			// Pega o tamanho da matriz
-			int maxLinha = tabuleiro.length;
-			int maxColuna = tabuleiro[0].length;
-
 			// Verifica se a posicao de cima e valida e esta vazia
 			if (linha > 0 && tabuleiro[linha-1][coluna] == 0) {
 				return true;
 			}
 
 			// Verifica se a posicao de baixo e valida e esta vazia
-			if (linha < maxLinha - 1 && tabuleiro[linha+1][coluna] == 0) {
+			if (linha < 3 && tabuleiro[linha+1][coluna] == 0) {
 				return true;
 			}
 
@@ -492,7 +488,7 @@ public class SlidePuzzle {
 			}
 
 			// Verifica se a posicao a direira e valida e esta vazia
-			if (coluna < maxColuna - 1 && tabuleiro[linha][coluna + 1] == 0) {
+			if (coluna < 3 && tabuleiro[linha][coluna + 1] == 0) {
 				return true;
 			}
 
