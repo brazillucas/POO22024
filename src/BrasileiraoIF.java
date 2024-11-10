@@ -3,12 +3,22 @@ import java.util.*;
 public class BrasileiraoIF {
 
     static Scanner scan = new Scanner(System.in);
-
-    public static void main(String[] args) {
-        menu();
+    private static int partidas;
+    
+    public static int getPartidas() {
+        return partidas;
     }
 
-    public static void menu() {
+    public static void setPartidas(int partidas) {
+        partidas += partidas;
+    }
+
+    public static void main(String[] args) {
+        Equipe[] equipes = new Equipe[20];
+        menu(equipes);
+    }
+
+    public static void menu(Equipe[] equipes) {
         int opc;
 
         while(true) {
@@ -20,9 +30,12 @@ public class BrasileiraoIF {
             System.out.println("5 - Cadastrar Nova Equipe;");
             System.out.println("6 - Sair");
 
+            System.out.print("Escolha uma opcao: ");
+            opc = scan.nextInt();
+
             switch (opc) {
                 case 1:
-                    cadastrarPartida();
+                    cadastrarPartida(equipes);
                     break;
                 case 2:
                     mostrarLider();
@@ -37,9 +50,41 @@ public class BrasileiraoIF {
                     cadastrarEquipe();
                     break;
                 case 6:
-                    System.out(0);
+                    System.out.println("Obrigado por utilizar este gerenciador!");
+                    System.out.println("Programa encerrando...");
+                    System.exit(0);
             }
         }
     }
 
+    public static void cadastrarEquipe(Equipe[] equipes) {
+        int limiteEquipes = acharUltimaEquipe(equipes);
+
+        if(limiteEquipes < 19) {
+            if (getPartidas() == 0) {
+                System.out.print("Digite o nome da nova equipe: ");
+                String nome = scan.nextLine();
+                equipes[limiteEquipes + 1] = new Equipe(nome);
+            } else {
+                System.out.println("Campeonato já iniciado!");
+                System.out.println("Não é possível adicionar uma nova equipe!");
+                System.out.println("Voltando ao menu...");
+                limpaConsole();
+            }
+        }
+
+    }
+
+    public static int acharUltimaEquipe(Equipe[] equipes) {
+        for(int i = 0; i < equipes.length; i++) {
+            if(equipes[i] == null) {
+                return i-1;
+            }
+        }
+        return equipes.length-1;
+    }
+
+    public static void limpaConsole() {
+        System.out.println("\033\143");
+    }
 }
