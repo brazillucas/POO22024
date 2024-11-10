@@ -142,12 +142,64 @@ public class BrasileiraoIF {
         equipes[equipe2Posicao].setCartAmarelo(cartAmarelo2);
 
         System.out.println("Partida cadastrada com sucesso!");
+        setPartidas(1);
+        ordenarEquipes(equipes);
         encerrarFuncao();
+    }
+
+    public static void ordenarEquipes(Equipe[] equipes) {
+        int limiteEquipes = acharUltimaEquipe(equipes);
+        Equipe temporaria;
+
+        for (int i = 0; i <= limiteEquipes; i++) {
+            for (int j = 0; j <= limiteEquipes; j++)
+            {
+                if(equipes[i].getPontos() > equipes[j].getPontos())
+                {
+                    temporaria = equipes[i];
+                    equipes[i] = equipes[j];
+                    equipes[j] = temporaria;
+                }
+                else if(equipes[i].getPontos() == equipes[j].getPontos() &&
+                        equipes[i].getSaldoGols() > equipes[j].getSaldoGols())
+                {
+                    temporaria = equipes[i];
+                    equipes[i] = equipes[j];
+                    equipes[j] = temporaria;
+                }
+                else if(equipes[i].getPontos() == equipes[j].getPontos() &&
+                        equipes[i].getSaldoGols() == equipes[j].getSaldoGols() &&
+                        equipes[i].getGolsPro() > equipes[j].getGolsPro())
+                {
+                    temporaria = equipes[i];
+                    equipes[i] = equipes[j];
+                    equipes[j] = temporaria;
+                }
+                else if(equipes[i].getPontos() == equipes[j].getPontos() &&
+                        equipes[i].getSaldoGols() == equipes[j].getSaldoGols() &&
+                        equipes[i].getGolsPro() == equipes[j].getGolsPro() &&
+                        equipes[i].getCartVermelho() < equipes[j].getCartVermelho())
+                {
+                    temporaria = equipes[i];
+                    equipes[i] = equipes[j];
+                    equipes[j] = temporaria;
+                }
+                else if(equipes[i].getPontos() == equipes[j].getPontos() &&
+                        equipes[i].getSaldoGols() == equipes[j].getSaldoGols() &&
+                        equipes[i].getGolsPro() == equipes[j].getGolsPro() &&
+                        equipes[i].getCartVermelho() == equipes[j].getCartVermelho() &&
+                        equipes[i].getCartAmarelo() < equipes[j].getCartAmarelo())
+                {
+                    temporaria = equipes[i];
+                    equipes[i] = equipes[j];
+                    equipes[j] = temporaria;
+                }
+            }
+        }
     }
 
     public static void mostrarLider(Equipe[] equipes) {
         int limiteEquipes = acharUltimaEquipe(equipes);
-        int lider = 0;
 
         if (limiteEquipes < 0) {
             System.out.println("Quantidade de equipes insuficiente!");
@@ -156,20 +208,10 @@ public class BrasileiraoIF {
             return;
         }
 
-        for(int i = 1; i <= limiteEquipes; i++) {
-            if (equipes[i-1].getPontos() > equipes[i].getPontos()) {
-                lider = i;
-            } else if (equipes[i-1].getPontos() == equipes[i].getPontos() && equipes[i-1].getSaldoGols() > equipes[i].getSaldoGols()) {
-                lider = i;
-            } else if (equipes[i-1].getPontos() == equipes[i].getPontos() && equipes[i-1].getSaldoGols() == equipes[i].getSaldoGols() && equipes[i-1].getCartVermelho() > equipes[i].getCartVermelho()) {
-                lider = i;
-            } else if (equipes[i-1].getPontos() == equipes[i].getPontos() && equipes[i-1].getSaldoGols() == equipes[i].getSaldoGols() && equipes[i-1].getCartVermelho() == equipes[i].getCartVermelho() && equipes[i-1].getCartAmarelo() > equipes[1].getCartAmarelo()) {
-                lider = i;
-            }
-        }
+        ordenarEquipes(equipes);
 
         System.out.println("Equipe Lider do Campeonato:");
-        listarEquipe(equipes, lider);
+        listarEquipe(equipes, 0);
         encerrarFuncao();
     }
 
@@ -217,7 +259,6 @@ public class BrasileiraoIF {
             if (getPartidas() == 0) {
                 System.out.print("Digite o nome da nova equipe: ");
                 nome = scan.nextLine();
-                
                 equipes[limiteEquipes + 1] = new Equipe(nome);
                 System.out.println("Nova equipe cadastrada:");
                 listarEquipe(equipes, limiteEquipes+1);
