@@ -6,7 +6,11 @@ public class Equipe {
 	private int cartAmarelo;
 
 	public Equipe (String nome) {
-		this.nome = nome
+		this.nome = nome;
+		this.pontos = 0;
+		this.saldoGols = 0;
+		this.cartAmarelo = 0;
+		this.cartVermelho = 0;
 	}
 
 	public String getNome() {
