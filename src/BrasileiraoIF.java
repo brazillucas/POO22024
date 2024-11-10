@@ -36,7 +36,7 @@ public class BrasileiraoIF {
 
             switch (opc) {
                 case 1:
-                    //cadastrarPartida(equipes);
+                    cadastrarPartida(equipes);
                     break;
                 case 2:
                     mostrarLider(equipes);
@@ -58,18 +58,112 @@ public class BrasileiraoIF {
         }
     }
 
+    public static void cadastrarPartida(Equipe[] equipes) {
+        int limiteEquipes = acharUltimaEquipe(equipes);
+        int golsPro1, golsPro2, cartVermelho1, cartVermelho2, cartAmarelo1, cartAmarelo2;
+        String equipe1, equipe2;
+        int equipe1Posicao, equipe2Posicao;
+        equipe1Posicao = equipe2Posicao = -1;
+        boolean equipe1Encontrada = false, equipe2Encontrada = false;
+
+        if (limiteEquipes < 0) {
+            System.out.println("Quantidade de equipes insuficiente!");
+            System.out.println("Cadastre novas equipes e tente novamente!");
+            encerrarFuncao();
+            return;
+        } else {
+            limpaConsole();
+            System.out.println("Equipes Cadastradas:");
+            for (int i = 0; i <= limiteEquipes; i++) {
+                System.out.println((i+1) + " - " + equipes[i].getNome());
+            }
+        }
+
+        System.out.print("Digite o nome da equipe mandante: ");
+        equipe1 = scan.nextLine();
+        System.out.print("Digite o nome da equipe visitante: ");
+        equipe2 = scan.nextLine();
+
+        for (int i = 0; i <= limiteEquipes; i++) {
+            if (equipes[i].getNome().equals(equipe1)) {
+                equipe1Encontrada = true;
+                equipe1Posicao = i;
+            } else if (equipes[i].getNome().equals(equipe2)) {
+                equipe2Encontrada = true;
+                equipe2Posicao = i;
+            }
+        }
+
+        if(equipe1Encontrada == false) {
+            System.out.println("Equipe mandante não encontrada!");
+            encerrarFuncao();
+            return;
+        } else if (equipe2Encontrada == false) {
+            System.out.println("Equipe visitante não encontrada!");
+            encerrarFuncao();
+            return;
+        }
+
+        //Lê dados da partida
+        System.out.print("Digite a quantidade de gols da equipe mandante: ");
+        golsPro1 = scan.nextInt();
+        System.out.print("Digite a quantidade de gols da equipe visitante: ");
+        golsPro2 = scan.nextInt();
+        
+        System.out.print("Digite a quantidade de cartões vermelhos da equipe mandante: ");
+        cartVermelho1 = scan.nextInt();
+        System.out.print("Digite a quantidade de cartões vermelhos da equipe visitante: ");
+        cartVermelho2 = scan.nextInt();
+
+        System.out.print("Digite a quantidade de cartões amarelos da equipe mandante: ");
+        cartAmarelo1 = scan.nextInt();
+        System.out.print("Digite a quantidade de cartões amarelos da equipe visitante: ");
+        cartAmarelo2 = scan.nextInt();
+
+        //adiciona pontos para as duas equipes
+        if (golsPro1 > golsPro2) {
+            equipes[equipe1Posicao].setPontos(3);
+        } else if (golsPro1 < golsPro2) {
+            equipes[equipe2Posicao].setPontos(3);
+        } else {
+            equipes[equipe1Posicao].setPontos(1);
+            equipes[equipe2Posicao].setPontos(1);
+        }
+
+        //adiciona valores da equipe mandante
+        equipes[equipe1Posicao].setGolsPro(golsPro1);
+        equipes[equipe1Posicao].setSaldoGols(golsPro1 - golsPro2);
+        equipes[equipe1Posicao].setCartVermelho(cartVermelho1);
+        equipes[equipe1Posicao].setCartAmarelo(cartAmarelo1);
+        //adiciona valores da equipe visitante
+        equipes[equipe2Posicao].setGolsPro(golsPro2);
+        equipes[equipe2Posicao].setSaldoGols(golsPro2 - golsPro1);
+        equipes[equipe2Posicao].setCartVermelho(cartVermelho2);
+        equipes[equipe2Posicao].setCartAmarelo(cartAmarelo2);
+
+        System.out.println("Partida cadastrada com sucesso!");
+        encerrarFuncao();
+    }
+
     public static void mostrarLider(Equipe[] equipes) {
         int limiteEquipes = acharUltimaEquipe(equipes);
         int lider = 0;
 
+        if (limiteEquipes < 0) {
+            System.out.println("Quantidade de equipes insuficiente!");
+            System.out.println("Cadastre novas equipes e tente novamente!");
+            encerrarFuncao();
+            return;
+        }
+
         for(int i = 1; i <= limiteEquipes; i++) {
             if (equipes[i-1].getPontos() > equipes[i].getPontos()) {
                 lider = i;
-            } else if (equipes[i-1].getPontos() == equipes[i].getPontos() && equipes[i-1].getSaldoGols > equipes[i].getSaldoGols()) {
+            } else if (equipes[i-1].getPontos() == equipes[i].getPontos() && equipes[i-1].getSaldoGols() > equipes[i].getSaldoGols()) {
                 lider = i;
-            } else if (equipes[i-1].getPontos() == equipes[i].getPontos() && equipes[i-1].getSaldoGols == equipes[i].getSaldoGols() && equipes[i-1].getCartVermelho() > equipes[i].getCartVermelho()) {
+            } else if (equipes[i-1].getPontos() == equipes[i].getPontos() && equipes[i-1].getSaldoGols() == equipes[i].getSaldoGols() && equipes[i-1].getCartVermelho() > equipes[i].getCartVermelho()) {
                 lider = i;
-            } else if (equipes[i-1].getPontos() == equipes[i].getPontos() && equipes[i-1].getSaldoGols == equipes[i].getSaldoGols() && equipes[i-1].getCartVermelho() == equipes[i].getCartVermelho() && equipes[i-1].getCartAmarelo() > equipes[1].getCartAmarelo()) {
+            } else if (equipes[i-1].getPontos() == equipes[i].getPontos() && equipes[i-1].getSaldoGols() == equipes[i].getSaldoGols() && equipes[i-1].getCartVermelho() == equipes[i].getCartVermelho() && equipes[i-1].getCartAmarelo() > equipes[1].getCartAmarelo()) {
                 lider = i;
             }
         }
@@ -85,6 +179,10 @@ public class BrasileiraoIF {
         if (limiteEquipes < 0) {
             System.out.println("Quantidade de equipes insuficiente!");
             System.out.println("Cadastre novas equipes e tente novamente!");
+        } else if (limiteEquipes < 3) {
+            for(int i = 0; i < limiteEquipes + 1; i++) {
+                listarEquipe(equipes, i);
+            }
         } else {
             for(int i = 0; i < 4; i++) {
                 listarEquipe(equipes, i);
@@ -95,8 +193,6 @@ public class BrasileiraoIF {
 
     public static void listarZ4(Equipe[] equipes) {
         int limiteEquipes = acharUltimaEquipe(equipes);
-
-        System.out.println(limiteEquipes);
 
         if (limiteEquipes > 3) {
             for (int i = limiteEquipes - 3; i <= limiteEquipes; i++) {
@@ -117,9 +213,6 @@ public class BrasileiraoIF {
         int limiteEquipes = acharUltimaEquipe(equipes);
         String nome;
 
-        System.out.println("Ultima posicao ocupada: " + limiteEquipes);
-        System.out.println(getPartidas());
-
         if(limiteEquipes < 19) {
             if (getPartidas() == 0) {
                 System.out.print("Digite o nome da nova equipe: ");
@@ -131,7 +224,6 @@ public class BrasileiraoIF {
             } else {
                 System.out.println("Campeonato já iniciado!");
                 System.out.println("Não é possível adicionar uma nova equipe!");
-                System.out.println("Pressione qualquer tecla para voltar ao menu...");
             }
         }
         encerrarFuncao();
@@ -141,8 +233,12 @@ public class BrasileiraoIF {
         System.out.println("+++++++++++++++++++++++++++++++++++++");
         System.out.print("Nome: ");
         System.out.println(equipes[posicao].getNome());
+        System.out.print("Pontos: ");
+        System.out.println(equipes[posicao].getPontos());
         System.out.print("Saldo de gols: ");
         System.out.println(equipes[posicao].getSaldoGols());
+        System.out.print("Gols Pro: ");
+        System.out.println(equipes[posicao].getGolsPro());
         System.out.print("Quantidade de Cartões Vermelhos: ");
         System.out.println(equipes[posicao].getCartVermelho());
         System.out.print("Quantidade de Cartões Amarelos: ");
