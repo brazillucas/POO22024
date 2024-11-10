@@ -54,6 +54,9 @@ public class BrasileiraoIF {
                     System.out.println("Obrigado por utilizar este gerenciador!");
                     System.out.println("Programa encerrando...");
                     System.exit(0);
+                default:
+                    System.out.println("Opção inválida!");
+                    encerrarFuncao();
             }
         }
     }
@@ -67,8 +70,7 @@ public class BrasileiraoIF {
         boolean equipe1Encontrada = false, equipe2Encontrada = false;
 
         if (limiteEquipes < 0) {
-            System.out.println("Quantidade de equipes insuficiente!");
-            System.out.println("Cadastre novas equipes e tente novamente!");
+            erroQuantidadeEquipes();
             encerrarFuncao();
             return;
         } else {
@@ -202,8 +204,7 @@ public class BrasileiraoIF {
         int limiteEquipes = acharUltimaEquipe(equipes);
 
         if (limiteEquipes < 0) {
-            System.out.println("Quantidade de equipes insuficiente!");
-            System.out.println("Cadastre novas equipes e tente novamente!");
+            erroQuantidadeEquipes();
             encerrarFuncao();
             return;
         }
@@ -219,8 +220,7 @@ public class BrasileiraoIF {
         int limiteEquipes = acharUltimaEquipe(equipes);
 
         if (limiteEquipes < 0) {
-            System.out.println("Quantidade de equipes insuficiente!");
-            System.out.println("Cadastre novas equipes e tente novamente!");
+            erroQuantidadeEquipes();
         } else if (limiteEquipes < 3) {
             for(int i = 0; i < limiteEquipes + 1; i++) {
                 listarEquipe(equipes, i);
@@ -241,8 +241,7 @@ public class BrasileiraoIF {
                 listarEquipe(equipes, i);
             }
         } else if (limiteEquipes < 0) {
-            System.out.println("Quantidade de equipes insuficiente!");
-            System.out.println("Cadastre novas equipes e tente novamente!");
+            erroQuantidadeEquipes();
         } else {
             for(int i = 0; i < limiteEquipes + 1; i++) {
                 listarEquipe(equipes, i);
@@ -333,6 +332,11 @@ public class BrasileiraoIF {
             }
         }
         return opc;
+    }
+
+    public static void erroQuantidadeEquipes() {
+        System.out.println("Quantidade de equipes insuficiente!");
+        System.out.println("Cadastre novas equipes e tente novamente!");
     }
 
     public static void limpaConsole() {
