@@ -39,7 +39,7 @@ public class BrasileiraoIF {
                     //cadastrarPartida(equipes);
                     break;
                 case 2:
-                    //mostrarLider();
+                    mostrarLider(equipes);
                     break;
                 case 3:
                     listarG4(equipes);
@@ -76,7 +76,7 @@ public class BrasileiraoIF {
 
         System.out.println("Equipe Lider do Campeonato:");
         listarEquipe(equipes, lider);
-        ence
+        encerrarFuncao();
     }
 
     public static void listarG4(Equipe[] equipes) {
