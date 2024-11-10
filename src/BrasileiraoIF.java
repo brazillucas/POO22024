@@ -212,6 +212,7 @@ public class BrasileiraoIF {
         ordenarEquipes(equipes);
 
         System.out.println("Equipe Lider do Campeonato:");
+        imprimirCabecalho();
         listarEquipe(equipes, 0);
         encerrarFuncao();
     }
@@ -222,10 +223,12 @@ public class BrasileiraoIF {
         if (limiteEquipes < 0) {
             erroQuantidadeEquipes();
         } else if (limiteEquipes < 3) {
+            imprimirCabecalho();
             for(int i = 0; i < limiteEquipes + 1; i++) {
                 listarEquipe(equipes, i);
             }
         } else {
+            imprimirCabecalho();
             for(int i = 0; i < 4; i++) {
                 listarEquipe(equipes, i);
             }
@@ -237,12 +240,14 @@ public class BrasileiraoIF {
         int limiteEquipes = acharUltimaEquipe(equipes);
 
         if (limiteEquipes > 3) {
+            imprimirCabecalho();
             for (int i = limiteEquipes - 3; i <= limiteEquipes; i++) {
                 listarEquipe(equipes, i);
             }
         } else if (limiteEquipes < 0) {
             erroQuantidadeEquipes();
         } else {
+            imprimirCabecalho();
             for(int i = 0; i < limiteEquipes + 1; i++) {
                 listarEquipe(equipes, i);
             }
@@ -263,6 +268,7 @@ public class BrasileiraoIF {
                 }
                 equipes[limiteEquipes + 1] = new Equipe(nome);
                 System.out.println("Nova equipe cadastrada:");
+                imprimirCabecalho();
                 listarEquipe(equipes, limiteEquipes+1);
             } else {
                 System.out.println("Campeonato já iniciado!");
@@ -273,8 +279,8 @@ public class BrasileiraoIF {
     }
 
     public static boolean verificarEquipe(Equipe[] equipes, String nome) {
-        for (int i = 0; i < equipes.length; i++) {
-            if (equipes[i] != null && equipes[i].getNome().equals(nome)) {
+        for (int i = 0; i < acharUltimaEquipe(equipes) + 1; i++) {
+            if (equipes[i].getNome().equals(nome)) {
                 System.out.println("Equipe já cadastrada!");
                 encerrarFuncao();
                 return true;
@@ -284,20 +290,20 @@ public class BrasileiraoIF {
     }
 
     public static void listarEquipe(Equipe[] equipes, int posicao) {
-        System.out.println("+++++++++++++++++++++++++++++++++++++");
-        System.out.print("Nome: ");
-        System.out.println(equipes[posicao].getNome());
-        System.out.print("Pontos: ");
-        System.out.println(equipes[posicao].getPontos());
-        System.out.print("Saldo de gols: ");
-        System.out.println(equipes[posicao].getSaldoGols());
-        System.out.print("Gols Pro: ");
-        System.out.println(equipes[posicao].getGolsPro());
-        System.out.print("Quantidade de Cartões Vermelhos: ");
-        System.out.println(equipes[posicao].getCartVermelho());
-        System.out.print("Quantidade de Cartões Amarelos: ");
-        System.out.println(equipes[posicao].getCartAmarelo());
-        System.out.println("+++++++++++++++++++++++++++++++++++++\n");
+    System.out.println("----------------------------------------------------------------");
+    Equipe equipe = equipes[posicao];
+    System.out.printf("| %-20s | %-5d | %-5d | %-5d | %-5d | %-5d |\n",
+            equipe.getNome(),
+            equipe.getPontos(),
+            equipe.getSaldoGols(),
+            equipe.getGolsPro(),
+            equipe.getCartVermelho(),
+            equipe.getCartAmarelo());
+}
+
+    private static void imprimirCabecalho() {
+        System.out.printf("| %-20s | %-5s | %-5s | %-5s | %-5s | %-5s |\n",
+                "Nome", "Pts", "SG", "GP", "CV", "CA");
     }
 
     public static int acharUltimaEquipe(Equipe[] equipes) {
@@ -312,10 +318,7 @@ public class BrasileiraoIF {
     public static int lerOpcao() {
         int opc = -1;
         boolean entradaValida = false;
-        /**
-         * Le a opcao selecionada ate obter uma
-         * entrada no formato correto
-         */
+
         while (!entradaValida) {
             try {
                 opc = scan.nextInt();
