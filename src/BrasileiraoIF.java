@@ -31,7 +31,7 @@ public class BrasileiraoIF {
             System.out.println("6 - Sair");
 
             System.out.print("Escolha uma opcao: ");
-            opc = scan.nextInt();
+            opc = lerOpcao();
             limpaBuffer();
 
             switch (opc) {
@@ -106,19 +106,19 @@ public class BrasileiraoIF {
 
         //Lê dados da partida
         System.out.print("Digite a quantidade de gols da equipe mandante: ");
-        golsPro1 = scan.nextInt();
+        golsPro1 = lerOpcao();
         System.out.print("Digite a quantidade de gols da equipe visitante: ");
-        golsPro2 = scan.nextInt();
+        golsPro2 = lerOpcao();
         
         System.out.print("Digite a quantidade de cartões vermelhos da equipe mandante: ");
-        cartVermelho1 = scan.nextInt();
+        cartVermelho1 = lerOpcao();
         System.out.print("Digite a quantidade de cartões vermelhos da equipe visitante: ");
-        cartVermelho2 = scan.nextInt();
+        cartVermelho2 = lerOpcao();
 
         System.out.print("Digite a quantidade de cartões amarelos da equipe mandante: ");
-        cartAmarelo1 = scan.nextInt();
+        cartAmarelo1 = lerOpcao();
         System.out.print("Digite a quantidade de cartões amarelos da equipe visitante: ");
-        cartAmarelo2 = scan.nextInt();
+        cartAmarelo2 = lerOpcao();
 
         //adiciona pontos para as duas equipes
         if (golsPro1 > golsPro2) {
@@ -294,6 +294,26 @@ public class BrasileiraoIF {
             }
         }
         return equipes.length-1;
+    }
+
+    public static int lerOpcao() {
+        int opc = -1;
+        boolean entradaValida = false;
+        /**
+         * Le a opcao selecionada ate obter uma
+         * entrada no formato correto
+         */
+        while (!entradaValida) {
+            try {
+                opc = scan.nextInt();
+                limpaBuffer();
+                entradaValida = true;
+            } catch (Exception e) {
+                System.out.print("Entrada invalida!! Digite um numero inteiro: ");
+                limpaBuffer();
+            }
+        }
+        return opc;
     }
 
     public static void limpaConsole() {
