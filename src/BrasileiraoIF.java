@@ -76,8 +76,9 @@ public class BrasileiraoIF {
         } else {
             limpaConsole();
             System.out.println("Equipes Cadastradas:");
+            imprimirCabecalho();
             for (int i = 0; i <= limiteEquipes; i++) {
-                System.out.println((i+1) + " - " + equipes[i].getNome());
+                listarEquipe(equipes, i);
             }
         }
 
@@ -210,6 +211,7 @@ public class BrasileiraoIF {
         }
 
         ordenarEquipes(equipes);
+        limpaConsole();
 
         System.out.println("Equipe Lider do Campeonato:");
         imprimirCabecalho();
@@ -219,7 +221,9 @@ public class BrasileiraoIF {
 
     public static void listarG4(Equipe[] equipes) {
         int limiteEquipes = acharUltimaEquipe(equipes);
+        limpaConsole();
 
+        System.out.println("Equipes no G4:");
         if (limiteEquipes < 0) {
             erroQuantidadeEquipes();
         } else if (limiteEquipes < 3) {
@@ -238,7 +242,9 @@ public class BrasileiraoIF {
 
     public static void listarZ4(Equipe[] equipes) {
         int limiteEquipes = acharUltimaEquipe(equipes);
+        limpaConsole();
 
+        System.out.println("Equipes no Z4:");
         if (limiteEquipes > 3) {
             imprimirCabecalho();
             for (int i = limiteEquipes - 3; i <= limiteEquipes; i++) {
@@ -261,6 +267,7 @@ public class BrasileiraoIF {
 
         if(limiteEquipes < 19) {
             if (getPartidas() == 0) {
+                limpaConsole();
                 System.out.print("Digite o nome da nova equipe: ");
                 nome = scan.nextLine();
                 if (verificarEquipe(equipes, nome)){
