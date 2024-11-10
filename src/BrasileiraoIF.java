@@ -20,6 +20,7 @@ public class BrasileiraoIF {
 
     public static void menu(Equipe[] equipes) {
         int opc;
+        limpaConsole();
 
         while(true) {
             System.out.println("Menu");
@@ -258,6 +259,9 @@ public class BrasileiraoIF {
             if (getPartidas() == 0) {
                 System.out.print("Digite o nome da nova equipe: ");
                 nome = scan.nextLine();
+                if (verificarEquipe(equipes, nome)){
+                    return;
+                }
                 equipes[limiteEquipes + 1] = new Equipe(nome);
                 System.out.println("Nova equipe cadastrada:");
                 listarEquipe(equipes, limiteEquipes+1);
@@ -267,6 +271,17 @@ public class BrasileiraoIF {
             }
         }
         encerrarFuncao();
+    }
+
+    public static boolean verificarEquipe(Equipe[] equipes, String nome) {
+        for (int i = 0; i < equipes.length; i++) {
+            if (equipes[i] != null && equipes[i].getNome().equals(nome)) {
+                System.out.println("Equipe já cadastrada!");
+                encerrarFuncao();
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void listarEquipe(Equipe[] equipes, int posicao) {
@@ -306,14 +321,15 @@ public class BrasileiraoIF {
             try {
                 opc = scan.nextInt();
                 limpaBuffer();
-                entradaValida = true;
+                if(opc < 0) {
+                    System.out.print("Entrada inválida!! Digite um número inteiro positivo: ");
+                    entradaValida = false;
+                } else {
+                    entradaValida = true;
+                }
             } catch (Exception e) {
                 System.out.print("Entrada inválida!! Digite um número inteiro positivo: ");
                 limpaBuffer();
-            }
-            if(opc < 0) {
-                System.out.print("Entrada inválida!! Digite um número inteiro positivo: ");
-                entradaValida = false;
             }
         }
         return opc;
