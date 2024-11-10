@@ -1,6 +1,7 @@
 public class Equipe {
-    private String nome;
+	private String nome;
 	private int pontos;
+	private int golsPro;
 	private int saldoGols;
 	private int cartVermelho;
 	private int cartAmarelo;
@@ -29,6 +30,14 @@ public class Equipe {
 		this.pontos += pontos;
 	}
 
+	public int getGolsPro() {
+		return this.golsPro;
+	}
+
+	public void setGolsPro(int golsPro) {
+		this.golsPro = golsPro;
+	}
+
 	public int getSaldoGols() {
 		return this.saldoGols;
 	}
@@ -52,6 +61,5 @@ public class Equipe {
 	public void setCartAmarelo(int cartAmarelo) {
 		this.cartAmarelo += cartAmarelo;
 	}
-    
 
 }
