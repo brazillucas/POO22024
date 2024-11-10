@@ -9,6 +9,7 @@ public class Equipe {
 	public Equipe (String nome) {
 		this.nome = nome;
 		this.pontos = 0;
+		this.golsPro = 0;
 		this.saldoGols = 0;
 		this.cartAmarelo = 0;
 		this.cartVermelho = 0;
@@ -35,7 +36,7 @@ public class Equipe {
 	}
 
 	public void setGolsPro(int golsPro) {
-		this.golsPro = golsPro;
+		this.golsPro += golsPro;
 	}
 
 	public int getSaldoGols() {
