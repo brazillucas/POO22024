@@ -32,7 +32,6 @@ public class BrasileiraoIF {
 
             System.out.print("Escolha uma opcao: ");
             opc = lerOpcao();
-            limpaBuffer();
 
             switch (opc) {
                 case 1:
@@ -309,8 +308,12 @@ public class BrasileiraoIF {
                 limpaBuffer();
                 entradaValida = true;
             } catch (Exception e) {
-                System.out.print("Entrada invalida!! Digite um numero inteiro: ");
+                System.out.print("Entrada inválida!! Digite um número inteiro positivo: ");
                 limpaBuffer();
+            }
+            if(opc < 0) {
+                System.out.print("Entrada inválida!! Digite um número inteiro positivo: ");
+                entradaValida = false;
             }
         }
         return opc;
