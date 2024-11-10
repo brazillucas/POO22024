@@ -5,6 +5,10 @@ public class Equipe {
 	private int cartVermelho;
 	private int cartAmarelo;
 
+	public Equipe (String nome) {
+		this.nome = nome
+	}
+
 	public String getNome() {
 		return this.nome;
 	}
