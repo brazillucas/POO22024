@@ -1,7 +1,49 @@
 public class Equipe {
-    private nome;
-    private pontos;
-    private cartoes;
+    private String nome;
+	private int pontos;
+	private int saldoGols;
+	private int cartVermelho;
+	private int cartAmarelo;
+
+	public String getNome() {
+		return this.nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public int getPontos() {
+		return this.pontos;
+	}
+
+	public void setPontos(int pontos) {
+		this.pontos += pontos;
+	}
+
+	public int getSaldoGols() {
+		return this.saldoGols;
+	}
+
+	public void setSaldoGols(int saldoGols) {
+		this.saldoGols += saldoGols;
+	}
+
+	public int getCartVermelho() {
+		return this.cartVermelho;
+	}
+
+	public void setCartVermelho(int cartVermelho) {
+		this.cartVermelho += cartVermelho;
+	}
+
+	public int getCartAmarelo() {
+		return this.cartAmarelo;
+	}
+
+	public void setCartAmarelo(int cartAmarelo) {
+		this.cartAmarelo += cartAmarelo;
+	}
     
 
 }
