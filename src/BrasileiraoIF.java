@@ -3,15 +3,7 @@ import java.util.*;
 public class BrasileiraoIF {
 
     static Scanner scan = new Scanner(System.in);
-    private static int partidas;
-    
-    public static int getPartidas() {
-        return partidas;
-    }
-
-    public static void setPartidas(int partidas) {
-        partidas += partidas;
-    }
+    static int partidas;
 
     public static void main(String[] args) {
         Equipe[] equipes = new Equipe[20];
@@ -145,7 +137,8 @@ public class BrasileiraoIF {
         equipes[equipe2Posicao].setCartAmarelo(cartAmarelo2);
 
         System.out.println("Partida cadastrada com sucesso!");
-        setPartidas(1);
+        partidas ++;
+        System.out.println("Partidas cadastradas: " + partidas);
         ordenarEquipes(equipes);
         encerrarFuncao();
     }
@@ -265,22 +258,24 @@ public class BrasileiraoIF {
         int limiteEquipes = acharUltimaEquipe(equipes);
         String nome;
 
-        if(limiteEquipes < 19) {
-            if (getPartidas() == 0) {
-                limpaConsole();
-                System.out.print("Digite o nome da nova equipe: ");
-                nome = scan.nextLine();
-                if (verificarEquipe(equipes, nome)){
-                    return;
-                }
-                equipes[limiteEquipes + 1] = new Equipe(nome);
-                System.out.println("Nova equipe cadastrada:");
-                imprimirCabecalho();
-                listarEquipe(equipes, limiteEquipes+1);
-            } else {
-                System.out.println("Campeonato já iniciado!");
-                System.out.println("Não é possível adicionar uma nova equipe!");
+        
+        if (partidas > 0) {
+            System.out.println("Campeonato já iniciado!");
+            System.out.println("Não é possível adicionar uma nova equipe!");
+        } else if(limiteEquipes < 19) {
+            limpaConsole();
+            System.out.print("Digite o nome da nova equipe: ");
+            nome = scan.nextLine();
+            if (verificarEquipe(equipes, nome)){
+                return;
             }
+            equipes[limiteEquipes + 1] = new Equipe(nome);
+            System.out.println("Nova equipe cadastrada:");
+            imprimirCabecalho();
+            listarEquipe(equipes, limiteEquipes+1);
+        } else {
+            System.out.println("Limite de equipes atingido!");
+            System.out.println("Não é possível adicionar uma nova equipe!");
         }
         encerrarFuncao();
     }
