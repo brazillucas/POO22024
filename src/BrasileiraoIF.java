@@ -69,7 +69,7 @@ public class BrasileiraoIF {
         equipe1Posicao = equipe2Posicao = -1;
         boolean equipe1Encontrada = false, equipe2Encontrada = false;
 
-        if (limiteEquipes < 0) {
+        if (limiteEquipes < 1) {
             erroQuantidadeEquipes();
             encerrarFuncao();
             return;
