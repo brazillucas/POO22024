@@ -7,8 +7,8 @@ O sistema permite:
 
 1. **Cadastrar Resultado de Partida**: Registra os resultados das partidas entre as equipes cadastradas, atualizando automaticamente os pontos, gols e cartões.
 2. **Visualizar Líder do Campeonato**: Exibe a equipe que está na liderança do campeonato com base nos critérios de pontuação, saldo de gols, gols pró, cartões vermelhos e cartões amarelos.
-3. **Listar G4**: Lista as quatro primeiras equipes do campeonato.
-4. **Listar Z4**: Lista as quatro últimas equipes do campeonato.
+3. **Listar G4**: Lista as quatro equipes elegivéis para a libertadores.
+4. **Listar Z4**: Lista as quatro últimas equipes do campeonato, sujeitas ao rebaixamento.
 5. **Cadastrar Nova Equipe**: Permite a adição de novas equipes ao campeonato, desde que o campeonato ainda não tenha iniciado.
 
 ## Estrutura do Projeto
