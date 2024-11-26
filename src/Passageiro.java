@@ -97,11 +97,13 @@ public class Passageiro {
     // toString
     @Override
     public String toString() {
-        return "Passageiro [comorbidades=" + comorbidades +
-        ", dataNascimento=" + dataNascimento +
-        ", email=" + email +
-        ", nome=" + nome +
+        return "Passageiro " +nomeCompleto +
+        " [nome=" + nome +
         ", sobrenome=" + sobrenome +
-        ", nomeCompleto=" + nomeCompleto + "]";
+        ", dataNascimento=" + this.getDataNascimento() +
+        ", idade=" + idade +
+        ", CPF=" + CPF +
+        ", email=" + email +
+        ", comorbidades=" + comorbidades + "]";
     }
 }
