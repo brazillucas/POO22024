@@ -17,13 +17,19 @@ public class Main {
                 case 1:
                     if (verificarLimitePassageiros(ultimoPassageiro) ) {
                         Passageiro passageiroTemp = criarPassageiro();
+
                         if (validarDuploPassageiro(passageiros, passageiroTemp, ultimoPassageiro)) {
+                            System.out.println("Passageiro já registrado!");
+                            System.out.println("Tente novamente com novos dados.");
+                            encerrarFluxo();
+                        } else {
                             passageiros[ultimoPassageiro] = passageiroTemp;
                             ultimoPassageiro++;
 
-                            // Exibir o objeto
+                            // Exibir o passageiro registrado
                             System.out.println("Passageiro cadastrado com sucesso:");
                             System.out.println(passageiros[ultimoPassageiro - 1]);
+                            
                             encerrarFluxo();
                         }
                         break;
@@ -45,9 +51,7 @@ public class Main {
                     break;
                 default:
                     System.out.println("Opção inválida.");
-                    mensagemEspera();
-                    limpaBuffer();
-                    limpaConsole();
+                    encerrarFluxo();
                     break;
             }
             menu();
@@ -100,13 +104,20 @@ public class Main {
     // Verifica se o passageiro não está duplicado
     public static boolean validarDuploPassageiro(Passageiro[] passageiros, Passageiro passageiro, int limite) {
         for (int i = 0; i <= limite; i++) {
-            if (passageiros[i] != null && passageiros[i] == passageiro) {
-                System.out.println("Passageiro já cadastrado.");
-                return false;
+            if (passageiros[i] != null) {
+                if (passageiros[i].getNome().equals(passageiro.getNome()) &&
+                    passageiros[i].getSobrenome().equals(passageiro.getSobrenome()) &&
+                    passageiros[i].getDataNascimento().equals(passageiro.getDataNascimento()) &&
+                    passageiros[i].getEmail().equals(passageiro.getEmail()) &&
+                    passageiros[i].getComorbidades() == passageiro.getComorbidades()) {
+
+                    return true; // Duplicidade encontrada
+                }
             }
         }
-        return true;
+        return false;
     }
+    
     // Verifica se o limite de passageiros foi atingido
     public static boolean verificarLimitePassageiros(int ultimoPassageiro) {
         if (ultimoPassageiro > 30) {
