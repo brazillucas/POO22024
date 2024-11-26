@@ -12,12 +12,12 @@ public class Main {
         menu();
         int opc = lerOpcao();
 
-        while (opc != 3) {
+        while (opc != 4) {
             switch (opc) {
                 case 1:
                     if (verificarLimitePassageiros(ultimoPassageiro) ) {
                         Passageiro passageiroTemp = criarPassageiro();
-                        if (validarDuploPassageiro(passageiros, passageiroTemp)) {
+                        if (validarDuploPassageiro(passageiros, passageiroTemp, ultimoPassageiro)) {
                             passageiros[ultimoPassageiro] = passageiroTemp;
                             ultimoPassageiro++;
 
@@ -31,8 +31,16 @@ public class Main {
 
                     break;
                 case 2:
+                    if (ultimoPassageiro == 0) {
+                        System.out.println("Nenhum passageiro registrado!");
+                        System.out.println("Registre passageiros antes de imprimi-los.");
+                    } else {
+                        listarPassageiros(passageiros, ultimoPassageiro);
+                    }
+                    encerrarFluxo();
+                    break;
+                case 3:
                     System.out.println("Cadastro de voos");
-                    
                     encerrarFluxo();
                     break;
                 default:
@@ -53,9 +61,10 @@ public class Main {
     // Exibe o menu principal
     public static void menu() {
         System.out.println("Bem-vindo ao SISVEPA!");
-        System.out.println("1 - Cadastro de passageiros");
-        System.out.println("2 - Cadastro de voos");
-        System.out.println("3 - Sair");
+        System.out.println("1 - Cadastro de passageiros;");
+        System.out.println("2 - Listar Passageiros;");
+        System.out.println("3 - Cadastro de voos;");
+        System.out.println("4 - Sair;");
         System.out.print("Selecione uma opção: ");
     }
 
@@ -64,6 +73,7 @@ public class Main {
         String nome = solicitarEntradaValida("Digite o nome (somente letras): ", "^[a-zA-Z]+$");
         String sobrenome = solicitarEntradaValida("Digite o sobrenome (somente letras): ", "^[a-zA-Z]+$");
         String dataNascimento = solicitarEntradaValida("Digite a data de nascimento (formato DD-MM-AAAA): ", "^\\d{2}-\\d{2}-\\d{4}$");
+        String CPF = solicitarEntradaValida("Digite o CPF (formato 999.999.999-99)", "^\\d{3}.\\d{3}.\\d{3}-\\d{2}");
         String email = solicitarEntradaValida("Digite o email: ", "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
         // Lógica para verificar se o passageiro possui comorbidades
@@ -72,8 +82,10 @@ public class Main {
         while (true) {
             System.out.print("Possui comorbidades? (Sim/Nao): ");
             comorbidadeTemp = scan.nextLine();
-            if (comorbidadeTemp.equalsIgnoreCase("Sim") || comorbidadeTemp.equalsIgnoreCase("Nao")) {
+            if (comorbidadeTemp.equalsIgnoreCase("Sim")) {
                 comorbidade = true;
+                break;
+            } else if (comorbidadeTemp.equalsIgnoreCase("Nao")) {
                 break;
             } else {
                 System.out.println("Entrada inválida. Digite 'Sim' ou 'Nao'.");
@@ -81,14 +93,14 @@ public class Main {
         }
 
         // Retorna o objeto Passageiro após validação
-        return new Passageiro(nome, sobrenome, dataNascimento, email, comorbidade);
+        return new Passageiro(nome, sobrenome, dataNascimento, CPF, email, comorbidade);
 
     }
 
     // Verifica se o passageiro não está duplicado
-    public static boolean validarDuploPassageiro(Passageiro[] passageiros, Passageiro passageiro) {
-        for (int i = 0; i < passageiros.length; i++) {
-            if (passageiros[i] != null && passageiros[i].equals(passageiro)) {
+    public static boolean validarDuploPassageiro(Passageiro[] passageiros, Passageiro passageiro, int limite) {
+        for (int i = 0; i <= limite; i++) {
+            if (passageiros[i] != null && passageiros[i] == passageiro) {
                 System.out.println("Passageiro já cadastrado.");
                 return false;
             }
@@ -97,7 +109,7 @@ public class Main {
     }
     // Verifica se o limite de passageiros foi atingido
     public static boolean verificarLimitePassageiros(int ultimoPassageiro) {
-        if (ultimoPassageiro >= 30) {
+        if (ultimoPassageiro > 30) {
             System.out.println("Limite de passageiros atingido. Não é possível cadastrar mais passageiros.");
             return false;
         }
@@ -114,6 +126,13 @@ public class Main {
             } else {
                 System.out.println("Entrada inválida. Tente novamente.");
             }
+        }
+    }
+
+    public static void listarPassageiros(Passageiro[] passageiros, int limite) {
+        // Imprime usando foreach
+        for (int i = 0; i < limite; i++) {
+            System.out.println(passageiros[i]);
         }
     }
 
