@@ -9,6 +9,7 @@
  * companhias: List<Companhia> (lista de companhias que o jogador possui)
  * Métodos:
  * mover(int casas): void (move o jogador um número de casas no tabuleiro)
+ * comprarCompanhia(Companhia companhia): void (compra uma companhia)
  * comprarPropriedade(Propriedade propriedade): void (compra uma propriedade)
  * pagarAluguel(double valor): void (paga um aluguel para outro jogador)
  * receber(double valor): void (recebe um valor)
@@ -16,6 +17,7 @@
  * construirHotel(Propriedade propriedade): void (constrói um hotel em uma propriedade)
  * falido(): boolean (verifica se o jogador está falido)
  * getEstado(): String (retorna o estado atual do jogador: saldo, propriedades e posição)
+ * toString(): String (retorna uma representação do jogador e suas propriedas/companhias)
  *
 */
 import java.util.List;
@@ -51,6 +53,16 @@ public class Jogador {
         }
     }
 
+    public void comprarCompanhia(Companhia Companhia) {
+        if (this.saldo >= Companhia.getValorCompra()) {
+            this.saldo -= Companhia.getValorCompra();
+            this.companhias.add(Companhia);
+            Companhia.setProprietario(this);
+        } else {
+            System.out.println("Saldo insuficiente para comprar a companhia");
+        }
+    }
+
     public void pagarAluguel(double valor) {
         this.saldo -= valor;
     }
@@ -82,5 +94,14 @@ public class Jogador {
             return true;
         }
         return false;
+    }
+
+    public String getEstado() {
+        return "Jogador: " + this.nome + "\nSaldo: " + this.saldo + "\nPosição: " + this.posicao;
+    }
+
+    @Override
+    public String toString() {
+        return "Jogador: " + this.nome + "\nSaldo: " + this.saldo + "\nPosição: " + this.posicao + "\nPropriedades: " + this.propriedades + "\nCompanhias: " + this.companhias;
     }
 }
