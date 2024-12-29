@@ -5,7 +5,7 @@ public class Cadeia extends Posicao {
     }
 
     @Override
-    public void acao(Jogador jogador) {
+    public void acao(Jogador jogador, int somaDados) {
         System.out.println("Jogador " + jogador.getNome() + " está na cadeia.");
         System.out.println("Jogador " + jogador.getNome() + " perdeu a vez.");
     }
