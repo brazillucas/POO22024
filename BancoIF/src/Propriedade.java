@@ -86,5 +86,39 @@ public class Propriedade extends Posicao {
     //@Override
     public void acao(Jogador jogador) {
         // Implementar a ação que ocorre quando um jogador cai nesta propriedade
+        if (proprietario == null) {
+            // Jogador pode comprar a propriedade
+            System.out.println("Propriedade disponível para compra: " + getNome());
+            // Implementar lógica de compra
+            System.out.println("Deseja comprar a propriedade? (s/n)");
+            String escolha = System.console().readLine();
+            if (escolha.toLowerCase().equals("s")) {
+                if (jogador.getSaldo() >= valorCompra) {
+                    jogador.comprarPropriedade(this);
+                    System.out.println("Jogador " + jogador.getNome() + " comprou a companhia " + getNome());
+                } else {
+                    System.out.println("Saldo insuficiente para comprar a companhia");
+                }
+            } else {
+                System.out.println("Jogador " + jogador.getNome() + " não comprou a propriedade " + getNome());
+            }
+        } else if (this.proprietario != jogador) {
+            // Jogador deve pagar aluguel
+            double valorAluguel = calcularAluguel();
+            jogador.pagarAluguel(valorAluguel);
+            this.proprietario.receber(valorAluguel);
+            System.out.println("Jogador " + jogador.getNome() + " pagou R$" + valorAluguel + " de aluguel para " + proprietario.getNome());
+        }
+    }
+
+    public double calcularAluguel() {
+        switch (nivelMelhoria) {
+            case 1:
+                return aluguelPousada;
+            case 2:
+                return aluguelHotel;
+            default:
+                return aluguel;
+        }
     }
 }

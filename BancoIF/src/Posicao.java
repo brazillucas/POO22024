@@ -30,4 +30,8 @@ public class Posicao {
     public String toString() {
         return nome + " (" + tipo + ")";
     }
+
+    public void acao(Jogador jogador) {
+        // Implementar ação da posição
+    }
 }
