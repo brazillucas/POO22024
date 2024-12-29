@@ -49,6 +49,10 @@ public class Jogador {
         return this.saldo;
     }
 
+    public void setPosicao(int posicao) {
+        this.posicao = posicao;
+    }
+
     public int getPosicao() {
         return this.posicao;
     }
@@ -58,9 +62,6 @@ public class Jogador {
         if (this.posicao >= 40) {
             this.posicao -= 40;
             this.saldo += 200;
-        }
-        if (this.posicao == 30 || this.posicao == 10) {
-            this.posicao = 20;
         }
     }
 
