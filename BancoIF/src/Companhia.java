@@ -28,7 +28,7 @@ public class Companhia extends Posicao{
     }
 
     // Métodos
-    public int calcularAluguel(int somaDados) {
+    private int calcularAluguel(int somaDados) {
         if (proprietario != null) {
             return somaDados * fatorAluguel;
         } else {
@@ -46,6 +46,35 @@ public class Companhia extends Posicao{
 
     public double getValorCompra() {
         return valorCompra;
+    }
+
+    @Override
+    public void acao(Jogador jogador) {
+        if (proprietario == null) {
+            // Jogador pode comprar a companhia
+            System.out.println("Companhia disponível para compra: " + getNome());
+            // Implementar lógica de compra
+            System.out.println("Deseja comprar a companhia? (s/n)");
+            String escolha = System.console().readLine();
+            if (escolha.toLowerCase().equals("s")) {
+                if (jogador.getSaldo() >= valorCompra) {
+                    jogador.comprarCompanhia(this);
+                    System.out.println("Jogador " + jogador.getNome() + " comprou a companhia " + getNome());
+                } else {
+                    System.out.println("Saldo insuficiente para comprar a companhia");
+                }
+            } else {
+                System.out.println("Jogador " + jogador.getNome() + " não comprou a propriedade " + getNome());
+            }
+
+        } else if (this.proprietario != jogador) {
+            // Jogador deve pagar aluguel
+            int somaDados = jogador.rolarDados();
+            double valorAluguel = this.calcularAluguel(somaDados);
+            jogador.pagarAluguel(valorAluguel);
+            this.proprietario.receber(valorAluguel);
+            System.out.println("Jogador " + jogador.getNome() + " pagou R$" + valorAluguel + " de aluguel para " + proprietario.getNome());
+        }
     }
 
 }
