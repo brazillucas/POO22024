@@ -86,6 +86,15 @@ public class Tabuleiro {
 
     public void executarAcao(Jogador jogador, int indice) {
         Posicao posicao = getPosicao(indice);
+        // Se o jogador cair na prisão, ele deve ser movido para a posição da cadeia.
+        if (posicao.getNome().equals("Vá para a Prisão") || posicao.getNome().equals("Cadeia")) {
+            for (int i = 0; i < posicoes.length; i++) {
+                if (posicoes[i].getNome().equals("Cadeia")) {
+                    jogador.setPosicao(i);
+                    break;
+                }
+            }
+        }
         posicao.acao(jogador);
     }
 
