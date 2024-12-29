@@ -116,9 +116,9 @@ public class Jogo {
                 jogoAtivo = false;
                 System.out.println("Fim do jogo!");
                 System.out.println("Jogador " + jogadores.get(0).getNome() + " venceu!");
-                System.out.println("Parabéns!");
                 System.out.println("O jogador finalou com o seguinte estado:");
                 System.out.println(jogadores.get(0).getEstado());
+                System.out.println("Parabéns!");
             }
 
             // Próximo jogador
