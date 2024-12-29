@@ -61,7 +61,7 @@ public class Jogador {
 
     public void construirPousada(Propriedade propriedade) {
         if (propriedade.getProprietario() == this && propriedade.getNivelMelhoria() == 0 && this.saldo >= propriedade.getAluguelPousada()) {
-            this.saldo -= propriedade.getAluguelPousada()
+            this.saldo -= propriedade.getAluguelPousada();
             propriedade.setNivelMelhoria(1);
         } else {
             System.out.println("Não é possível construir uma pousada nesta propriedade");
