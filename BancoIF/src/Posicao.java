@@ -31,7 +31,7 @@ public class Posicao {
         return nome + " (" + tipo + ")";
     }
 
-    public void acao(Jogador jogador) {
+    public void acao(Jogador jogador, int somaDados) {
         // Implementar ação da posição
         System.out.println("Jogador " + jogador.getNome() + " está na posição " + getNome());
     }

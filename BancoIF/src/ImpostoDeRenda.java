@@ -7,8 +7,8 @@ public class ImpostoDeRenda extends Posicao {
     }
 
     @Override
-    public void acao(Jogador jogador) {
-        jogador.pagarAluguel(valorImposto);
+    public void acao(Jogador jogador, int somaDados) {
+        jogador.pagar(this.valorImposto);
         System.out.println("Jogador " + jogador.getNome() + " pagou R$" + valorImposto + " de imposto de renda.");
     }
 }

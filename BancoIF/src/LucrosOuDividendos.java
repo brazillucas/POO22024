@@ -7,7 +7,7 @@ public class LucrosOuDividendos extends Posicao {
     }
 
     @Override
-    public void acao(Jogador jogador) {
+    public void acao(Jogador jogador, int somaDados) {
         jogador.receber(valorLucro);
         System.out.println("Jogador " + jogador.getNome() + " recebeu R$" + valorLucro + " de lucros ou dividendos.");
     }
