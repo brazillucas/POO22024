@@ -49,14 +49,17 @@ public class Companhia extends Posicao{
     }
 
     @Override
-    public void acao(Jogador jogador) {
+    public void acao(Jogador jogador, int somaDados) {
         if (proprietario == null) {
             // Jogador pode comprar a companhia
             System.out.println("Companhia disponível para compra: " + getNome());
+            System.out.println("Valor de compra: R$" + valorCompra);
             // Implementar lógica de compra
-            System.out.println("Deseja comprar a companhia? (s/n)");
+            System.out.print("Deseja comprar a companhia? (s/n) ");
             String escolha = System.console().readLine();
+
             if (escolha.toLowerCase().equals("s")) {
+                // Verifica se o jogador tem saldo suficiente para comprar a companhia
                 if (jogador.getSaldo() >= valorCompra) {
                     jogador.comprarCompanhia(this);
                     System.out.println("Jogador " + jogador.getNome() + " comprou a companhia " + getNome());
@@ -67,13 +70,29 @@ public class Companhia extends Posicao{
                 System.out.println("Jogador " + jogador.getNome() + " não comprou a propriedade " + getNome());
             }
 
+        } else if(this.proprietario == jogador) {
+            // Informar que caiu em uma propriedade própria
+            System.out.println("Jogador " + jogador.getNome() + " caiu na sua própria companhia: " + getNome() + ".");
+
         } else if (this.proprietario != jogador) {
+            // Informar que caiu em uma propriedade com dono e que deve pagar aluguel
+            System.out.println("Jogador " + jogador.getNome() + " caiu em " + getNome() + " que pertence a " + proprietario.getNome());
             // Jogador deve pagar aluguel
-            int somaDados = jogador.rolarDados();
             double valorAluguel = this.calcularAluguel(somaDados);
-            jogador.pagarAluguel(valorAluguel);
+            // Verificar se o jogador tem saldo suficiente para pagar o aluguel
+            if (jogador.getSaldo() < valorAluguel) {
+                System.out.println("Jogador " + jogador.getNome() + " não tem saldo suficiente para pagar o aluguel de R$" + valorAluguel);
+                jogador.setFalencia();
+                return;
+            }
+            // Pagar aluguel
+            jogador.pagar(valorAluguel);
             this.proprietario.receber(valorAluguel);
             System.out.println("Jogador " + jogador.getNome() + " pagou R$" + valorAluguel + " de aluguel para " + proprietario.getNome());
+
+            Jogo.imprimirLinha();
+            // Mostra o saldo do proprietário
+            System.out.println("Novo saldo do proprietário " + proprietario.getNome() + ": R$" + proprietario.getSaldo());
         }
     }
 
