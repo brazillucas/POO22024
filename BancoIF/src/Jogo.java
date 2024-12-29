@@ -72,6 +72,7 @@ public class Jogo {
         // Iniciar as rodadas do jogo
         int jogadorAtual = 0;
         boolean jogoAtivo = true;
+        Dado dado = new Dado();
 
         while (jogoAtivo) {
             Jogador jogador = jogadores[jogadorAtual];
@@ -79,8 +80,8 @@ public class Jogo {
             System.out.println("Saldo atual: " + jogador.getSaldo());
 
             // Lançar os dados
-            int dado1 = (int) (Math.random() * 6) + 1;
-            int dado2 = (int) (Math.random() * 6) + 1;
+            int dado1 = dado.rolar();
+            int dado2 = dado.rolar();
             int somaDados = dado1 + dado2;
 
             System.out.println("Dado 1: " + dado1);
