@@ -33,5 +33,6 @@ public class Posicao {
 
     public void acao(Jogador jogador) {
         // Implementar ação da posição
+        System.out.println("Jogador " + jogador.getNome() + " está na posição " + getNome());
     }
 }
