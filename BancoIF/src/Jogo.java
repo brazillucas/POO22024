@@ -32,6 +32,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Jogo {
     public static void main(String[] args) {
         Tabuleiro tabuleiro = new Tabuleiro();
@@ -39,28 +40,32 @@ public class Jogo {
         int numJogadores = 0;
 
         // Solicitar o número de jogadores
-        System.out.println("Bem-vindo ao Banco Imobiliário!");
-        System.out.println("Digite o número de jogadores (2 a 6): ");
-        numJogadores = Integer.parseInt(System.console().readLine());
-
+        do {
+            limparTela();
+            System.out.println("Bem-vindo ao Banco Imobiliário!");
+            System.out.print("Digite o número de jogadores (2 a 6): ");
+            numJogadores = Integer.parseInt(System.console().readLine());
+            if (numJogadores >= 2 && numJogadores <= 6) {
+                break;
+            }
+            System.out.println("Número de jogadores inválido!");
+            aguardarEnter();
+        } while (true);
+        
         // Solicitar o nome de cada jogador
         for (int i = 0; i < numJogadores; i++) {
-            System.out.println("Digite o nome do jogador " + (i + 1) + ": ");
+            System.out.print("Digite o nome do jogador " + (i + 1) + ": ");
             String nome = System.console().readLine();
             jogadores.add(new Jogador(nome));
         }
 
+        imprimirLinha();
         iniciarRodadasDoJogo(tabuleiro, jogadores, numJogadores);
 
     }
 
     public static void iniciarRodadasDoJogo(Tabuleiro tabuleiro, List<Jogador> jogadores, int numJogadores) {
         // Validações para iniciar o jogo
-        if (numJogadores < 2 || numJogadores > 6) {
-            System.out.println("Número de jogadores inválido!");
-            return;
-        }
-
         if (jogadores == null || jogadores.size() < numJogadores) {
             System.out.println("Erro ao iniciar o jogo!");
             return;
@@ -81,25 +86,34 @@ public class Jogo {
             Jogador jogador = jogadores.get(jogadorAtual);
             System.out.println("Vez do jogador: " + jogador.getNome());
             System.out.println("Saldo atual: " + jogador.getSaldo());
-
+            System.out.println("Posição atual: " + jogador.getPosicao());
+            
             // Lançar os dados
             int dado1 = dado.rolar();
             int dado2 = dado.rolar();
             int somaDados = dado1 + dado2;
-
+            
             System.out.println("Dado 1: " + dado1);
             System.out.println("Dado 2: " + dado2);
             System.out.println("Total de casas a avançar: " + somaDados);
+            imprimirLinha();
 
             // Mover o jogador
             jogador.mover(somaDados);
 
             // Executar a ação correspondente à posição
-            tabuleiro.executarAcao(jogador, jogador.getPosicao());
+            tabuleiro.executarAcao(jogador, jogador.getPosicao(), somaDados);
+            imprimirLinha();
+            System.out.println(jogador.getEstado());
+            imprimirLinha();
+            aguardarEnter();
+            limparTela();
 
             // Verificar se o jogador faliu
             if (jogador.falido()) {
                 System.out.println("Jogador " + jogador.getNome() + " faliu!");
+                System.out.println("O jogador "+ jogador.getNome() + " finalou com o seguinte estado:");
+                System.out.println(jogador);
                 // Remover jogador do jogo
                 jogadores.remove(jogador);
             }
@@ -117,12 +131,32 @@ public class Jogo {
                 System.out.println("Fim do jogo!");
                 System.out.println("Jogador " + jogadores.get(0).getNome() + " venceu!");
                 System.out.println("O jogador finalou com o seguinte estado:");
-                System.out.println(jogadores.get(0).getEstado());
+                System.out.println(jogadores.get(0));
                 System.out.println("Parabéns!");
             }
 
             // Próximo jogador
             jogadorAtual = (jogadorAtual + 1) % numJogadores;
+            // imprimirLinha();
         }
+    }
+
+    public static void imprimirLinha() {
+        for (int i = 0; i < 20; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
+    }
+
+    // Limpar a tela do terminal
+    public static void limparTela() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    // Aguarda o jogador pressionar Enter
+    public static void aguardarEnter() {
+        System.out.print("Pressione Enter para continuar...");
+        System.console().readLine();
     }
 }
