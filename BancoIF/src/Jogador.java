@@ -16,10 +16,12 @@
  * construirPousada(Propriedade propriedade): void (constrói uma pousada em uma propriedade)
  * construirHotel(Propriedade propriedade): void (constrói um hotel em uma propriedade)
  * falido(): boolean (verifica se o jogador está falido)
+ * getPosicao(): int (retorna a posição atual do jogador)
  * getEstado(): String (retorna o estado atual do jogador: saldo, propriedades e posição)
  * toString(): String (retorna uma representação do jogador e suas propriedas/companhias)
  *
 */
+import java.util.ArrayList;
 import java.util.List;
 
 public class Jogador {
@@ -34,14 +36,34 @@ public class Jogador {
         this.nome = nome;
         this.saldo = 1500;
         this.posicao = 0;
+         this.propriedades = new ArrayList<>();
+        this.companhias = new ArrayList<>();
     }
 
     // Metodos
+    public String getNome() {
+        return this.nome;
+    }
+
+    public double getSaldo() {
+        return this.saldo;
+    }
+
+    public int getPosicao() {
+        return this.posicao;
+    }
+
     public void mover(int casas) {
         this.posicao += casas;
         if (this.posicao >= 40) {
             this.posicao -= 40;
             this.saldo += 200;
+        }
+        if (this.posicao == 30 || this.posicao == 10) {
+            this.posicao = 20;
+        }
+        if (this.posicao == 4) {
+            this.saldo -= 200;
         }
     }
 
@@ -50,17 +72,15 @@ public class Jogador {
             this.saldo -= propriedade.getPreco();
             this.propriedades.add(propriedade);
             propriedade.setProprietario(this);
+        } else {
+            System.out.println("Saldo insuficiente para comprar a propriedade");
         }
     }
 
     public void comprarCompanhia(Companhia Companhia) {
-        if (this.saldo >= Companhia.getValorCompra()) {
-            this.saldo -= Companhia.getValorCompra();
-            this.companhias.add(Companhia);
-            Companhia.setProprietario(this);
-        } else {
-            System.out.println("Saldo insuficiente para comprar a companhia");
-        }
+        this.saldo -= Companhia.getValorCompra();
+        this.companhias.add(Companhia);
+        Companhia.setProprietario(this);
     }
 
     public void pagarAluguel(double valor) {
@@ -94,6 +114,11 @@ public class Jogador {
             return true;
         }
         return false;
+    }
+
+    public int rolarDados() {
+        Dado dado = new Dado();
+        return dado.rolar() + dado.rolar();
     }
 
     public String getEstado() {
