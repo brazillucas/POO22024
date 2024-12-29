@@ -29,10 +29,13 @@
  * O sistema deve exibir as ações realizadas por cada jogador, como movimentação, compra de propriedades/companhias, pagamento de aluguel, etc.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Jogo {
     public static void main(String[] args) {
         Tabuleiro tabuleiro = new Tabuleiro();
-        Jogador[] jogadores = new Jogador[6];
+        List<Jogador> jogadores = new ArrayList<>();
         int numJogadores = 0;
 
         // Solicitar o número de jogadores
@@ -44,21 +47,21 @@ public class Jogo {
         for (int i = 0; i < numJogadores; i++) {
             System.out.println("Digite o nome do jogador " + (i + 1) + ": ");
             String nome = System.console().readLine();
-            jogadores[i] = new Jogador(nome);
+            jogadores.add(new Jogador(nome));
         }
 
         iniciarRodadasDoJogo(tabuleiro, jogadores, numJogadores);
 
     }
 
-    public static void iniciarRodadasDoJogo(Tabuleiro tabuleiro, Jogador[] jogadores, int numJogadores) {
+    public static void iniciarRodadasDoJogo(Tabuleiro tabuleiro, List<Jogador> jogadores, int numJogadores) {
         // Validações para iniciar o jogo
         if (numJogadores < 2 || numJogadores > 6) {
             System.out.println("Número de jogadores inválido!");
             return;
         }
 
-        if (jogadores == null || jogadores.length < numJogadores) {
+        if (jogadores == null || jogadores.size() < numJogadores) {
             System.out.println("Erro ao iniciar o jogo!");
             return;
         }
@@ -75,7 +78,7 @@ public class Jogo {
         Dado dado = new Dado();
 
         while (jogoAtivo) {
-            Jogador jogador = jogadores[jogadorAtual];
+            Jogador jogador = jogadores.get(jogadorAtual);
             System.out.println("Vez do jogador: " + jogador.getNome());
             System.out.println("Saldo atual: " + jogador.getSaldo());
 
@@ -98,19 +101,24 @@ public class Jogo {
             if (jogador.falido()) {
                 System.out.println("Jogador " + jogador.getNome() + " faliu!");
                 // Remover jogador do jogo
-                // Implementar
+                jogadores.remove(jogador);
             }
 
             // Verificar se o jogo acabou
             int jogadoresAtivos = 0;
-            for (int i = 0; i < numJogadores; i++) {
-                if (!jogadores[i].falido()) {
+            for (Jogador jogadorAtivo : jogadores) {
+                if (!jogadorAtivo.falido()) {
                     jogadoresAtivos++;
                 }
             }
 
             if (jogadoresAtivos == 1) {
                 jogoAtivo = false;
+                System.out.println("Fim do jogo!");
+                System.out.println("Jogador " + jogadores.get(0).getNome() + " venceu!");
+                System.out.println("Parabéns!");
+                System.out.println("O jogador finalou com o seguinte estado:");
+                System.out.println(jogadores.get(0).getEstado());
             }
 
             // Próximo jogador
