@@ -1,4 +1,4 @@
-public class Carta extends Posicao {
+public class CartaDeSorte extends Posicao {
     private String descricao;
     private boolean sorte;
     private int valorMinimoGanho;
@@ -6,7 +6,7 @@ public class Carta extends Posicao {
     private int valorMinimoPerda;
     private int valorMaximoPerda;
 
-    public Carta(String nome) {
+    public CartaDeSorte(String nome) {
         super(nome, "Carta");
         this.descricao = "Essa carta gera um evento aleatório, determinando um ganho ou perda de dinheiro para o jogador";
         this.sorte = false;
