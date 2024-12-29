@@ -62,9 +62,6 @@ public class Jogador {
         if (this.posicao == 30 || this.posicao == 10) {
             this.posicao = 20;
         }
-        if (this.posicao == 4) {
-            this.saldo -= 200;
-        }
     }
 
     public void comprarPropriedade(Propriedade propriedade) {
