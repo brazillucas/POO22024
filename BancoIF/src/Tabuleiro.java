@@ -2,11 +2,11 @@
  * Tabuleiro: O tabuleiro é composto por posições que representam propriedades (pontos turísticos brasileiros), companhias de serviço e funcionalidades específicas (Sorte/Revés, imposto de renda, bonificações).
  * 
  * Métodos:
-inicializarTabuleiro(): void (cria e inicializa o tabuleiro com todas as posições)
-getPosicao(int indice): Posicao (retorna a posição do tabuleiro com base no índice)
-getTipoPosicao(int indice): String (retorna o tipo da posição no tabuleiro com base no índice)
-executarAcao(Jogador jogador, int indice): void (executa a ação correspondente à posição no tabuleiro)
-exibirTabuleiro(): void (exibe o estado atual do tabuleiro)
+ * inicializarTabuleiro(): void (cria e inicializa o tabuleiro com todas as posições)
+ * getPosicao(int indice): Posicao (retorna a posição do tabuleiro com base no índice)
+ * getTipoPosicao(int indice): String (retorna o tipo da posição no tabuleiro com base no índice)
+ * executarAcao(Jogador jogador, int indice): void (executa a ação correspondente à posição no tabuleiro)
+ * exibirTabuleiro(): void (exibe o estado atual do tabuleiro)
  
 * O tabuleiro em uma tabela markdown:
 | Parada Livre      | Bangu           | Sorte/Reves      | Botafogo            | Imposto de Renda       | Companhia de navegação | Avenida Brasil                        | Sorte/Reves          | Avenida Paulista  | Jardim Europa | Vá para a Prisão         |
@@ -35,45 +35,45 @@ public class Tabuleiro {
     private void inicializarTabuleiro() {
         // Preenchendo as posições do tabuleiro.
         posicoes[0] = new Posicao("Partida", "Inicial");
-        posicoes[1] = new Posicao("Bangu", "Propriedade");
-        posicoes[2] = new Posicao("Sorte/Reves", "Sorte/Reves");
-        posicoes[3] = new Posicao("Botafogo", "Propriedade");
+        posicoes[1] = new Propriedade("Bangu", 100, 10, 50, 100);
+        posicoes[2] = new Carta("Sorte/Reves");
+        posicoes[3] = new Propriedade("Botafogo", 200, 20, 100, 200);
         posicoes[4] = new Posicao("Imposto de Renda", "Imposto");
-        posicoes[5] = new Posicao("Companhia de Navegação", "Companhia");
-        posicoes[6] = new Posicao("Avenida Brasil", "Propriedade");
-        posicoes[7] = new Posicao("Sorte/Reves", "Sorte/Reves");
-        posicoes[8] = new Posicao("Avenida Paulista", "Propriedade");
-        posicoes[9] = new Posicao("Jardim Europa", "Propriedade");
+        posicoes[5] = new Companhia("Companhia de Navegação", 150, 4);
+        posicoes[6] = new Propriedade("Avenida Brasil", 300, 30, 150, 300);
+        posicoes[7] = new Carta("Sorte/Reves");
+        posicoes[8] = new Propriedade("Avenida Paulista", 400, 40, 200, 400);
+        posicoes[9] = new Propriedade("Jardim Europa", 500, 50, 250, 500);
         posicoes[10] = new Posicao("Vá para a Prisão", "Especial");
-        posicoes[11] = new Posicao("Copacabana", "Propriedade");
-        posicoes[12] = new Posicao("Companhia de Aviação", "Companhia");
-        posicoes[13] = new Posicao("Avenida Vieira Souto", "Propriedade");
-        posicoes[14] = new Posicao("Avenida Atlântica", "Propriedade");
-        posicoes[15] = new Posicao("Companhia Táxi Aéreo", "Companhia");
-        posicoes[16] = new Posicao("Ipanema", "Propriedade");
-        posicoes[17] = new Posicao("Sorte/Reves", "Sorte/Reves");
-        posicoes[18] = new Posicao("Jardim Paulista", "Propriedade");
-        posicoes[19] = new Posicao("Brooklin", "Propriedade");
+        posicoes[11] = new Propriedade("Copacabana", 600, 60, 300, 600);
+        posicoes[12] = new Companhia("Companhia de Aviação", 150, 4);
+        posicoes[13] = new Propriedade("Avenida Vieira Souto", 700, 70, 350, 700);
+        posicoes[14] = new Propriedade("Avenida Atlântica", 800, 80, 400, 800);
+        posicoes[15] = new Companhia("Companhia Táxi Aéreo", 150, 4);
+        posicoes[16] = new Propriedade("Ipanema", 900, 90, 450, 900);
+        posicoes[17] = new Carta("Sorte/Reves");
+        posicoes[18] = new Propriedade("Jardim Paulista", 1000, 100, 500, 1000);
+        posicoes[19] = new Propriedade("Brooklin", 1100, 110, 550, 1100);
         posicoes[20] = new Posicao("Cadeia", "Especial");
-        posicoes[21] = new Posicao("Avenida 9 de Julho", "Propriedade");
-        posicoes[22] = new Posicao("Avenida Rebouças", "Propriedade");
-        posicoes[23] = new Posicao("Companhia de Viação", "Companhia");
-        posicoes[24] = new Posicao("Avenida Brigadeiro Faria Lima", "Propriedade");
-        posicoes[25] = new Posicao("Companhia Ferroviária", "Companhia");
-        posicoes[26] = new Posicao("Avenida Nossa Senhora de Copacabana", "Propriedade");
-        posicoes[27] = new Posicao("Avenida Presidente Vargas", "Propriedade");
-        posicoes[28] = new Posicao("Sorte/Reves", "Sorte/Reves");
-        posicoes[29] = new Posicao("Leblon", "Propriedade");
+        posicoes[21] = new Propriedade("Avenida 9 de Julho", 1200, 120, 600, 1200);
+        posicoes[22] = new Propriedade("Avenida Rebouças", 1300, 130, 650, 1300);
+        posicoes[23] = new Companhia("Companhia de Viação", 150, 4);
+        posicoes[24] = new Propriedade("Avenida Brigadeiro Faria Lima", 1400, 140, 700, 1400);
+        posicoes[25] = new Companhia("Companhia Ferroviária", 150, 4);
+        posicoes[26] = new Propriedade("Avenida Nossa Senhora de Copacabana", 1500, 150, 750, 1500);
+        posicoes[27] = new Propriedade("Avenida Presidente Vargas", 1600, 160, 800, 1600);
+        posicoes[28] = new Carta("Sorte/Reves");
+        posicoes[29] = new Propriedade("Leblon", 1700, 170, 850, 1700);
         posicoes[30] = new Posicao("Vá para a Prisão", "Especial");
-        posicoes[31] = new Posicao("Morumbi", "Propriedade");
+        posicoes[31] = new Propriedade("Morumbi", 1800, 180, 900, 1800);
         posicoes[32] = new Posicao("Lucros ou Dividendos", "Especial");
-        posicoes[33] = new Posicao("Interlagos", "Propriedade");
-        posicoes[34] = new Posicao("Sorte/Reves", "Sorte/Reves");
-        posicoes[35] = new Posicao("Companhia de Táxi", "Companhia");
-        posicoes[36] = new Posicao("Avenida Pacaembu", "Propriedade");
-        posicoes[37] = new Posicao("Rua Augusta", "Propriedade");
-        posicoes[38] = new Posicao("Sorte/Reves", "Sorte/Reves");
-        posicoes[39] = new Posicao("Avenida Europa", "Propriedade");
+        posicoes[33] = new Propriedade("Interlagos", 1900, 190, 950, 1900);
+        posicoes[34] = new Carta("Sorte/Reves");
+        posicoes[35] = new Companhia("Companhia de Táxi", 150, 4);
+        posicoes[36] = new Propriedade("Avenida Pacaembu", 2000, 200, 1000, 2000);
+        posicoes[37] = new Propriedade("Rua Augusta", 2100, 210, 1050, 2100);
+        posicoes[38] = new Carta("Sorte/Reves");
+        posicoes[39] = new Propriedade("Avenida Europa", 2200, 220, 1100, 2200);
     }
 
     public Posicao getPosicao(int index) {
@@ -84,22 +84,15 @@ public class Tabuleiro {
         }
     }
 
-    public void imprimirTabuleiro() {
-        for (int i = 0; i < posicoes.length; i++) {
-            System.out.printf("Posição %d: %s%n", i, posicoes[i]);
-        }
-    }
-
-    public String getTipoPosicao(int indice) {
-        return posicoes[indice].getTipo();
-    }
-
     public void executarAcao(Jogador jogador, int indice) {
-        // Executa a ação correspondente à posição no tabuleiro
+        Posicao posicao = getPosicao(indice);
+        posicao.acao(jogador);
     }
 
     public void exibirTabuleiro() {
-        // Exibe o estado atual do tabuleiro
+        for (int i = 0; i < posicoes.length; i++) {
+            System.out.println("Posição " + i + ": " + posicoes[i]);
+        }
     }
 
 }
