@@ -31,11 +31,11 @@ public class CartaDeSorte extends Posicao {
 
     private double sortearPerda() {
         int valor = (int) (Math.random() * (valorMaximoPerda - valorMinimoPerda + 1) + valorMinimoPerda);
-        return valor * -1;
+        return valor;
     }
 
     @Override
-    public void acao(Jogador jogador) {
+    public void acao(Jogador jogador, int somaDados) {
         double sorteio = Math.random();
         double valor = 0;
         if (sorteio < 0.5) {
@@ -47,10 +47,12 @@ public class CartaDeSorte extends Posicao {
 
         if (sorte) {
             System.out.println("Sorte: " + descricao);
+            System.out.println("Você ganhou: R$" + valor);
             jogador.receber(valor);
         } else {
             System.out.println("Revés: " + descricao);
-            jogador.receber(valor);
+            System.out.println("Você perdeu: R$" + valor);
+            jogador.pagar(valor);
         }
     }
 }
