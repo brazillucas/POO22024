@@ -30,6 +30,7 @@ public class Jogador {
     private int posicao;
     private List<Propriedade> propriedades;
     private List<Companhia> companhias;
+    private boolean falido;
 
     // Construtor
     public Jogador(String nome) {
@@ -38,6 +39,7 @@ public class Jogador {
         this.posicao = 0;
          this.propriedades = new ArrayList<>();
         this.companhias = new ArrayList<>();
+        this.falido = false;
     }
 
     // Metodos
@@ -56,32 +58,38 @@ public class Jogador {
     public int getPosicao() {
         return this.posicao;
     }
+    
+    public boolean falido() {
+        return this.falido;
+    }
+
+    public void setFalencia() {
+        this.falido = true;
+    }
 
     public void mover(int casas) {
         this.posicao += casas;
         if (this.posicao >= 40) {
             this.posicao -= 40;
             this.saldo += 200;
+            System.out.println("Jogador " + this.nome + " ganhou R$200 por completar uma volta no tabuleiro.");
+
         }
     }
 
     public void comprarPropriedade(Propriedade propriedade) {
-        if (this.saldo >= propriedade.getPreco()) {
             this.saldo -= propriedade.getPreco();
             this.propriedades.add(propriedade);
             propriedade.setProprietario(this);
-        } else {
-            System.out.println("Saldo insuficiente para comprar a propriedade");
-        }
     }
 
-    public void comprarCompanhia(Companhia Companhia) {
-        this.saldo -= Companhia.getValorCompra();
-        this.companhias.add(Companhia);
-        Companhia.setProprietario(this);
+    public void comprarCompanhia(Companhia companhia) {
+            this.saldo -= companhia.getValorCompra();
+            this.companhias.add(companhia);
+            companhia.setProprietario(this);
     }
 
-    public void pagarAluguel(double valor) {
+    public void pagar(double valor) {
         this.saldo -= valor;
     }
 
@@ -90,29 +98,35 @@ public class Jogador {
     }
 
     public void construirPousada(Propriedade propriedade) {
-        if (propriedade.getProprietario() == this && propriedade.getNivelMelhoria() == 0 && this.saldo >= propriedade.getAluguelPousada()) {
-            this.saldo -= propriedade.getAluguelPousada();
-            propriedade.setNivelMelhoria(1);
+        if (this.saldo >= propriedade.getAluguelPousada()){
+            if (propriedade.getNivelMelhoria() == 0) {
+                this.saldo -= propriedade.getAluguel();
+                propriedade.setNivelMelhoria(1);
+            } else if (propriedade.getNivelMelhoria() == 1) {
+                System.out.println("Já existe uma pousada nesta propriedade");
+                System.out.println("Construa um hotel");
+            }
         } else {
-            System.out.println("Não é possível construir uma pousada nesta propriedade");
+            System.out.println("Saldo insuficiente para construir uma pousada");
         }
     }
 
     public void construirHotel(Propriedade propriedade) {
-        if (propriedade.getProprietario() == this && propriedade.getNivelMelhoria() == 1 && this.saldo >= propriedade.getAluguelHotel()) {
-            this.saldo -= propriedade.getAluguelHotel();
-            propriedade.setNivelMelhoria(2);
+        if (this.saldo >= propriedade.getAluguelHotel()) {
+            if (propriedade.getNivelMelhoria() == 1) {
+                this.saldo -= propriedade.getAluguelPousada();
+                propriedade.setNivelMelhoria(2);
+            } else if (propriedade.getNivelMelhoria() == 2) {
+                System.out.println("A propriedade já possui um hotel");
+            } else {
+                System.out.println("Não é possível construir um hotel nesta propriedade");
+                System.out.println("Construa uma pousada primeiro");
+            }
         } else {
-            System.out.println("Não é possível construir um hotel nesta propriedade");
+            System.out.println("Saldo insuficiente para construir um hotel");
         }
     }
 
-    public boolean falido() {
-        if (this.saldo < 0) {
-            return true;
-        }
-        return false;
-    }
 
     public int rolarDados() {
         Dado dado = new Dado();
