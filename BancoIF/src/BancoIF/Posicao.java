@@ -1,9 +1,12 @@
 package BancoIF;
 /**
- * Representa uma posição no tabuleiro do jogo.
+ * Representa uma <b>posição</b> no tabuleiro do jogo.
  * <p>
- * Uma posição pode ser de diferentes tipos, como "Propriedade", "Companhia",
- * "Sorte/Reves", entre outros. Cada posição possui um nome e um tipo.
+ * Uma posição pode ser de diferentes tipos, como <i>"Propriedade"</i>, <i>"Companhia"</i>,
+ * <i>"Sorte/Reves"</i>, entre outros.
+ * </p>
+ * <p>
+ * Cada posição possui um <i>nome</i> e um <i>tipo</i>.
  * </p>
  */
 
@@ -44,7 +47,7 @@ public class Posicao {
      * @return O nome da posição.
      */
     public String getNome() {
-        return nome;
+        return this.nome;
     }
 
     /**
@@ -53,7 +56,7 @@ public class Posicao {
      * @return O tipo da posição.
      */
     public String getTipo() {
-        return tipo;
+        return this.tipo;
     }
 
     /**
@@ -63,20 +66,39 @@ public class Posicao {
      */
     @Override
     public String toString() {
-        return nome + " (" + tipo + ")";
+        return this.nome + " (" + tipo + ")";
     }
 
      /**
      * Executa uma ação específica baseada na posição.
      * <p>
-     * Este método deve ser implementado de acordo com as regras do jogo.
+     * Este método deve ser sobrescrito nas subclasse Companhia para implementar a ação
+     * específica da posição.
+     * Por padrão, a ação da posição é apenas exibir uma mensagem informando
+     * que o jogador está naquela posição.
      * </p>
      *
      * @param jogador   O jogador que está na posição.
      * @param somaDados O resultado da soma dos dados, que pode influenciar a ação.
      */
     public void acao(Jogador jogador, int somaDados) {
-        // Implementar ação da posição
-        System.out.println("Jogador " + jogador.getNome() + " está na posição " + getNome());
+        // Exibe mensagem informando que o jogador está na posição
+        System.out.println("Jogador " + jogador.getNome() + " está na posição " + this.getNome());
+    }
+
+    /**
+     * Executa uma ação específica baseada na posição.
+     * <p>
+     * Este método deve ser sobrescrito nas subclasses para implementar a ação
+     * específica da posição.
+     * Por padrão, a ação da posição é apenas exibir uma mensagem informando
+     * que o jogador está naquela posição.
+     * </p>
+     *
+     * @param jogador O jogador que está na posição.
+     */
+    public void acao(Jogador jogador) {
+        // Exibe mensagem informando que o jogador está na posição
+        System.out.println("Jogador " + jogador.getNome() + " está na posição " + this.getNome());
     }
 }
