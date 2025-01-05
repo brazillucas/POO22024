@@ -2,7 +2,6 @@ package BancoIF;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * Classe principal do jogo Banco Imobiliário.
@@ -169,15 +168,13 @@ public class Jogo {
      * @return A entrada válida do usuário.
      */
     public static String solicitarEntradaValida(String mensagem, String regex, String mensagemErro) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            while (true) {
-                System.out.print(mensagem);
-                String entrada = scanner.nextLine();
-                if (entrada.matches(regex)) {
-                    return entrada;
-                } else {
-                    System.out.println(mensagemErro + "! Tente novamente.");
-                }
+        while (true) {
+            System.out.print(mensagem);
+            String entrada = System.console().readLine();
+            if (entrada.matches(regex)) {
+                return entrada;
+            } else {
+                System.out.println(mensagemErro + "! Tente novamente.");
             }
         }
     }

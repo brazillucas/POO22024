@@ -59,7 +59,7 @@ public class Tabuleiro {
      */
     private void inicializarTabuleiro() {
         // Leitura do arquivo CSV
-        try (BufferedReader br = new BufferedReader(new FileReader("/home/android/devFolder/POO22024/BancoIF/src/main/java/BancoIF/tabuleiro.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("BancoIF/src/BancoIF/tabuleiro.csv"))) {
             String linha;
             int indice = 0;
             // Leitura de cada linha do arquivo
