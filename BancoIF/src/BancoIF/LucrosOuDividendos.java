@@ -1,3 +1,4 @@
+package BancoIF;
 public class LucrosOuDividendos extends Posicao {
     private double valorLucro;
 

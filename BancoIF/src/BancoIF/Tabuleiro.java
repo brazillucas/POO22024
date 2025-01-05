@@ -1,3 +1,4 @@
+package BancoIF;
 /*
  * Tabuleiro: O tabuleiro é composto por posições que representam propriedades (pontos turísticos brasileiros), companhias de serviço e funcionalidades específicas (Sorte/Revés, imposto de renda, bonificações).
  * 

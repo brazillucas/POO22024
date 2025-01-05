@@ -1,3 +1,4 @@
+package BancoIF;
 /**
  * Classe Companhia (Herda de Posicao):
  * Atributos:

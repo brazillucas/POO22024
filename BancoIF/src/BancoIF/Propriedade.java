@@ -1,3 +1,4 @@
+package BancoIF;
 /**
  * Classe Propriedade (Herda de Posicao):
  * Atributos:

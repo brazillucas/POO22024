@@ -1,3 +1,4 @@
+package BancoIF;
 public class Cadeia extends Posicao {
     
     public Cadeia(String nome) {

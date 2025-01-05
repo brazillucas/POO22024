@@ -1,3 +1,4 @@
+package BancoIF;
 /**
  * Classe SorteReves (Herda de Posicao):
  * Atributos:

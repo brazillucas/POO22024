@@ -1,3 +1,5 @@
+package BancoIF;
+
 public class CartaDeSorte extends Posicao {
     private String descricao;
     private boolean sorte;

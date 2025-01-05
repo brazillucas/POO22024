@@ -1,3 +1,4 @@
+package BancoIF;
 public class ImpostoDeRenda extends Posicao {
     private double valorImposto;
 
