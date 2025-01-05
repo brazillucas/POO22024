@@ -100,7 +100,7 @@ public class Jogador {
      * 
      * @return true se o jogador está falido, false caso contrário.
      */
-    public boolean falido() {
+    public boolean getFalido() {
         return this.falido;
     }
 

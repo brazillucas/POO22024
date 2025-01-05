@@ -59,7 +59,7 @@ public class Tabuleiro {
      */
     private void inicializarTabuleiro() {
         // Leitura do arquivo CSV
-        try (BufferedReader br = new BufferedReader(new FileReader("BancoIF/src/BancoIF/tabuleiro.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("/home/android/devFolder/POO22024/BancoIF/src/main/java/BancoIF/tabuleiro.csv"))) {
             String linha;
             int indice = 0;
             // Leitura de cada linha do arquivo
@@ -123,6 +123,27 @@ public class Tabuleiro {
             return this.posicoes[indice];
         } else {
             throw new IndexOutOfBoundsException("Posição inválida! A posição não está contida no tabuleiro.");
+        }
+    }
+
+    /**
+     * Remove as propriedade e companhias de um jogador falido
+     * 
+     * @param jogador O jogador que está falido.
+     */
+    public void removerPropriedadesCompanhias(Jogador jogador) {
+        for (int i = 0; i < posicoes.length; i++) {
+            if (posicoes[i].getTipo().equals("Propriedade")) {
+                Propriedade propriedade = (Propriedade) posicoes[i];
+                if (propriedade.getProprietario() == jogador) {
+                    propriedade.setProprietario(null);
+                }
+            } else if (posicoes[i].getTipo().equals("Companhia")) {
+                Companhia companhia = (Companhia) posicoes[i];
+                if (companhia.getProprietario() == jogador) {
+                    companhia.setProprietario(null);
+                }
+            }
         }
     }
 

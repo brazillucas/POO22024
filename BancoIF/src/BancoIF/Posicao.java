@@ -66,7 +66,7 @@ public class Posicao {
      */
     @Override
     public String toString() {
-        return this.nome + " (" + tipo + ")";
+        return this.nome;
     }
 
      /**

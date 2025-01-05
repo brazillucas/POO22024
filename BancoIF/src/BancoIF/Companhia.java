@@ -70,6 +70,15 @@ public class Companhia extends Posicao{
     }
 
     /**
+     * Retorna o jogador proprietário da propriedade.
+     * 
+     * @return O jogador proprietário da propriedade.
+     */
+    public Jogador getProprietario() {
+        return this.proprietario;
+    }
+
+    /**
      * Define o proprietário da companhia.
      * 
      * @param jogador O novo proprietário da companhia.

@@ -2,6 +2,7 @@ package BancoIF;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Classe principal do jogo Banco Imobiliário.
@@ -115,20 +116,23 @@ public class Jogo {
             limparTela();
 
             // Verificar se o jogador faliu
-            if (jogador.falido()) {
+            if (jogador.getFalido()) {
                 imprimirLinha();
                 System.out.println("Jogador " + jogador.getNome() + " faliu!");
                 System.out.println("O jogador "+ jogador.getNome() + " finalou com o seguinte estado:");
                 System.out.println(jogador);
                 imprimirLinha();
+                aguardarEnter();
                 // Remover jogador do jogo
                 jogadores.remove(jogador);
+                // Remove propriedade e companhias do jogador
+                tabuleiro.removerPropriedadesCompanhias(jogador);
             }
 
             // Verificar se o jogo acabou
             int jogadoresAtivos = 0;
             for (Jogador jogadorAtivo : jogadores) {
-                if (!jogadorAtivo.falido()) {
+                if (!jogadorAtivo.getFalido()) {
                     jogadoresAtivos++;
                 }
             }
@@ -145,7 +149,7 @@ public class Jogo {
             }
 
             // Próximo jogador
-            jogadorAtual = (jogadorAtual + 1) % numJogadores;
+            jogadorAtual = (jogadorAtual + 1) % jogadores.size();
             
         } while (jogoAtivo && saida.equalsIgnoreCase("S"));
     }
@@ -165,13 +169,15 @@ public class Jogo {
      * @return A entrada válida do usuário.
      */
     public static String solicitarEntradaValida(String mensagem, String regex, String mensagemErro) {
-        while (true) {
-            System.out.print(mensagem);
-            String entrada = System.console().readLine();
-            if (entrada.matches(regex)) {
-                return entrada;
-            } else {
-                System.out.println(mensagemErro + "! Tente novamente.");
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                System.out.print(mensagem);
+                String entrada = scanner.nextLine();
+                if (entrada.matches(regex)) {
+                    return entrada;
+                } else {
+                    System.out.println(mensagemErro + "! Tente novamente.");
+                }
             }
         }
     }
