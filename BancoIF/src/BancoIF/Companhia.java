@@ -106,18 +106,19 @@ public class Companhia extends Posicao{
         double valorAluguel = this.calcularAluguel(somaDados);
         // Verificar se o jogador tem saldo suficiente para pagar o aluguel
         if (jogador.getSaldo() < valorAluguel) {
-            System.out.println("Jogador " + jogador.getNome() + " não tem saldo suficiente para pagar o aluguel de R$" + valorAluguel);
+            System.out.printf("Jogador %s não tem saldo suficiente para pagar o aluguel de R$ %.2f\n", jogador.getNome(), valorAluguel);
             jogador.setFalencia();
             return;
         }
         // Pagar aluguel
         jogador.pagar(valorAluguel);
         this.proprietario.receber(valorAluguel);
-        System.out.println("Jogador " + jogador.getNome() + " pagou R$" + valorAluguel + " de aluguel para " + this.proprietario.getNome());
+        System.out.printf("Jogador %s pagou R$ %.2f de aluguel para %s\n", jogador.getNome(), valorAluguel, this.proprietario.getNome());
 
         Jogo.imprimirLinha();
         // Mostra o saldo do proprietário
-        System.out.println("Novo saldo do proprietário " + this.proprietario.getNome() + ": R$" + this.proprietario.getSaldo());
+        System.out.printf("Novo saldo do proprietário %s: R$ %.2f.\n", this.proprietario.getNome(), this.proprietario.getSaldo());
+
     }
 
     /**
@@ -141,17 +142,18 @@ public class Companhia extends Posicao{
 
             // Verifica se o jogador quer comprar a companhia
             String escolha = Jogo.solicitarEntradaValida("Deseja comprar a companhia? (S/N) ", "[sS|nN]", "Opção inválida");
+            Jogo.imprimirLinha();
 
             if (escolha.toLowerCase().equalsIgnoreCase("S")) {
                 // Verifica se o jogador tem saldo suficiente para comprar a companhia
                 if (jogador.getSaldo() >= valorCompra) {
                     jogador.comprarCompanhia(this);
-                    System.out.println("Jogador " + jogador.getNome() + " comprou a companhia " + this.getNome());
+                    System.out.println("Jogador " + jogador.getNome() + " comprou a companhia: " + this.getNome());
                 } else {
                     System.out.println("Saldo insuficiente para comprar a companhia");
                 }
             } else {
-                System.out.println("Jogador " + jogador.getNome() + " não comprou a propriedade " + getNome());
+                System.out.println("Jogador " + jogador.getNome() + " não comprou a propriedade: " + this.getNome());
             }
         } else if(this.proprietario == jogador) {
             // Informa ao jogador que caiu em uma propriedade que ele é o dono e que já possui um hotel

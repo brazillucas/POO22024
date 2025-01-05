@@ -41,6 +41,6 @@ public class ImpostoDeRenda extends Posicao {
     @Override
     public void acao(Jogador jogador) {
         jogador.pagar(this.valorImposto);
-        System.out.println("Jogador " + jogador.getNome() + " pagou R$" + valorImposto + " de imposto de renda.");
+        System.out.printf("Jogador %S pagou R$ %.2f de imposto de renda.\n", jogador.getNome(), valorImposto);
     }
 }

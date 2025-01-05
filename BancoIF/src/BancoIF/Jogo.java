@@ -74,6 +74,12 @@ public class Jogo {
         String saida = "S";
 
         do {
+            // Incrementa o número de rodadas
+            rodadas++;
+            System.out.println("Rodada: " + rodadas);
+            imprimirLinha();
+
+            // Exibir informações do jogador
             Jogador jogador = jogadores.get(jogadorAtual);
             System.out.println("Vez do jogador: " + jogador.getNome());
             System.out.printf("Saldo atual: R$ %.2f\n", jogador.getSaldo());
@@ -98,13 +104,23 @@ public class Jogo {
             System.out.println(jogador.getEstado());
             imprimirLinha();
             aguardarEnter();
+
+            // Se o número de jogadas for múltiplo de 60, pergunta o jogador se deseja continuar
+            // ou se deseja encerrar o jogo
+            if(rodadas % 60 == 0) {
+                System.out.println("Vocês jogaram 60 rodadas.");
+                saida = solicitarEntradaValida("Deseja continuar jogando? (S/N): ", "^[SsNn]$", "Opção inválida");
+            }
+
             limparTela();
 
             // Verificar se o jogador faliu
             if (jogador.falido()) {
+                imprimirLinha();
                 System.out.println("Jogador " + jogador.getNome() + " faliu!");
                 System.out.println("O jogador "+ jogador.getNome() + " finalou com o seguinte estado:");
                 System.out.println(jogador);
+                imprimirLinha();
                 // Remover jogador do jogo
                 jogadores.remove(jogador);
             }
@@ -121,7 +137,9 @@ public class Jogo {
                 jogoAtivo = false;
                 System.out.println("Fim do jogo!");
                 System.out.println("Jogador " + jogadores.get(0).getNome() + " venceu!");
-                System.out.println("O jogador finalou com o seguinte estado:");
+                imprimirLinha();
+                System.out.printf("%s finalou com o seguinte estado:\n", jogadores.get(0).getNome());
+                imprimirLinha();
                 System.out.println(jogadores.get(0));
                 System.out.println("Parabéns!");
             }
@@ -129,13 +147,6 @@ public class Jogo {
             // Próximo jogador
             jogadorAtual = (jogadorAtual + 1) % numJogadores;
             
-            // Incrementa o número de rodadas
-            rodadas++;
-            // Se o número de jogadas for múltiplo de 60, pergunta o jogador se deseja continuar
-            // ou se deseja encerrar o jogo
-            if(rodadas % 60 == 0) {
-                saida = solicitarEntradaValida("Deseja continuar jogando? (S/N): ", "^[SsNn]$", "Opção inválida");
-            }
         } while (jogoAtivo && saida.equalsIgnoreCase("S"));
     }
 
@@ -184,7 +195,7 @@ public class Jogo {
      * Limpa a tela do terminal.
      */
     public static void limparTela() {
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033\143");
         System.out.flush();
     }
 

@@ -127,7 +127,7 @@ public class Jogador {
             this.posicao -= 40;
             this.saldo += 200;
             System.out.println("Jogador " + this.nome + " ganhou R$ 200.00 por completar uma volta no tabuleiro.");
-
+            Jogo.imprimirLinha();
         }
     }
 
@@ -244,7 +244,7 @@ public class Jogador {
      */
     @Override
     public String toString() {
-        return String.format("Jogador: %s\nSaldo: R$ %.2f\nPosição: %d\nPropriedades: %s\nCompanhias: %s", 
+        return String.format("Jogador: %s\nSaldo: R$ %.2f\nPosição: %d\nPropriedades: %s\n\nCompanhias: %s", 
                      this.nome, this.saldo, this.posicao, this.propriedades, this.companhias);
     }
 }

@@ -46,8 +46,8 @@ public class CartaDeSorte extends Posicao {
      */
     public CartaDeSorte(String nome) {
         super(nome, "Carta");
-        this.descricaoSorte = "Essa carta gera um valor aleatório, determinando um ganho de dinheiro para o jogador";
-        this.descricaoReves = "Essa carta gera um valor aleatório, determinando uma perda de dinheiro para o jogador";
+        this.descricaoSorte = "Essa carta gera um valor aleatório, determinando um ganho de dinheiro para o jogador.";
+        this.descricaoReves = "Essa carta gera um valor aleatório, determinando uma perda de dinheiro para o jogador.";
         this.ganhoMinimo = 1;
         this.ganhoMaximo = 150;
         this.perdaMinima = 1;

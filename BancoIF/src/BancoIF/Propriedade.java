@@ -213,8 +213,12 @@ public class Propriedade extends Posicao {
         {
             
             do {
+                // Utiliza operador ternário para exibir o nível de melhoria da propriedade
+                // Se o nível de melhoria for 0, exibe "Básico", senão exibe "Pousada"
+                String nivelMelhoriaStr = (this.nivelMelhoria == 0) ? "Básico" : "Pousada";
+                
                 // Informa ao jogador o nível de melhoria atual da propriedade
-                System.out.println("O nível de melhoria desta propriedade é: " + this.nivelMelhoria);
+                System.out.println("O nível de melhoria desta propriedade é: " + nivelMelhoriaStr);
                 Jogo.imprimirLinha();
                 // Imprime a lista de melhorias disponíveis
                 System.out.println("Deseja construir melhorias na propriedade?");
@@ -225,6 +229,7 @@ public class Propriedade extends Posicao {
                 // Verifica se o jogador deseja construir melhorias na propriedade
                 // Converte a entrada e executa a ação correspondente
                 int opcao = Integer.parseInt(Jogo.solicitarEntradaValida("Escolha uma opção: ", "^[0-2]$", "Opção inválida"));
+                Jogo.imprimirLinha();
 
                 if (opcao == 0) {
                     System.out.println("Nenhuma melhoria foi construída");
@@ -236,14 +241,24 @@ public class Propriedade extends Posicao {
                     Jogo.imprimirLinha();
                     System.out.println("O menu será exibido novamente. Escolha uma opção válida.");
                     Jogo.aguardarEnter();
+                    Jogo.limparTela();
                     continue;
                 } else if (opcao == 1) {
                     if (jogador.getSaldo() < this.aluguelPousada) {
                         System.out.println("Saldo insuficiente para construir uma pousada");
                         Jogo.aguardarEnter();
                         return;
+                    } else if (this.nivelMelhoria == opcao) {
+                        System.out.println("A propriedade já possui uma pousada");
+                        System.out.println("Construa um hotel para melhorar a propriedade");
+                        Jogo.imprimirLinha();
+                        System.out.println("O menu será exibido novamente. Escolha uma opção válida.");
+                        Jogo.aguardarEnter();
+                        Jogo.limparTela();
+                        continue;
                     }
                     jogador.construirPousada(this);
+                    System.out.println("Pousada construída com sucesso!");
                     return;
                 } else {
                     if (jogador.getSaldo() < this.aluguelHotel) {
@@ -252,6 +267,7 @@ public class Propriedade extends Posicao {
                         return;
                     }
                     jogador.construirHotel(this);
+                    System.out.println("Hotel construído com sucesso!");
                     return;
                 }
             } while(true);
@@ -275,18 +291,18 @@ public class Propriedade extends Posicao {
         double valorAluguel = calcularAluguel();
         // Verificar se o jogador tem saldo suficiente para pagar o aluguel
         if (jogador.getSaldo() < valorAluguel) {
-            System.out.println("Jogador " + jogador.getNome() + " não tem saldo suficiente para pagar o aluguel de R$ " + valorAluguel);
+            System.out.printf("Jogador %s não tem saldo suficiente para pagar o aluguel de R$ %.2f\n", jogador.getNome(), valorAluguel);
             jogador.setFalencia();
             return;
         }
         // Pagar aluguel ao proprietário
         jogador.pagar(valorAluguel);
         this.proprietario.receber(valorAluguel);
-        System.out.println("Jogador " + jogador.getNome() + " pagou R$ " + valorAluguel + " de aluguel para " + this.proprietario.getNome());
+        System.out.printf("Jogador %s pagou R$ %.2f de aluguel para %s.\n", jogador.getNome(), valorAluguel, this.proprietario.getNome());
 
         Jogo.imprimirLinha();
         // Mostra o saldo do proprietário
-        System.out.println("Novo saldo do proprietário " + this.proprietario.getNome() + ": R$ " + this.proprietario.getSaldo());
+        System.out.printf("Novo saldo do proprietário %s: R$ %.2f.\n", this.proprietario.getNome(), this.proprietario.getSaldo());
     }
 
     //@Override
@@ -305,21 +321,22 @@ public class Propriedade extends Posicao {
         if (this.proprietario == null) {
             // Jogador pode comprar a propriedade
             System.out.println("Propriedade disponível para compra: " + this.getNome());
-            System.out.printf("Valor da propriedade: %.2f\n", this.valorCompra);
+            System.out.printf("Valor da propriedade: R$ %.2f.\n", this.valorCompra);
             
             // Verifica se o jogador quer comprar a propriedade
             String escolha = Jogo.solicitarEntradaValida("Deseja comprar a propriedade? (S/N): ", "[sS|nN]", "Opção inválida");
+            Jogo.imprimirLinha();
 
             if (escolha.equalsIgnoreCase("S")) {
                 // Verifica se o jogador tem saldo suficiente para comprar a propriedade
                 if (jogador.getSaldo() >= this.valorCompra) {
                     jogador.comprarPropriedade(this);
-                    System.out.println("Jogador " + jogador.getNome() + " comprou a propriedade " + getNome());
+                    System.out.println("Jogador " + jogador.getNome() + " comprou a propriedade: " + this.getNome());
                 } else {
                     System.out.println("Saldo insuficiente para comprar a propriedade");
                 }
             } else {
-                System.out.println("Jogador " + jogador.getNome() + " não comprou a propriedade " + getNome());
+                System.out.println("Jogador " + jogador.getNome() + " não comprou a propriedade: " + this.getNome());
             }
         } else if(this.proprietario == jogador) {
             // Oferece ao jogador a possibilidade de construir melhorias na propriedade
