@@ -1,145 +1,250 @@
 package BancoIF;
-/**
- * 
- * Classe Jogador:
- * Atributos:
- * nome: String (nome do jogador)
- * saldo: double (saldo do jogador)
- * posicao: int (posição atual no tabuleiro)
- * propriedades: List<Propriedade> (lista de propriedades que o jogador possui)
- * companhias: List<Companhia> (lista de companhias que o jogador possui)
- * Métodos:
- * mover(int casas): void (move o jogador um número de casas no tabuleiro)
- * comprarCompanhia(Companhia companhia): void (compra uma companhia)
- * comprarPropriedade(Propriedade propriedade): void (compra uma propriedade)
- * pagarAluguel(double valor): void (paga um aluguel para outro jogador)
- * receber(double valor): void (recebe um valor)
- * construirPousada(Propriedade propriedade): void (constrói uma pousada em uma propriedade)
- * construirHotel(Propriedade propriedade): void (constrói um hotel em uma propriedade)
- * falido(): boolean (verifica se o jogador está falido)
- * getPosicao(): int (retorna a posição atual do jogador)
- * getEstado(): String (retorna o estado atual do jogador: saldo, propriedades e posição)
- * toString(): String (retorna uma representação do jogador e suas propriedas/companhias)
- *
-*/
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa um jogador no jogo.
+ * 
+ * <p>
+ * Esta classe contém informações sobre o jogador.
+ * <ul>
+ * <li>Nome</li>
+ * <li>Saldo</li>
+ * <li>Posição no tabuleiro</li>
+ * <li>Propriedades</li>
+ * <li>Companhias</li>
+ * <li>Estado de falência</li>
+ * </ul>
+ * </p>
+ *
+*/
+
 public class Jogador {
+    // Atributos
+    /**
+     * O nome do jogador.
+     */
     private String nome;
+    /**
+     * O saldo do jogador.
+     */
     private double saldo;
+    /**
+     * A posição do jogador no tabuleiro.
+     */
     private int posicao;
+    /**
+     * A lista de propriedades que o jogador possui.
+     */
     private List<Propriedade> propriedades;
+    /**
+     * A lista de companhias que o jogador possui.
+     */
     private List<Companhia> companhias;
+    /**
+     * Indica se o jogador está falido.
+     */
     private boolean falido;
 
     // Construtor
+    /**
+     * Construtor da classe Jogador.
+     * <p>
+     * Cria um novo jogador com um nome e saldo inicial de R$ 1500.00.
+     * </p>
+     * 
+     * @param nome O nome do jogador.
+     */
     public Jogador(String nome) {
         this.nome = nome;
         this.saldo = 1500;
         this.posicao = 0;
-         this.propriedades = new ArrayList<>();
+        this.propriedades = new ArrayList<>();
         this.companhias = new ArrayList<>();
         this.falido = false;
     }
 
     // Metodos
+    /**
+     * Retorna o nome do jogador.
+     */
     public String getNome() {
         return this.nome;
     }
 
+    /**
+     * Retorna o saldo do jogador.
+     */
     public double getSaldo() {
         return this.saldo;
     }
 
+    /**
+     * Configura uma nova posição no tabuleiro para o jogador.
+     */
     public void setPosicao(int posicao) {
         this.posicao = posicao;
     }
 
+    /**
+     * Retorna a posição atual do jogador no tabuleiro.
+     * @return A posição do jogador.
+     */
     public int getPosicao() {
         return this.posicao;
     }
-    
+
+    /**
+     * Retorna o estado de falência do jogador.
+     * 
+     * @return true se o jogador está falido, false caso contrário.
+     */
     public boolean falido() {
         return this.falido;
     }
 
+    /**
+     * Configura o jogador como falido.
+     */    
     public void setFalencia() {
         this.falido = true;
     }
 
+    /**
+     * Move o jogador para uma nova posição no tabuleiro.
+     * 
+     * <p>
+     * Quando o jogador completa 40 casas, a contagem começa novamente a partir de 0.
+     * Caso o jogador complete uma volta no tabuleiro, ele recebe R$ 200.00.
+     * </p>
+     * 
+     * @param casas O número de casas para mover.
+     */
     public void mover(int casas) {
         this.posicao += casas;
         if (this.posicao >= 40) {
             this.posicao -= 40;
             this.saldo += 200;
-            System.out.println("Jogador " + this.nome + " ganhou R$200 por completar uma volta no tabuleiro.");
+            System.out.println("Jogador " + this.nome + " ganhou R$ 200.00 por completar uma volta no tabuleiro.");
 
         }
     }
 
+    /**
+     * Permite que o jogador compre uma propriedade.
+     * 
+     * <p>
+     * O jogador paga o valor da propriedade e a adiciona à sua lista de propriedades.
+     * </p>
+     * 
+     * @param propriedade A propriedade a ser comprada.
+     */
     public void comprarPropriedade(Propriedade propriedade) {
             this.saldo -= propriedade.getPreco();
             this.propriedades.add(propriedade);
             propriedade.setProprietario(this);
     }
 
+    /**
+     * Permite que o jogador compre uma companhia.
+     * 
+     * <p>
+     * O jogador paga o valor da companhia e a adiciona à sua lista de companhias.
+     * </p>
+     * @param companhia A companhia a ser comprada.
+     */
     public void comprarCompanhia(Companhia companhia) {
-            this.saldo -= companhia.getValorCompra();
+            this.pagar(companhia.getValorCompra());
             this.companhias.add(companhia);
             companhia.setProprietario(this);
     }
 
+    /**
+     * Subtrai um valor do saldo do jogador.
+     * 
+     * <p>
+     * Essa função é utilizada para subtrair valores do saldo do jogador, como aluguéis e taxas.
+     * </p>
+     * @param valor O valor a ser subtraído.
+     */
     public void pagar(double valor) {
         this.saldo -= valor;
     }
 
+    /**
+     * Adiciona um valor ao saldo do jogador.
+     * 
+     * <p>
+     * Essa função é utilizada para o jogador receber valores durante o jogo, como aluguéis e lucros.
+     * </p>
+     * @param valor O valor a ser adicionado.
+     */
     public void receber(double valor) {
         this.saldo += valor;
     }
 
+    /**
+     * Constrói uma pousada em uma propriedade.
+     * 
+     * <p>
+     * O jogador paga o valor da construção e a propriedade que será melhorada.
+     * <ul>
+     * <li><i>Esta função só pode ser chamada se o jogador possuir saldo suficiente.</i></li>
+     * </ul>
+     * 
+     * </p>
+     * @param propriedade A propriedade a ser melhorada.
+     */
     public void construirPousada(Propriedade propriedade) {
-        if (this.saldo >= propriedade.getAluguelPousada()){
-            if (propriedade.getNivelMelhoria() == 0) {
-                this.saldo -= propriedade.getAluguel();
-                propriedade.setNivelMelhoria(1);
-            } else if (propriedade.getNivelMelhoria() == 1) {
-                System.out.println("Já existe uma pousada nesta propriedade");
-                System.out.println("Construa um hotel");
-            }
-        } else {
-            System.out.println("Saldo insuficiente para construir uma pousada");
-        }
+        this.pagar(propriedade.getAluguel());
+        propriedade.setNivelMelhoria(1);
     }
 
+    /**
+     * Constrói um hotel em uma propriedade.
+     * 
+     * <p>
+     * O jogador paga o valor da construção e a propriedade que será melhorada.
+     * <ul>
+     * <li><i>Esta função só pode ser chamada após a construção de uma pousada.</i></li>
+     * <li><i>Esta função só pode ser chamada se o jogador possuir saldo suficiente.</i></li>
+     * </ul>
+     * </p>
+     * 
+     * @param propriedade A propriedade a ser melhorada.
+     */
     public void construirHotel(Propriedade propriedade) {
-        if (this.saldo >= propriedade.getAluguelHotel()) {
-            if (propriedade.getNivelMelhoria() == 1) {
-                this.saldo -= propriedade.getAluguelPousada();
-                propriedade.setNivelMelhoria(2);
-            } else if (propriedade.getNivelMelhoria() == 2) {
-                System.out.println("A propriedade já possui um hotel");
-            } else {
-                System.out.println("Não é possível construir um hotel nesta propriedade");
-                System.out.println("Construa uma pousada primeiro");
-            }
-        } else {
-            System.out.println("Saldo insuficiente para construir um hotel");
-        }
+        this.pagar(propriedade.getAluguelPousada());
+        propriedade.setNivelMelhoria(2);
     }
 
-
-    public int rolarDados() {
-        Dado dado = new Dado();
-        return dado.rolar() + dado.rolar();
-    }
-
+    /**
+     * Retorna o estado atual do jogador.
+     * 
+     * <p>
+     * Retorna uma string com o nome do jogador, seu saldo, sua posição no tabuleiro.
+     * </p>
+     * 
+     * @return O nome, o saldo e a posição do jogador.
+     */
     public String getEstado() {
-        return "Jogador: " + this.nome + "\nSaldo: " + this.saldo + "\nPosição: " + this.posicao;
+        return String.format("Jogador: %s\nSaldo: R$ %.2f\nPosição: %d", this.nome, this.saldo, this.posicao);
     }
 
+    /**
+     * Retorna os dados completos do jogador.
+     *
+     * <p>
+     * Retorna uma string com o nome do jogador, seu saldo, sua posição no tabuleiro,
+     * e a lista de propriedades e companhias que possui.
+     * </p>
+     * 
+     * @return O nome, o saldo, a posiçao no tabuleiro e a lista de propriedades e companhias do jogador.
+     */
     @Override
     public String toString() {
-        return "Jogador: " + this.nome + "\nSaldo: " + this.saldo + "\nPosição: " + this.posicao + "\nPropriedades: " + this.propriedades + "\nCompanhias: " + this.companhias;
+        return String.format("Jogador: %s\nSaldo: R$ %.2f\nPosição: %d\nPropriedades: %s\nCompanhias: %s", 
+                     this.nome, this.saldo, this.posicao, this.propriedades, this.companhias);
     }
 }
