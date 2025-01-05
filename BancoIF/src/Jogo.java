@@ -40,22 +40,14 @@ public class Jogo {
         int numJogadores = 0;
 
         // Solicitar o número de jogadores
-        do {
-            limparTela();
-            System.out.println("Bem-vindo ao Banco Imobiliário!");
-            System.out.print("Digite o número de jogadores (2 a 6): ");
-            numJogadores = Integer.parseInt(System.console().readLine());
-            if (numJogadores >= 2 && numJogadores <= 6) {
-                break;
-            }
-            System.out.println("Número de jogadores inválido!");
-            aguardarEnter();
-        } while (true);
+        limparTela();
+        System.out.println("Bem-vindo ao Banco Imobiliário!");
+        numJogadores = Integer.parseInt(solicitarEntradaValida("Digite o número de jogadores (2 a 6): ", "^[2-6]$", "Número de jogadores inválido!"));
+        aguardarEnter();
         
         // Solicitar o nome de cada jogador
         for (int i = 0; i < numJogadores; i++) {
-            System.out.print("Digite o nome do jogador " + (i + 1) + ": ");
-            String nome = System.console().readLine();
+            String nome = solicitarEntradaValida("Digite o nome do jogador " + (i + 1) + " (somente letras): ", "^[a-zA-Z]+$", "Nome inválido!");
             jogadores.add(new Jogador(nome));
         }
 
@@ -138,6 +130,18 @@ public class Jogo {
             // Próximo jogador
             jogadorAtual = (jogadorAtual + 1) % numJogadores;
             // imprimirLinha();
+        }
+    }
+
+    private static String solicitarEntradaValida(String mensagem, String regex, String mensagemErro) {
+        while (true) {
+            System.out.print(mensagem);
+            String entrada = System.console().readLine();
+            if (entrada.matches(regex)) {
+                return entrada;
+            } else {
+                System.out.println(mensagemErro + ". Tente novamente.");
+            }
         }
     }
 
