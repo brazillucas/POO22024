@@ -1,5 +1,6 @@
 package BancoIF;
 
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -123,6 +124,25 @@ public class Tabuleiro {
             return this.posicoes[indice];
         } else {
             throw new IndexOutOfBoundsException("Posição inválida! A posição não está contida no tabuleiro.");
+        }
+    }
+
+    /**
+     * Imprime o tabuleiro no console.
+     * <p>
+     * Este método imprime o tabuleiro, mostrando o nome e o número de cada posição.
+     * </p>
+     */
+    public void exibirTabuleiro(List<Jogador> jogadores) {
+        for (int i = 0; i < posicoes.length; i++) {
+            // Verifica se há um jogador na posição
+            System.out.printf("%02d - %s\t", i, posicoes[i].getNome());
+            for (Jogador jogador : jogadores) {
+                if (jogador.getPosicao() == i) {
+                    System.out.printf("| (%s) ", jogador.getNome());
+                }
+            }
+            System.out.println();
         }
     }
 
