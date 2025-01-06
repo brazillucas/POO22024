@@ -229,7 +229,7 @@ public class Jogador {
      * @return O nome, o saldo e a posição do jogador.
      */
     public String getEstado() {
-        return String.format("Jogador: %s\nSaldo: R$ %.2f\nPosição: %d", this.nome, this.saldo, this.posicao);
+        return String.format("Jogador: %s\nSaldo: R$ %.2f\nPosição: %02d", this.nome, this.saldo, this.posicao);
     }
 
     /**
@@ -244,7 +244,7 @@ public class Jogador {
      */
     @Override
     public String toString() {
-        return String.format("Jogador: %s\nSaldo: R$ %.2f\nPosição: %d\nPropriedades: %s\n\nCompanhias: %s", 
+        return String.format("Jogador: %s\nSaldo: R$ %.2f\nPosição: %02d\nPropriedades: %s\n\nCompanhias: %s", 
                      this.nome, this.saldo, this.posicao, this.propriedades, this.companhias);
     }
 }
