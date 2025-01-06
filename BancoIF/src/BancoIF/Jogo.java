@@ -16,21 +16,50 @@ public class Jogo {
      * Método principal que inicia o jogo.
      * 
      * <p>
-     * Este método configura o jogo coletando informações dos jogadores e inicia
-     * o loop principal das rodadas.
+     * Este método inicia o jogo, exibindo um menu para o jogador escolher entre iniciar o jogo ou sair.
      * </p>
      * 
      * @param args Argumentos da linha de comando (não utilizados).
      */
     public static void main(String[] args) {
+        // Solicitar o número de jogadores
+        limparTela();
+        System.out.println("Bem-vindo ao Banco Imobiliário!");
+        imprimirLinha();
+        // Imprime um menu com as opções do jogo
+        System.out.println("1 - Iniciar jogo");
+        System.out.println("2 - Sair");
+        String opcao = solicitarEntradaValida("Escolha uma opção: ", "^[1-2]$", "Opção inválida");
+
+        // Se o jogador escolher sair, encerra o jogo
+        if (opcao.equals("2")) {
+            System.out.println("Até mais!");
+            return;
+        }
+
+        // Iniciar o jogo
+        iniciarRodadasDoJogo();
+
+    }
+
+    /**
+     * Inicia as rodadas do jogo.
+     * 
+     * <p>
+     * Este método coleta as informações dos jogadores, instancia um tabuleiro e
+     * inicia o loop principal das rodadas do jogo.
+     * </p>
+     * 
+     */
+    public static void iniciarRodadasDoJogo() {
+        // Inicia variáveis do jogo
         Tabuleiro tabuleiro = new Tabuleiro();
         List<Jogador> jogadores = new ArrayList<>();
         int numJogadores = 0;
 
         // Solicitar o número de jogadores
-        limparTela();
-        System.out.println("Bem-vindo ao Banco Imobiliário!");
         numJogadores = Integer.parseInt(solicitarEntradaValida("Digite o número de jogadores (2 a 6): ", "^[2-6]$", "Número de jogadores inválido"));
+        System.out.printf("Número de jogadores: %d\n", numJogadores);
         aguardarEnter();
         
         // Solicitar o nome de cada jogador
@@ -40,39 +69,29 @@ public class Jogo {
         }
 
         imprimirLinha();
-        iniciarRodadasDoJogo(tabuleiro, jogadores, numJogadores);
+        // Exibir jogadores cadastrados
+        System.out.println("Jogadores cadastrados:");
+        imprimirLinha();
+        for (Jogador jogador : jogadores) {
+            System.out.printf("%s\n\n",jogador.getEstado());
+        }
+        imprimirLinha();
+        aguardarEnter();
+        limparTela();
 
-    }
-
-    /**
-     * Inicia as rodadas do jogo.
-     * 
-     * @param tabuleiro O tabuleiro do jogo.
-     * @param jogadores A lista de jogadores.
-     * @param numJogadores O número de jogadores.
-     */
-    public static void iniciarRodadasDoJogo(Tabuleiro tabuleiro, List<Jogador> jogadores, int numJogadores) {
         // Validações para iniciar o jogo
         if (jogadores == null || jogadores.size() < numJogadores) {
             System.out.println("Erro ao iniciar o jogo!");
             return;
         }
 
-        if (tabuleiro == null) {
-            System.out.println("Erro ao iniciar o jogo!");
-            System.out.println("Tabuleiro não foi inicializado!");
-            return;
-        }
-        
-        // Iniciar as rodadas do jogo
+        // Variáveis de controle de rodadas do jogo
         int jogadorAtual = 0;
         boolean jogoAtivo = true;
-        Random aleatorio = new Random();
-
-        // Variável de controle de rodadas do jogo
         int rodadas = 0;
         String saida = "S";
 
+        // Iniciar as rodadas do jogo
         do {
             // Incrementa o número de rodadas
             rodadas++;
@@ -81,18 +100,10 @@ public class Jogo {
 
             // Exibir informações do jogador
             Jogador jogador = jogadores.get(jogadorAtual);
-            System.out.println("Vez do jogador: " + jogador.getNome());
-            System.out.printf("Saldo atual: R$ %.2f\n", jogador.getSaldo());
-            System.out.println("Posição atual: " + jogador.getPosicao());
+            exibirJogadorInfo(jogador);
             
             // Lançar os dados
-            int dado1 = aleatorio.nextInt(6) + 1;
-            int dado2 = aleatorio.nextInt(6) + 1;
-            int somaDados = dado1 + dado2;
-            
-            System.out.println("Dado 1: " + dado1);
-            System.out.println("Dado 2: " + dado2);
-            System.out.println("Total de casas a avançar: " + somaDados);
+            int somaDados = lancarDados();
             imprimirLinha();
 
             // Mover o jogador
@@ -105,27 +116,21 @@ public class Jogo {
             imprimirLinha();
             aguardarEnter();
 
-            // Se o número de jogadas for múltiplo de 60, pergunta o jogador se deseja continuar
-            // ou se deseja encerrar o jogo
+            /**
+             * Se o número de jogadas for múltiplo de 60, pergunta o jogador se deseja continuar
+             * ou se deseja encerrar o jogo
+             * */ 
             if(rodadas % 60 == 0) {
                 System.out.println("Vocês jogaram 60 rodadas.");
                 saida = solicitarEntradaValida("Deseja continuar jogando? (S/N): ", "^[SsNn]$", "Opção inválida");
             }
 
+            visualizarTabuleiro(tabuleiro, jogadores);
             limparTela();
 
             // Verificar se o jogador faliu
             if (jogador.getFalido()) {
-                imprimirLinha();
-                System.out.println("Jogador " + jogador.getNome() + " faliu!");
-                System.out.println("O jogador "+ jogador.getNome() + " finalou com o seguinte estado:");
-                System.out.println(jogador);
-                imprimirLinha();
-                aguardarEnter();
-                // Remover jogador do jogo
-                jogadores.remove(jogador);
-                // Remove propriedade e companhias do jogador
-                tabuleiro.removerPropriedadesCompanhias(jogador);
+                exibirFalencia(tabuleiro, jogadores, jogador);
             }
 
             // Verificar se o jogo acabou
@@ -136,21 +141,126 @@ public class Jogo {
                 }
             }
 
-            if (jogadoresAtivos == 1) {
-                jogoAtivo = false;
-                System.out.println("Fim do jogo!");
-                System.out.println("Jogador " + jogadores.get(0).getNome() + " venceu!");
-                imprimirLinha();
-                System.out.printf("%s finalou com o seguinte estado:\n", jogadores.get(0).getNome());
-                imprimirLinha();
-                System.out.println(jogadores.get(0));
-                System.out.println("Parabéns!");
-            }
+            //Recebe o valor condição de parada do loop
+            jogoAtivo = finalizaJogo(jogadores, jogoAtivo, jogadoresAtivos);
 
             // Próximo jogador
             jogadorAtual = (jogadorAtual + 1) % jogadores.size();
-            
+
+
         } while (jogoAtivo && saida.equalsIgnoreCase("S"));
+    }
+
+    /**
+     * Pergunta ao jogador se deseja visualizar o tabuleiro.
+     * 
+     * <p>
+     * Exibe uma mensagem perguntando se o jogador deseja visualizar o tabuleiro.
+     * Caso a resposta seja sim, limpa a tela e imprime o tabuleiro.
+     * </p>
+     * 
+     * @param tabuleiro O tabuleiro do jogo.
+     */
+    private static void visualizarTabuleiro(Tabuleiro tabuleiro, List<Jogador> jogadores) {
+        imprimirLinha();
+        System.out.println("Deseja visualizar o tabuleiro? (S/N)");
+        String visualizarTabuleiro = solicitarEntradaValida("Digite a opção: ", "^[SsNn]$", "Opção inválida");
+        if (visualizarTabuleiro.equalsIgnoreCase("S")) {
+            limparTela();
+            tabuleiro.exibirTabuleiro(jogadores);
+            imprimirLinha();
+            aguardarEnter();
+        }
+    }
+
+    /**
+     * Lança dois dados e retorna a soma dos valores.
+     * 
+     * <p>
+     * Este método gera dois números aleatórios entre 1 e 6, simulando o lançamento de dois dados.
+     * Em seguida, exibe os valores dos dados e a soma deles (que será a quantidade de casas que o jogador deve avançar).
+     * </p>
+     * 
+     */
+    private static int lancarDados() {
+        Random aleatorio = new Random();
+        int dado1 = aleatorio.nextInt(6) + 1;
+        int dado2 = aleatorio.nextInt(6) + 1;
+        int somaDados = dado1 + dado2;
+        
+        System.out.println("Dado 1: " + dado1);
+        System.out.println("Dado 2: " + dado2);
+        System.out.printf("Total de casas a avançar: %02d\n", somaDados);
+        return somaDados;
+    }
+
+    /**
+     * Exibe as informações do jogador atual.
+     * 
+     * <p>
+     * Exibe o nome, saldo e posição atual do jogador.
+     * </p>
+     * 
+     * @param jogador O jogador a ser exibido.
+     */
+    private static void exibirJogadorInfo(Jogador jogador) {
+        System.out.println("Vez do jogador: " + jogador.getNome());
+        System.out.printf("Saldo atual: R$ %.2f\n", jogador.getSaldo());
+        System.out.printf("Posição atual: %02d\n", jogador.getPosicao());
+    }
+
+    /**
+     * Exibe as informações do jogador falido.
+     * 
+     * <p>
+     * Exibe uma mensagem informando que o jogador faliu e exibe o estado final do jogador.
+     * </p>
+     * 
+     * @param tabuleiro O tabuleiro do jogo.
+     * @param jogadores A lista de jogadores ativos.
+     * @param jogador O jogador que faliu.
+     */
+    private static void exibirFalencia(Tabuleiro tabuleiro, List<Jogador> jogadores, Jogador jogador) {
+        imprimirLinha();
+        System.out.println("Jogador " + jogador.getNome() + " faliu!");
+        System.out.println("O jogador "+ jogador.getNome() + " finalou com o seguinte estado:");
+        System.out.println(jogador);
+        imprimirLinha();
+        aguardarEnter();
+        // Remover jogador do jogo
+        jogadores.remove(jogador);
+        // Remove propriedade e companhias do jogador
+        tabuleiro.removerPropriedadesCompanhias(jogador);
+    }
+
+    /**
+     * Finaliza o jogo
+     * 
+     * <p>
+     * Verifica se o jogo acabou, ou seja, se restou apenas um jogador ativo.
+     * </p>
+     * 
+     * <p>
+     * Se o jogo acabou, exibe uma mensagem de vitória e o estado final do jogador vencedor.
+     * </p>
+     * 
+     * @param jogadores Lista de jogadores ativos.
+     * @param jogoAtivo Indica se o jogo está ativo.
+     * @param jogadoresAtivos Número de jogadores ativos.
+     * @return Indica se o jogo está ativo.
+     */
+    private static boolean finalizaJogo(List<Jogador> jogadores, boolean jogoAtivo, int jogadoresAtivos) {
+        if (jogadoresAtivos == 1) {
+            jogoAtivo = false;
+            System.out.println("Fim do jogo!");
+            System.out.println("Jogador " + jogadores.get(0).getNome() + " venceu!");
+            imprimirLinha();
+            System.out.printf("%s finalou com o seguinte estado:\n", jogadores.get(0).getNome());
+            imprimirLinha();
+            System.out.println(jogadores.get(0));
+            System.out.println("Parabéns!");
+        }
+        return jogoAtivo;
     }
 
     /**
