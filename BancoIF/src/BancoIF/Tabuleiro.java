@@ -131,6 +131,7 @@ public class Tabuleiro {
      * Imprime o tabuleiro no console.
      * <p>
      * Este método imprime o tabuleiro, mostrando o nome e o número de cada posição.
+     * Além de exibir os jogadores que estão em cada posição.
      * </p>
      */
     public void exibirTabuleiro(List<Jogador> jogadores) {
