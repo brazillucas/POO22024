@@ -308,12 +308,12 @@ public class Propriedade extends Posicao {
     //@Override
     /**
      * Executa as ações que ocorrem quando um jogador cai em uma propriedade.
-     * <p> <ul>
+     * <ul>
      * <li>Se a propriedade não tem proprietário, o jogador pode comprá-la.</li>
      * <li>Se a propriedade tem o jogador como proprietário, ele pode construir melhorias.</li>
      * <li>Se a propriedade tem outro jogador como proprietário, o jogador deve pagar aluguel.</li>
-     * </ul> </p>
-     *
+     * </ul>
+     * 
      * @param jogador   O jogador que caiu na propriedade.
      */
     public void acao(Jogador jogador) {
