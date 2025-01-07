@@ -135,12 +135,16 @@ public class Tabuleiro {
      * Este método imprime o tabuleiro, mostrando o nome e o número de cada posição.
      * Além de exibir os jogadores que estão em cada posição.
      * </p>
+     * 
+     * @param jogadores A lista de jogadores que estão no tabuleiro.
      */
     public void exibirTabuleiro(List<Jogador> jogadores) {
+        // Imprime o nome e o número de cada posição
         for (int i = 0; i < posicoes.length; i++) {
             // Verifica se há um jogador na posição
             System.out.printf("%02d - %s\t", i, posicoes[i].getNome());
             for (Jogador jogador : jogadores) {
+                // Se houver um jogador na posição, imprime o nome do jogador
                 if (jogador.getPosicao() == i) {
                     System.out.printf("| (%s) ", jogador.getNome());
                 }
