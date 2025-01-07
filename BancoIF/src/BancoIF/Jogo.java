@@ -12,6 +12,18 @@ import java.util.Random;
  * </p>
  */
 public class Jogo {
+
+    /**
+     * Construtor da classe Jogo.
+     * 
+     * <p>
+     * Inicializa uma nova instância da classe Jogo.
+     * </p>
+     */
+    public Jogo() {
+        // Construtor vazio
+    }
+
     /**
      * Método principal que inicia o jogo.
      * 
