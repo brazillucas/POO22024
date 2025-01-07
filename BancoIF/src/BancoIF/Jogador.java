@@ -6,8 +6,7 @@ import java.util.List;
 /**
  * Representa um jogador no jogo.
  * 
- * <p>
- * Esta classe contém informações sobre o jogador.
+ * <p>Esta classe contém informações sobre o jogador.</p>
  * <ul>
  * <li>Nome</li>
  * <li>Saldo</li>
@@ -16,9 +15,7 @@ import java.util.List;
  * <li>Companhias</li>
  * <li>Estado de falência</li>
  * </ul>
- * </p>
- *
-*/
+ */
 
 public class Jogador {
     // Atributos
@@ -53,7 +50,6 @@ public class Jogador {
      * <p>
      * Cria um novo jogador com um nome e saldo inicial de R$ 1500.00.
      * </p>
-     * 
      * @param nome O nome do jogador.
      */
     public Jogador(String nome) {
@@ -68,6 +64,8 @@ public class Jogador {
     // Metodos
     /**
      * Retorna o nome do jogador.
+     * 
+     * @return O nome do jogador.
      */
     public String getNome() {
         return this.nome;
@@ -75,6 +73,8 @@ public class Jogador {
 
     /**
      * Retorna o saldo do jogador.
+     * 
+     * @return O saldo do jogador.
      */
     public double getSaldo() {
         return this.saldo;
@@ -82,6 +82,8 @@ public class Jogador {
 
     /**
      * Configura uma nova posição no tabuleiro para o jogador.
+     * 
+     * @param posicao A nova posição do jogador.
      */
     public void setPosicao(int posicao) {
         this.posicao = posicao;
@@ -89,6 +91,7 @@ public class Jogador {
 
     /**
      * Retorna a posição atual do jogador no tabuleiro.
+     * 
      * @return A posição do jogador.
      */
     public int getPosicao() {
@@ -187,13 +190,11 @@ public class Jogador {
     /**
      * Constrói uma pousada em uma propriedade.
      * 
-     * <p>
-     * O jogador paga o valor da construção e a propriedade que será melhorada.
+     * <p>O jogador paga o valor da construção e a propriedade que será melhorada.</p>
      * <ul>
      * <li><i>Esta função só pode ser chamada se o jogador possuir saldo suficiente.</i></li>
      * </ul>
      * 
-     * </p>
      * @param propriedade A propriedade a ser melhorada.
      */
     public void construirPousada(Propriedade propriedade) {
@@ -204,13 +205,11 @@ public class Jogador {
     /**
      * Constrói um hotel em uma propriedade.
      * 
-     * <p>
-     * O jogador paga o valor da construção e a propriedade que será melhorada.
+     * <p>O jogador paga o valor da construção e a propriedade que será melhorada.</p>
      * <ul>
      * <li><i>Esta função só pode ser chamada após a construção de uma pousada.</i></li>
      * <li><i>Esta função só pode ser chamada se o jogador possuir saldo suficiente.</i></li>
      * </ul>
-     * </p>
      * 
      * @param propriedade A propriedade a ser melhorada.
      */
