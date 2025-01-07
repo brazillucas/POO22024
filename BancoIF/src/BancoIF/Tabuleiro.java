@@ -2,8 +2,9 @@ package BancoIF;
 
 import java.util.List;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Representa o tabuleiro do jogo.
@@ -60,7 +61,8 @@ public class Tabuleiro {
      */
     private void inicializarTabuleiro() {
         // Leitura do arquivo CSV
-        try (BufferedReader br = new BufferedReader(new FileReader("BancoIF/src/BancoIF/tabuleiro.csv"))) {
+        InputStream is = getClass().getClassLoader().getResourceAsStream("BancoIF/tabuleiro.csv");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             String linha;
             int indice = 0;
             // Leitura de cada linha do arquivo
