@@ -22,7 +22,14 @@ public class Comanda {
     }
 
     public void anotaPedido(Produto novoPedido) {
-        this.produtos.add(novoPedido);
+        if (this.produtos.contains(novoPedido)) {
+            int indice = this.produtos.indexOf(novoPedido);
+            Produto produto = this.produtos.get(indice);
+            produto.setQuantVend(1);
+        } else {
+            novoPedido.setQuantVend(1);
+            this.produtos.add(novoPedido);
+        }
         this.valorTotal += novoPedido.getValorUnit();
     }
 
@@ -35,9 +42,14 @@ public class Comanda {
         System.out.println("Cliente: " + this.respCompanda.getNome());
         System.out.println("Produtos consumidos: ");
         for(Produto produto : produtos) {
-            System.out.printf("%-25s - R$ %2.2f\n", produto.getNome(), produto.getValorUnit());
+            System.out.printf("%-25s | R$ %.2f | x%02d | R$ %.2f\n",
+                                    produto.getNome(),
+                                    produto.getValorUnit(),
+                                    produto.getQuantVend(),
+                                    produto.getValorUnit() * produto.getQuantVend()
+                            );
         }
-        System.out.printf("Total: R$ %2.2f\n", this.valorTotal);
+        System.out.printf("Total: R$ %.2f\n", this.valorTotal);
     }
 
     public void encerrarComanda() {
@@ -66,12 +78,16 @@ public class Comanda {
             bufEscrita.write("Produtos consumidos: \n");
             
             for (Produto produto : produtos) {
-                bufEscrita.write(String.format("%-25s | R$ %2.2f\n",
+                bufEscrita.write(String.format("%-25s | R$ %.2f | x%02d | R$ %.2f\n",
                                     produto.getNome(),
-                                    produto.getValorUnit()));
+                                    produto.getValorUnit(),
+                                    produto.getQuantVend(),
+                                    produto.getValorUnit() * produto.getQuantVend()
+                                    )
+                                );
             }
 
-            bufEscrita.write(String.format("Total: R$ %2.2f", this.valorTotal));
+            bufEscrita.write(String.format("Total: R$ %.2f", this.valorTotal));
 
             bufEscrita.flush();
             bufEscrita.close();
