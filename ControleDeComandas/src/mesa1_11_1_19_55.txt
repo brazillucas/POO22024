@@ -1,0 +1,7 @@
+Cliente: Lucas
+Data: 2025-01-11
+Produtos consumidos: 
+Pizza Margherita - R$ 32.9
+Salada Caesar - R$ 18.5
+Feijoada - R$ 40.0
+Total: R$ 91.4
