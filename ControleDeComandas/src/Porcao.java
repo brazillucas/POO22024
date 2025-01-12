@@ -1,5 +1,7 @@
 public class Porcao extends Produto {
+    @SuppressWarnings("unused")
     private double peso;
+    @SuppressWarnings("unused")
     private int qPessoas;
 
     public Porcao(double peso, int quantVend, String nome, double valorUnit, int qPessoas) {
@@ -13,4 +15,5 @@ public class Porcao extends Produto {
         this.peso = peso;
         this.qPessoas = qPessoas;
     }
+    
 }

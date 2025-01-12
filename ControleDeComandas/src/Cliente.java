@@ -1,6 +1,8 @@
 public class Cliente {
     private String nome;
+    @SuppressWarnings("unused")
     private String telefone;
+    @SuppressWarnings("unused")
     private String endereco;
 
     public Cliente(String nome, String telefone, String endereco) {

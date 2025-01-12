@@ -16,8 +16,16 @@ public class Produto {
         this.quantVend = 0;
     }
 
+    public String getNome() {
+        return this.nome;
+    }
+
     public double getValorUnit() {
         return this.valorUnit;
+    }
+
+    public int getQuantVend() {
+        return this.quantVend;
     }
 
     @Override
