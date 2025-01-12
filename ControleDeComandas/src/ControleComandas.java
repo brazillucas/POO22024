@@ -26,6 +26,8 @@ public class ControleComandas {
                 case 3: restAvenida.fecharComanda(); break;
                 case 4: System.out.println("Encerrando o programa..."); return;
             }
+
+            pausar();
         }
     }
 
