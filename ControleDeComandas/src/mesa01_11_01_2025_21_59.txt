@@ -1,0 +1,7 @@
+Cliente: Lucas
+Data: 11/01/2025
+Produtos consumidos: 
+Vinho Tinto (taça)        | R$ 20,00 | x01 | R$ 20,00
+Feijoada                  | R$ 40,00 | x02 | R$ 80,00
+Frango Assado             | R$ 34,00 | x01 | R$ 34,00
+Total: R$ 134,00

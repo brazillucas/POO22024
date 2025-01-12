@@ -1,0 +1,7 @@
+Cliente: Lucas
+Data: 11/01/2025
+Produtos consumidos: 
+Vinho Tinto (taça)        | R$ 20,00
+Vinho Tinto (taça)        | R$ 20,00
+Água com Gás              | R$ 4,50
+Total: R$ 44,50

@@ -1,0 +1,6 @@
+Cliente: Lucas
+Data: 11/01/2025
+Produtos consumidos: 
+Wrap Vegetariano          | R$ 20,00 | x01 | 20,00
+Espaguete à Bolonhesa     | R$ 29,90 | x01 | 29,90
+Total: R$ 49,90

@@ -1,0 +1,6 @@
+Cliente: Monique
+Data: 11/01/2025
+Produtos consumidos: 
+Vinho Tinto (taça)        | R$ 20,00 | x03 | 60,00
+Bacalhau à Brás           | R$ 60,00 | x01 | 60,00
+Total: R$ 120,00

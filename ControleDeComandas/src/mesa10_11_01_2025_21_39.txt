@@ -1,0 +1,6 @@
+Cliente: Lucas
+Data: 11/01/2025
+Produtos consumidos: 
+Vinho Tinto (taça)        | R$ 20,00 | x02
+Feijoada                  | R$ 40,00 | x01
+Total: R$ 80,00

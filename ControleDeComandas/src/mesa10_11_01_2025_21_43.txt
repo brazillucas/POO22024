@@ -1,0 +1,7 @@
+Cliente: Lucas
+Data: 11/01/2025
+Produtos consumidos: 
+Coxinha de Frango         | R$ 5,00 | x01
+Vinho Tinto (taça)        | R$ 20,00 | x03
+Frango Assado             | R$ 34,00 | x01
+Total: R$ 59,00

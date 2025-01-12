@@ -1,0 +1,7 @@
+Cliente: Monique
+Data: 11/01/2025
+Produtos consumidos: 
+Bacalhau à Brás           | R$ 60,00 | x02 | R$ 120,00
+Vinho Tinto (taça)        | R$ 20,00 | x02 | R$ 40,00
+Sorvete Artesanal         | R$ 12,00 | x01 | R$ 12,00
+Total: R$ 152,00
