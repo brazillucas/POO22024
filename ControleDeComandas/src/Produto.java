@@ -28,6 +28,10 @@ public class Produto {
         return this.quantVend;
     }
 
+    public void setQuantVend(int quantVend) {
+        this.quantVend += quantVend;
+    }
+
     @Override
     public String toString() {
         return this.nome + "\t | " + this.valorUnit;
