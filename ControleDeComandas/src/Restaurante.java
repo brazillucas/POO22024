@@ -81,7 +81,7 @@ public class Restaurante {
             "Mesa inválida!"
         ));
 
-        Comanda novaComanda = new Comanda(novoCliente, numMesa);
+        Comanda novaComanda = new Comanda(novoCliente, numMesa--);
 
         mesas[numMesa] = novaComanda;
     }
@@ -92,6 +92,8 @@ public class Restaurante {
             "Informe o número da mesa (1 a 10): ",
             "^(10|[1-9])$",
             "Mesa inválida!"));
+
+        numMesa--;
 
         if (mesas[numMesa] == null) {
             System.out.println("Mesa vazia!");
@@ -130,17 +132,23 @@ public class Restaurante {
     }
 
     public void fecharComanda() {
-        System.out.print("Informe o número da mesa: ");
 
-        int numMesa = Integer.parseInt(System.console().readLine());
+        int numMesa = Integer.parseInt(ControleComandas.solicitarEntradaValida(
+            "Informe o número da mesa: ",
+            "^(10|[1-9])$",
+            "Mesa inválida!"
+        ));
 
-        if (numMesa < 0 || numMesa > 9 || mesas[numMesa] == null) {
-            System.out.println("Mesa não encontrada");
+        numMesa--;
+        ControleComandas.imprimirSeparador();
+        if (mesas[numMesa] == null) {
+            System.out.println("Mesa não está ocupada!");
         } else {
             mesas[numMesa].imprimirComanda();
             mesas[numMesa].encerrarComanda();
             System.out.println("Comanda encerrada!");
             mesas[numMesa] = null;
         }
+        ControleComandas.imprimirSeparador();
     }
 }
