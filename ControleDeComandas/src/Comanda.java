@@ -33,6 +33,14 @@ public class Comanda {
         this.valorTotal += novoPedido.getValorUnit();
     }
 
+    public double getValorTotal() {
+        return this.valorTotal;
+    }
+
+    public Cliente getCliente() {
+        return this.respCompanda;
+    }
+
     public void imprimirComanda() {
         System.out.println("Comanda da mesa " + this.numMesa);
         System.out.printf("Data: %02d/%02d/%d\n",
