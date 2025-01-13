@@ -1,0 +1,4 @@
+Cliente: android
+Data: 12/01/2025
+Produtos consumidos: 
+Total: R$ 0,00

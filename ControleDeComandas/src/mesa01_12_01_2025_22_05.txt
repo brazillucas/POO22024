@@ -1,0 +1,5 @@
+Cliente: monique
+Data: 12/01/2025
+Produtos consumidos: 
+Pizza Margherita          | R$ 32,90 | x02 | R$ 65,80
+Total: R$ 32,90

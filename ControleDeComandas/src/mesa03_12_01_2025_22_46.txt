@@ -1,0 +1,5 @@
+Cliente: tatila
+Data: 12/01/2025
+Produtos consumidos: 
+Salada Caesar             | R$ 18,50 | x01 | R$ 18,50
+Total: R$ 18,50

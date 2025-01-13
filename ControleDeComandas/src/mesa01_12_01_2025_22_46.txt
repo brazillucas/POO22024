@@ -1,0 +1,5 @@
+Cliente: android
+Data: 12/01/2025
+Produtos consumidos: 
+Frango Assado             | R$ 34,00 | x01 | R$ 34,00
+Total: R$ 34,00

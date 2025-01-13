@@ -1,0 +1,6 @@
+Cliente: android
+Data: 12/01/2025
+Produtos consumidos: 
+Frango Assado             | R$ 34,00 | x03 | R$ 102,00
+Água com Gás              | R$ 4,50 | x01 | R$ 4,50
+Total: R$ 38,50

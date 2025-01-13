@@ -1,0 +1,6 @@
+Cliente: monique
+Data: 12/01/2025
+Produtos consumidos: 
+Risoto de Cogumelos       | R$ 36,50 | x01 | R$ 36,50
+Sushi Variado             | R$ 42,00 | x01 | R$ 42,00
+Total: R$ 78,50

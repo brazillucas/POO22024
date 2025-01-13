@@ -1,0 +1,6 @@
+Cliente: monique
+Data: 12/01/2025
+Produtos consumidos: 
+Pizza Margherita          | R$ 32,90 | x02 | R$ 65,80
+Frango Assado             | R$ 34,00 | x03 | R$ 102,00
+Total: R$ 66,90

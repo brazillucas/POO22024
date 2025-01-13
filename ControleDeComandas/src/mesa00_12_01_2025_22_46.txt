@@ -1,0 +1,7 @@
+Cliente: lucas
+Data: 12/01/2025
+Produtos consumidos: 
+Feijoada                  | R$ 40,00 | x01 | R$ 40,00
+Lasanha de Legumes        | R$ 28,00 | x01 | R$ 28,00
+Smoothie de Morango       | R$ 12,50 | x01 | R$ 12,50
+Total: R$ 80,50
