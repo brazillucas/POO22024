@@ -8,6 +8,8 @@ import java.util.ArrayList;
 public class Restaurante {
 
     private String nome;
+    private double caixa = 0.0;
+    private int mesasAtendidas;
 
     private Comanda[] mesas = new Comanda[10];
 
@@ -15,11 +17,29 @@ public class Restaurante {
 
     public  Restaurante(String nome) {
         this.nome = nome;
+        this.caixa = 0.0;
+        this.mesasAtendidas = 0;
         carregaProdutosMenu();
     }
 
     public String getNome(){
         return this.nome;
+    }
+
+    private void setSaldoCaixa(double valor) {
+        this.caixa += valor;
+    }
+
+    public double getSaldoCaixa() {
+        return this.caixa;
+    }
+
+    public void incrementaMesasAtendidas() {
+        this.mesasAtendidas++;
+    }
+
+    public int getMesasAtendidas() {
+        return this.mesasAtendidas;
     }
 
     private void carregaProdutosMenu() {
@@ -64,34 +84,84 @@ public class Restaurante {
     // procesando arquivo ... LEITURA
 
     public void cadastraComanda() {
-        String nomeCliente = ControleComandas.solicitarEntradaValida("Informe o nome do cliente (apenas caracteres simples, sem acentos ou pontuações): ",
-        "^[a-zA-Z\\s]{3,}$",
+        String nomeCliente = ControleComandas.solicitarEntradaValida("Informe o nome do cliente (apenas caracteres simples, sem acentos ou pontuações | '-1' para cancelar): ",
+        "^([a-zA-Z\\s]{3,}|-1)$",
         "Nome inválido!");
+        if (nomeCliente.equals("-1")) {
+            System.out.println("Nenhum cliente cadastrado, retornando ao menu...");
+            return;
+        } else {
+            for (int i = 0; i < mesas.length; i++) {
+                if (mesas[i] != null && mesas[i].getCliente().getNome().equalsIgnoreCase(nomeCliente)) {
+                    System.out.println("Cliente já possui comanda aberta!");
+                    System.out.printf("Gentileza, atendê-lo na mesa %d\n", (i+1));
+                    System.out.println("Retornando ao menu...\n");
+                    return;
+                }
+            }
+        }
+
         String telCliente = ControleComandas.solicitarEntradaValida(
-            "Informe o número de telefone do cliente: ",
-            "^[0-9]{8,9}$",
+            "Informe o número de telefone do cliente (8 a 9 dígitos | '-1' para cancelar): ",
+            "(^[0-9]{8,9}|-1)$",
             "Telefone inválido!"
         );
+
+        if (telCliente.equals("-1")) {
+            System.out.println("Nenhum cliente cadastrado, retornando ao menu...");
+            return;
+        }
 
         Cliente novoCliente = new Cliente(nomeCliente, telCliente);
 
         int numMesa = Integer.parseInt(ControleComandas.solicitarEntradaValida(
             "Informe o número da mesa do cliente (1-10): ",
-            "^(10|[1-9])$",
+            "^[1-9]\\d*$",
             "Mesa inválida!"
         ));
 
-        Comanda novaComanda = new Comanda(novoCliente, numMesa--);
+        numMesa--;
+
+        if(mesas[numMesa] != null) {
+            System.out.println("Mesa já ocupada!");
+            boolean mudouMesa = false;
+            for(int i= 0; i < mesas.length; i++) {
+                if (mesas[i] == null) {
+                    numMesa = i;
+                    System.out.println("Alocando cliente em mesa disponível...");
+                    System.out.println("Cliente alocado para a mesa " + (numMesa + 1));
+                    mudouMesa = true;
+                    break;
+                }
+            }
+            if (!mudouMesa) {
+                System.out.println("Nenhuma mesa disponível!");
+                System.out.println("Retornando ao menu...\n");
+                return;
+            }
+        }
+
+        Comanda novaComanda = new Comanda(novoCliente, numMesa);
 
         mesas[numMesa] = novaComanda;
     }
 
     public void realizarPedido() {
 
+        // Exibir mesas ativas
+        ControleComandas.imprimirSeparador();
+        this.exibirMesasAtivas();
+        ControleComandas.imprimirSeparador();
+
         int numMesa = Integer.parseInt(ControleComandas.solicitarEntradaValida(
-            "Informe o número da mesa (1 a 10): ",
-            "^(10|[1-9])$",
+            "Informe o número da mesa (1 a 10 | -1 para cancelar): ",
+            "^([1-9]\\d*|-1)$",
             "Mesa inválida!"));
+
+        if (numMesa == -1) {
+            System.out.println("Nenhuma mesa selecionada, retornando ao menu...");
+            return;
+        }
 
         numMesa--;
 
@@ -108,8 +178,8 @@ public class Restaurante {
             int numProduto = -1;
             do{
                 numProduto = Integer.parseInt(ControleComandas.solicitarEntradaValida(
-                    "Informe o produto do pedido: (1 - " + this.menu.size() + ") ",
-                    "^[1-9]+$",
+                    "Informe o produto do pedido (1 - " + this.menu.size() + "): ",
+                    "^[1-9]\\d*$",
                     "Produto inválido!"
                 ));
             } while(numProduto > this.menu.size());
@@ -118,6 +188,15 @@ public class Restaurante {
             this.mesas[numMesa].anotaPedido(this.menu.get(numProduto));
 
             return;
+        }
+    }
+
+    private void exibirMesasAtivas() {
+        System.out.println("Atendimentos em andamento:");
+        for(int i = 0; i < mesas.length; i++) {
+            if (mesas[i] != null) {
+                System.out.printf("Mesa %d - %s\n", (i+1), mesas[i].getCliente().getNome());
+            }
         }
     }
 
@@ -132,12 +211,19 @@ public class Restaurante {
     }
 
     public void fecharComanda() {
+        this.exibirMesasAtivas();
+        ControleComandas.imprimirSeparador();
 
         int numMesa = Integer.parseInt(ControleComandas.solicitarEntradaValida(
-            "Informe o número da mesa: ",
-            "^(10|[1-9])$",
+            "Informe o número da mesa ('-1' para cancelar): ",
+            "^([1-9]\\d*|-1)$",
             "Mesa inválida!"
         ));
+
+        if (numMesa == -1) {
+            System.out.println("Nenhuma mesa selecionada, retornando ao menu...");
+            return;
+        }
 
         numMesa--;
         ControleComandas.imprimirSeparador();
@@ -145,10 +231,23 @@ public class Restaurante {
             System.out.println("Mesa não está ocupada!");
         } else {
             mesas[numMesa].imprimirComanda();
+            this.setSaldoCaixa(mesas[numMesa].getValorTotal());
+            this.incrementaMesasAtendidas();
             mesas[numMesa].encerrarComanda();
             System.out.println("Comanda encerrada!");
             mesas[numMesa] = null;
         }
         ControleComandas.imprimirSeparador();
+    }
+
+    public void fecharTodasComandas() {
+        for (Comanda mesa : mesas) {
+            if (mesa != null) {
+                this.setSaldoCaixa(mesa.getValorTotal());
+                this.incrementaMesasAtendidas();
+                mesa.encerrarComanda();
+                mesa = null;
+            }
+        }
     }
 }
