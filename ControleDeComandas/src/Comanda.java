@@ -64,7 +64,7 @@ public class Comanda {
 
         LocalDateTime horaFechamento = LocalDateTime.now();
 
-        File arquivo = new File(String.format("ControleDeComandas/src/mesa%02d_%02d_%02d_%d_%02d_%02d.txt", 
+        File arquivo = new File(String.format("ControleDeComandas/src/comandasFechadas/mesa%02d_%02d_%02d_%d_%02d_%02d.txt", 
             this.numMesa, 
             horaFechamento.getDayOfMonth(),
             horaFechamento.getMonthValue(),
