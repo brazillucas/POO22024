@@ -24,23 +24,35 @@ public class ControleComandas {
                 case 1: restAvenida.cadastraComanda(); break;
                 case 2: restAvenida.realizarPedido(); break;
                 case 3: restAvenida.fecharComanda(); break;
-                case 4: System.out.println("Encerrando o programa..."); return;
+                case 4: 
+                    encerrarDia(restAvenida);
+                    System.exit(0);
             }
 
             pausar();
         }
     }
 
+    private static void encerrarDia(Restaurante restAvenida) {
+        System.out.println("Encerrando o dia...");
+        System.out.println("Fechando todas as comandas...");
+        restAvenida.fecharTodasComandas();
+        if(restAvenida.getMesasAtendidas() == 0) {
+            System.out.println("Nenhuma mesa foi atendida hoje.");
+        } else {
+            System.out.println("Fechando o caixa...");
+            System.out.printf("Total arrecadado no dia: R$ %.2f\n", restAvenida.getSaldoCaixa());
+            System.out.printf("Total de comandas fechadas: %d\n", restAvenida.getMesasAtendidas());
+        }
+        System.out.println("Encerrando o programa...");
+    }
+
     public static String solicitarEntradaValida(String mensagem, String regex, String mensagemErro) {
-        System.out.println("Digite 'sair' para encerrar o programa.");
         while(true) {
             System.out.print(mensagem);
             String entrada = System.console().readLine();
             if (entrada.matches(regex)) {
                 return entrada;
-            } else if(entrada.equalsIgnoreCase("sair")) {
-                System.out.println("Encerrando o programa...");
-                System.exit(0);
             } else {
                 System.out.printf("%s! Tente novamente.\n", mensagemErro);
             }
