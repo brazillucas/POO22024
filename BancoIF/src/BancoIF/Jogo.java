@@ -67,7 +67,7 @@ public class Jogo {
         // Inicia variáveis do jogo
         Tabuleiro tabuleiro = new Tabuleiro();
         List<Jogador> jogadores = new ArrayList<>();
-        int numJogadores = 0;
+        int numJogadores;
 
         // Solicitar o número de jogadores
         numJogadores = Integer.parseInt(solicitarEntradaValida("Digite o número de jogadores (2 a 6): ", "^[2-6]$", "Número de jogadores inválido"));
@@ -92,7 +92,7 @@ public class Jogo {
         limparTela();
 
         // Validações para iniciar o jogo
-        if (jogadores == null || jogadores.size() < numJogadores) {
+        if (jogadores.size() < numJogadores) {
             System.out.println("Erro ao iniciar o jogo!");
             return;
         }
