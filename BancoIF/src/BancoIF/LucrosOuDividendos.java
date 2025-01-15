@@ -14,7 +14,7 @@ public class LucrosOuDividendos extends Posicao {
     /**
      * O valor do lucro a ser recebido.
      */
-    private double valorLucro;
+    private final double valorLucro;
 
     // Construtor
     /**

@@ -1,10 +1,10 @@
 package BancoIF;
 
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * Representa o tabuleiro do jogo.
@@ -26,7 +26,7 @@ public class Tabuleiro {
     /**
      * As posições do tabuleiro.
      */
-    private Posicao[] posicoes;
+    private final Posicao[] posicoes;
 
     // Construtor
     /**
@@ -103,7 +103,7 @@ public class Tabuleiro {
             }
         } catch (IOException e) {
             // Em caso de erro na leitura do arquivo, imprime a exceção
-            e.printStackTrace();
+            System.err.printf("Erro na leitura do arquivo: %s.\n", e.getMessage());
         }
     }
 
@@ -159,14 +159,14 @@ public class Tabuleiro {
      * @param jogador O jogador que está falido.
      */
     public void removerPropriedadesCompanhias(Jogador jogador) {
-        for (int i = 0; i < posicoes.length; i++) {
-            if (posicoes[i].getTipo().equals("Propriedade")) {
-                Propriedade propriedade = (Propriedade) posicoes[i];
+        for (Posicao posicaoAtual : posicoes) {
+            if (posicaoAtual.getTipo().equals("Propriedade")) {
+                Propriedade propriedade = (Propriedade) posicaoAtual;
                 if (propriedade.getProprietario() == jogador) {
                     propriedade.setProprietario(null);
                 }
-            } else if (posicoes[i].getTipo().equals("Companhia")) {
-                Companhia companhia = (Companhia) posicoes[i];
+            } else if (posicaoAtual.getTipo().equals("Companhia")) {
+                Companhia companhia = (Companhia) posicaoAtual;
                 if (companhia.getProprietario() == jogador) {
                     companhia.setProprietario(null);
                 }
@@ -198,7 +198,7 @@ public class Tabuleiro {
             }
         }
         // Se o jogador cair em uma companhia, envia a soma dos dados jogados para calcular o aluguel.
-        if(posicao.getTipo() == "Companhia") {
+        if("Companhia".equals(posicao.getTipo())) {
             posicao.acao(jogador, somaDados);
         } else {
             posicao.acao(jogador);

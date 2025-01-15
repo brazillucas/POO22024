@@ -13,27 +13,27 @@ public class CartaDeSorte extends Posicao {
     /** 
      * A descrição da carta de sorte.
      */
-    private String descricaoSorte;
+    private final String descricaoSorte;
     /** 
      * A descrição da carta de revés.
      */
-    private String descricaoReves;
+    private final String descricaoReves;
     /** 
      * O valor mínimo que o jogador pode ganhar.
      */
-    private int ganhoMinimo;
+    private final int ganhoMinimo;
     /** 
      * O valor máximo que o jogador pode ganhar.
      */
-    private int ganhoMaximo;
+    private final int ganhoMaximo;
     /** 
      * O valor mínimo que o jogador pode perder.
      */
-    private int perdaMinima;
+    private final int perdaMinima;
     /** 
      * O valor máximo que o jogador pode perder.
      */
-    private int perdaMaxima;
+    private final int perdaMaxima;
 
     // Construtor
     /**
@@ -90,7 +90,7 @@ public class CartaDeSorte extends Posicao {
     public void acao(Jogador jogador) {
         // Sorteia um valor aleatório entre 0 e 1.
         double sorteio = Math.random();
-        double valor = 0;
+        double valor;
         // Se o valor sorteado for menor que 0.5, o jogador ganha, senão, perde.
         if (sorteio < 0.5) {
             valor = this.sortearGanho();

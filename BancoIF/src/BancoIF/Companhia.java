@@ -15,7 +15,7 @@ public class Companhia extends Posicao{
     /**
      * O valor de compra da companhia.
      */
-    private double valorCompra;
+    private final double valorCompra;
     /**
      * O fator multiplicador do aluguel.
      * <p>
@@ -26,7 +26,7 @@ public class Companhia extends Posicao{
      * Exemplo: fator = 4, lançamento dos dados = 7, aluguel = 4 * 7 = 28.
      * </p>
      */
-    private int fatorAluguel;
+    private final int fatorAluguel;
     /**
      * O proprietário da companhia.
      */

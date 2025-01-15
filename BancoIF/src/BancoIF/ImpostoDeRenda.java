@@ -13,7 +13,7 @@ public class ImpostoDeRenda extends Posicao {
     /**
      * O valor do imposto a ser pago.
      */
-    private double valorImposto;
+    private final double valorImposto;
 
     // Construtor
     /**

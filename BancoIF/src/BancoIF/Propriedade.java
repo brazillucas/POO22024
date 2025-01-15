@@ -208,7 +208,6 @@ public class Propriedade extends Posicao {
         {
             System.out.println("A propriedade já possui um hotel");
             System.out.println("Não é possível construir mais melhorias nesta propriedade");
-            return;
         } else
         {
             
@@ -242,7 +241,6 @@ public class Propriedade extends Posicao {
                     System.out.println("O menu será exibido novamente. Escolha uma opção válida.");
                     Jogo.aguardarEnter();
                     Jogo.limparTela();
-                    continue;
                 } else if (opcao == 1) {
                     if (jogador.getSaldo() < this.aluguelPousada) {
                         System.out.println("Saldo insuficiente para construir uma pousada");
@@ -316,6 +314,7 @@ public class Propriedade extends Posicao {
      * 
      * @param jogador   O jogador que caiu na propriedade.
      */
+    @Override
     public void acao(Jogador jogador) {
         // Verifica se a propriedade está disponível para compra
         if (this.proprietario == null) {

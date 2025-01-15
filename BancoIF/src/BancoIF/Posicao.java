@@ -17,7 +17,7 @@ public class Posicao {
      * Exemplo: <i>"Avenida Paulista"</i>.
      * </p>
      */
-    private String nome;
+    private final String nome;
 
     /**
      * O tipo da posição.
@@ -25,7 +25,7 @@ public class Posicao {
      * Exemplos: <i>"Propriedade"</i>, <i>"Companhia"</i>, <i>"Sorte/Reves"</i>.
      * </p>
      */
-    private String tipo;
+    private final String tipo;
 
     /**
      * Construtor da classe Posicao.

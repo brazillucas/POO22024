@@ -22,7 +22,7 @@ public class Jogador {
     /**
      * O nome do jogador.
      */
-    private String nome;
+    private final String nome;
     /**
      * O saldo do jogador.
      */
@@ -34,11 +34,11 @@ public class Jogador {
     /**
      * A lista de propriedades que o jogador possui.
      */
-    private List<Propriedade> propriedades;
+    private final List<Propriedade> propriedades;
     /**
      * A lista de companhias que o jogador possui.
      */
-    private List<Companhia> companhias;
+    private final List<Companhia> companhias;
     /**
      * Indica se o jogador está falido.
      */
