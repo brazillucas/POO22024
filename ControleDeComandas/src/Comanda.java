@@ -1,18 +1,19 @@
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import  java.util.ArrayList;
 
 public class Comanda {
 
-    private LocalDate data;
-    private int numMesa;
+    private final LocalDate data;
+    private final int numMesa;
     private double valorTotal;
-    private Cliente respCompanda;
+    private final Cliente respCompanda;
 
-    private ArrayList<Produto> produtos = new ArrayList<>();
+    private final ArrayList<Produto> produtos = new ArrayList<>();
 
     public Comanda(Cliente respCompanda, int numMesa) {
         this.respCompanda = respCompanda;
@@ -75,32 +76,32 @@ public class Comanda {
         try {
             FileWriter marcaEscrita = new FileWriter(arquivo);
 
-            BufferedWriter bufEscrita = new BufferedWriter(marcaEscrita);
-
             // Escreve o cabeçalho com nome do cliente
-            bufEscrita.write("Cliente: " + this.respCompanda.getNome() + "\n");
-            bufEscrita.write(String.format("Data: %02d/%02d/%d\n",
-                                this.data.getDayOfMonth(),
-                                this.data.getMonthValue(),
-                                this.data.getYear()));
-            bufEscrita.write("Produtos consumidos: \n");
-            
-            for (Produto produto : produtos) {
-                bufEscrita.write(String.format("%-25s | R$ %.2f | x%02d | R$ %.2f\n",
-                                    produto.getNome(),
-                                    produto.getValorUnit(),
-                                    produto.getQuantVend(),
-                                    produto.getValorUnit() * produto.getQuantVend()
-                                    )
-                                );
+            try (BufferedWriter bufEscrita = new BufferedWriter(marcaEscrita)) {
+                // Escreve o cabeçalho com nome do cliente
+                bufEscrita.write("Cliente: " + this.respCompanda.getNome() + "\n");
+                bufEscrita.write(String.format("Data: %02d/%02d/%d\n",
+                        this.data.getDayOfMonth(),
+                        this.data.getMonthValue(),
+                        this.data.getYear()));
+                bufEscrita.write("Produtos consumidos: \n");
+                
+                for (Produto produto : produtos) {
+                    bufEscrita.write(String.format("%-25s | R$ %.2f | x%02d | R$ %.2f\n",
+                            produto.getNome(),
+                            produto.getValorUnit(),
+                            produto.getQuantVend(),
+                            produto.getValorUnit() * produto.getQuantVend()
+                    )
+                    );
+                }
+                
+                bufEscrita.write(String.format("Total: R$ %.2f", this.valorTotal));
+                
+                bufEscrita.flush();
             }
-
-            bufEscrita.write(String.format("Total: R$ %.2f", this.valorTotal));
-
-            bufEscrita.flush();
-            bufEscrita.close();
             
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Arquivo corrompido.");
         }
     }

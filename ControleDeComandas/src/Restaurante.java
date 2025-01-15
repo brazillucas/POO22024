@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 public class Restaurante {
 
-    private String nome;
+    private final String nome;
     private double caixa = 0.0;
     private int mesasAtendidas;
 
-    private Comanda[] mesas = new Comanda[10];
+    private final Comanda[] mesas = new Comanda[10];
 
-    private ArrayList<Produto> menu = new ArrayList<>();
+    private final ArrayList<Produto> menu = new ArrayList<>();
 
     public  Restaurante(String nome) {
         this.nome = nome;
@@ -168,7 +168,6 @@ public class Restaurante {
         if (mesas[numMesa] == null) {
             System.out.println("Mesa vazia!");
             System.out.println("Retornando ao menu...\n");
-            return;
         } else {
             // Imprime o menu
             ControleComandas.limparTela();
@@ -187,7 +186,6 @@ public class Restaurante {
 
             this.mesas[numMesa].anotaPedido(this.menu.get(numProduto));
 
-            return;
         }
     }
 

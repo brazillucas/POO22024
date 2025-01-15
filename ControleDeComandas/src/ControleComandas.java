@@ -10,11 +10,12 @@ public class ControleComandas {
             limparTela();
             System.out.printf("Bem-vindo ao %s!\n", restAvenida.getNome());
             imprimirSeparador();
-            System.out.println("MENU\n"
-                            + "1 - Cadastrar comanda\n"
-                            + "2 - Realizar pedido\n"
-                            + "3 - fechar comanda\n"
-                            + "4 - encerrar dia");
+            System.out.println("""
+                               MENU
+                               1 - Cadastrar comanda
+                               2 - Realizar pedido
+                               3 - fechar comanda
+                               4 - encerrar dia""");
 
             int opcao = Integer.parseInt(solicitarEntradaValida("Informe a opção desejada: ", "^[1-4]", "Opção incorreta!"));
 

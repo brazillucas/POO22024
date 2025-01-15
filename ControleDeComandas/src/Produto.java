@@ -1,7 +1,7 @@
 public class Produto {
-    private double valorUnit;
+    private final double valorUnit;
     private int quantVend;
-    private String nome;
+    private final String nome;
 
     public Produto(double valorUnit, int quantVend, String nome) {
         this.valorUnit = valorUnit;

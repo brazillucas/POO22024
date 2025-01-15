@@ -1,8 +1,8 @@
 public class Porcao extends Produto {
     @SuppressWarnings("unused")
-    private double peso;
+    private final double peso;
     @SuppressWarnings("unused")
-    private int qPessoas;
+    private final int qPessoas;
 
     public Porcao(double peso, int quantVend, String nome, double valorUnit, int qPessoas) {
         super(valorUnit, quantVend, nome);

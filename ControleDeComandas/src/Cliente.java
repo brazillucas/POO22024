@@ -1,7 +1,7 @@
 public class Cliente {
-    private String nome;
+    private final String nome;
     @SuppressWarnings("unused")
-    private String telefone;
+    private final String telefone;
     @SuppressWarnings("unused")
     private String endereco;
 

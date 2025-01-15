@@ -1,8 +1,8 @@
 public class Bebida extends Produto {
     @SuppressWarnings("unused")
-    private double volume;
+    private final double volume;
     @SuppressWarnings("unused")
-    private boolean alcolica;
+    private final boolean alcolica;
 
     public Bebida(double volume, boolean alcolica, double valorUnit, String nome) {
         super(valorUnit, nome);
