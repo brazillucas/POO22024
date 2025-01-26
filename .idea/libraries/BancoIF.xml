@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="BancoIF">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/BancoIF/BancoIF.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
