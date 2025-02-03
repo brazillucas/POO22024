@@ -30,6 +30,14 @@ public class ObraLiteraria {
         this.quantidadeDisponivel = quantidadeTotal;
     }
 
+    public ObraLiteraria(int id, String titulo, int quantidadeTotal) {
+        this.id = id;
+        this.titulo = titulo;
+        this.autor = "Autor Desconhecido";
+        this.quantidadeTotal = quantidadeTotal;
+        this.quantidadeDisponivel = quantidadeTotal;
+    }
+
     public String consultarInformacoes() {
         return "ID: " + id + "\nTítulo: " + titulo + "\nAutor: " + autor + "\nQuantidade disponível: " + quantidadeDisponivel + "\nQuantidade total: " + quantidadeTotal;
     }
