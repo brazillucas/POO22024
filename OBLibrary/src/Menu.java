@@ -11,7 +11,6 @@ public class Menu {
     public void exibirMenuPrincipal() {
         System.out.println("Bem-vindo à OBLibrary!");
         System.out.println("1 - Login");
-        System.out.println("2 - Cadastro");
         System.out.println("0 - Sair");
     }
 
