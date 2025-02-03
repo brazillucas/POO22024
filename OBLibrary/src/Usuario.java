@@ -54,7 +54,7 @@ public abstract class Usuario {
             if (emprestimo.getObra().equals(obra)) {
                 emprestimo.setDevolucaoRealizada();
                 obra.atualizarQuantidade(1);
-                System.out.printf("A obra %s não está mais emprestada para %s.\n", emprestimo.getUsuario().getNome(), this.nome);
+                System.out.printf("A obra %s não está mais emprestada para %s.\n", emprestimo.getUsuario().getNome(), obra.getNome(), this.nome);
                 return;
             }
         }
@@ -63,8 +63,13 @@ public abstract class Usuario {
     }
 
     public void realizarEmprestimo(ObraLiteraria obra) {
+        if (!validacaoEmprestimo(obra)) {
+            return;
+        }
         Emprestimo novoEmprestimo = new Emprestimo(this, obra);
         this.emprestimosAtivos.add(novoEmprestimo);
+        System.out.println("Empréstimo realizado com sucesso.");
+        System.out.printf("Novo livro emprestado: %s\n", obra.getTitulo());
         obra.atualizarQuantidade(-1);
     }
 
@@ -117,6 +122,28 @@ public abstract class Usuario {
 
     public List<Emprestimo> getEmprestimosAtivos() {
         return this.emprestimosAtivos;
+    }
+
+    public void exibirObrasEmprestadas() {
+        boolean emprestimosAbertos = false;
+        for (Emprestimo emprestimo : this.emprestimosAtivos) {
+            if (emprestimo.getDataDevolucaoRealizada() == null) {
+                emprestimosAbertos = true;
+            }
+        }
+
+        if (this.emprestimosAtivos.isEmpty() || !emprestimosAbertos) {
+            System.out.printf("%s não possui obras emprestadas.\n", this.nome);
+            return;
+        }
+        
+
+        System.out.printf("Obras emprestadas para %s:\n", this.nome);
+        for (Emprestimo emprestimo : this.emprestimosAtivos) {
+            if (emprestimo.getDataDevolucaoRealizada() == null) {
+                System.out.printf("%d | Título: %s\n", emprestimo.getObra().getId(), emprestimo.getObra().getTitulo());
+            }
+        }
     }
 
     public boolean isBloqueado() {
