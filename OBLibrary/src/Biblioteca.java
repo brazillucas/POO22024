@@ -39,13 +39,16 @@ public class Biblioteca {
         this.usuarios = new ArrayList<>();
         this.obras = new ArrayList<>();
         this.emprestimos = new ArrayList<>();
+        Usuario usuario = new Bibliotecario("João", "joao@google.com", "1aA.", "12345678");
+        this.usuarios.add(usuario);
+        carregarDados();
     }
 
     public void carregarDados() {
         String linha;
 
         // Código para carregar os dados do sistema a partir de arquivos .txt
-        File arquivoUsuarios = new File("usuarios.txt");
+        File arquivoUsuarios = new File("OBLibrary\\src\\dados\\usuarios.txt");
         // Leitura dos arquivos e carregamento dos dados
         try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoUsuarios))) {
             while ((linha = leitor.readLine()) != null) {
@@ -82,17 +85,16 @@ public class Biblioteca {
         }
 
         // Carregamento de obras
-        File arquivoObras = new File("obras.txt");
+        File arquivoObras = new File("OBLibrary\\src\\dados\\acervo.csv");
 
         try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoObras))) {
+            linha = leitor.readLine();
             while ((linha = leitor.readLine()) != null) {
-                String[] dadosObra = linha.split(";");
-
+                String[] dadosObra = linha.split(",");
                 int id = Integer.parseInt(dadosObra[0]);
                 String titulo = dadosObra[1];
-                String autor = dadosObra[2];
-                int quantidade = Integer.parseInt(dadosObra[3]);
-                ObraLiteraria obra = new ObraLiteraria(id, titulo, autor, quantidade);
+                int quantidade = Integer.parseInt(dadosObra[2]);
+                ObraLiteraria obra = new ObraLiteraria(id, titulo, quantidade);
                 this.obras.add(obra);
             }
         } catch (FileNotFoundException e) {
@@ -102,7 +104,7 @@ public class Biblioteca {
         }
 
         // Carregamento de empréstimos
-        File arquivoEmprestimos = new File("emprestimos.txt");
+        File arquivoEmprestimos = new File("OBLibrary\\src\\dados\\emprestimos.txt");
 
         try (BufferedReader leitor = new BufferedReader(new FileReader(arquivoEmprestimos));) {
             while ((linha = leitor.readLine()) != null) {
@@ -213,6 +215,15 @@ public class Biblioteca {
         return usuarios;
     }
 
+    public void exibirObrasDisponiveis() {
+        for (ObraLiteraria obra : obras) {
+            if (obra.getQuantidadeDisponivel() > 0) {
+                System.out.printf("Id: %d | Título: %s | Autor: %s | Quantidade disponível: %d\n", obra.getId(), obra.getTitulo(), obra.getAutor(), obra.getQuantidadeDisponivel());
+            }
+        }
+        System.out.println();
+    }
+
     public int getQuantUsuarios() {
         return usuarios.size();
     }
@@ -223,8 +234,37 @@ public class Biblioteca {
         this.usuarioLogado = null;
     }
 
+    public Usuario getUsuarioLogado() {
+        return this.usuarioLogado;
+    }
+
     public void cadastrarUsuario(Usuario usuario) {
         this.usuarios.add(usuario);
+    }
+
+    public ObraLiteraria selecionarObra() {
+        // Código para selecionar uma obra disponível
+        exibirObrasDisponiveis();
+        int idObra = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o código da obra desejada: ", "^[0-9]+$", "Código Inválido"));
+
+        for (ObraLiteraria obra : obras) {
+            if (obra.getId() == idObra && obra.getQuantidadeDisponivel() > 0) {
+                return obra;
+            }
+        }
+        
+        System.out.println("Obra não encontrada ou não disponível.");
+        return null;
+    }
+
+    public ObraLiteraria buscarObra(int id) {
+        // Código para buscar uma obra pelo título
+        for (ObraLiteraria obra : obras) {
+            if (obra.getId() == id) {
+                return obra;
+            }
+        }
+        return null;
     }
 
     public void gerarRelatorioObrasEmprestadas() {
@@ -238,7 +278,7 @@ public class Biblioteca {
 
     public void gerarRelatorioUsuariosComAtraso() {
         // Código para gerar relatório de usuários com atraso
-        File arquivoRelatorio = new File("src/dados/relatorio_usuarios_atraso.txt");
+        File arquivoRelatorio = new File("OBLibrary\\src\\dados\\relatorio_usuarios_atraso.txt");
         try {
             arquivoRelatorio.createNewFile();
         } catch (IOException e) {
@@ -251,7 +291,7 @@ public class Biblioteca {
         // Código para salvar os dados do sistema em arquivos .txt
 
         // Salvamento de obras
-        File arquivoObras = new File("src/dados/obras.txt");
+        File arquivoObras = new File("OBLibrary\\src\\dados\\obras.txt");
 
         try {
             arquivoObras.createNewFile();
@@ -270,7 +310,7 @@ public class Biblioteca {
         }
 
         // Salvamento de usuários
-        File arquivoUsuarios = new File("src/dados/usuarios.txt");
+        File arquivoUsuarios = new File("OBLibrary\\src\\dados\\usuarios.txt");
 
         try {
             arquivoUsuarios.createNewFile();
@@ -298,7 +338,7 @@ public class Biblioteca {
 
 
         // Salvamento de empréstimos
-        File arquivoEmprestimos = new File("src/dados/emprestimos.txt");
+        File arquivoEmprestimos = new File("OBLibrary\\src\\dados\\emprestimos.txt");
         
         try {
             arquivoEmprestimos.createNewFile();
