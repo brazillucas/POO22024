@@ -9,22 +9,20 @@ public class Main {
             int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Escolha uma opção: ", "[0-2]", "Opção inválida"));
 
             if (opcao == 0) {
+                System.out.println("Salvando relatórios...");
+                biblioteca.salvarDados();
                 System.out.println("Encerrando sistema...");
                 break;
             }
 
-           switch (opcao) {
-               case 1:
-                     if(biblioteca.getQuantUsuarios() > 0){
-                        System.out.println("Nenhum usuário cadastrado.");
-                        break;
-                     }
-                    realizarLogin(biblioteca, menu);
+           if (opcao == 1 && biblioteca.getQuantUsuarios() == 0) {
+                System.out.println("Nenhum usuário cadastrado.");
+                continue;
+            }
 
-                   break;
-               default:
-                   throw new AssertionError();
-           }
+            if (opcao == 1) {
+                realizarLogin(biblioteca, menu);
+            }
         }
 
     }
@@ -34,17 +32,67 @@ public class Main {
         String senha = Entrada.solicitarSenha();
 
         Usuario usuario = biblioteca.loginUsuario(email, senha);
+        int opcao;
 
-        if (usuario != null) {
-            System.out.printf("Bem-vindo, %s!\n", usuario.getNome());
+        while (biblioteca.getUsuarioLogado() != null) {
             if (usuario instanceof Aluno || usuario instanceof Professor) {
                 menu.exibirMenuUsuario(usuario);
+                opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Escolha uma opção: ", "^[0-4]$", "Opção inválida"));
+                
+                if (opcao == 0) {
+                    biblioteca.logoutUsuario();
+                } else if (opcao == 1) {
+                    ObraLiteraria obra = biblioteca.selecionarObra();
+                    if (obra != null) {
+                        biblioteca.getUsuarioLogado().realizarEmprestimo(obra);
+                    } else {
+                        System.out.println("Obra não encontrada.");
+                        System.out.println("Retornando ao menu...");
+                    }
+                } else if (opcao == 2) {
+                    biblioteca.getUsuarioLogado().exibirObrasEmprestadas();
+                    int idObra = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID da obra que deseja devolver: ", "^[0-9]+$", "ID inválido"));
+
+                    ObraLiteraria obra = biblioteca.buscarObra(idObra);
+                    if (obra != null) {
+                        usuario.realizarDevolucao(obra);
+                    } else {
+                        System.out.println("Obra não encontrada.");
+                        System.out.println("Retornando ao menu...");
+                    }
+                } else if (opcao == 3) {
+                    biblioteca.getUsuarioLogado().exibirObrasEmprestadas();
+                }
+
             } else if (usuario instanceof Bibliotecario) {
                 menu.exibirMenuBibliotecario(usuario);
+
+                opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Escolha uma opção: ", "^[0-3]$", "Opção inválida"));
+
+                if (opcao == 0) {
+                    biblioteca.logoutUsuario();
+                } else if (opcao == 1) {
+                    ((Bibliotecario) usuario).cadastrarUsuario(biblioteca);
+                } else if (opcao == 2) {
+                    biblioteca.getUsuarioLogado().exibirObrasEmprestadas();
+                    int idObra = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID da obra que deseja registrar a devolução: ", "^[0-9]+$", "ID inválido"));
+
+                    ObraLiteraria obra = biblioteca.buscarObra(idObra);
+                    if (obra != null) {
+                        ((Bibliotecario) usuario).registrarDevolucao(biblioteca.getUsuarioLogado(), obra);
+
+                    } else {
+                        System.out.println("Obra não encontrada.");
+                        System.out.println("Retornando ao menu...");
+                    }
+                } else if (opcao == 3) {
+                    System.out.println("Gerando relatórios...");
+                    ((Bibliotecario) usuario).gerarRelatorios(biblioteca);
+                }
             }
-        } else {
-            System.out.println("E-mail ou senha incorretos.");
         }
+
+        System.out.println("E-mail ou senha incorretos.");
     }
 
 
