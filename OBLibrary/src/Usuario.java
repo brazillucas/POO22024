@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 2. Classe Usuario (Classe Abstrata)
     Responsabilidade: Representa um usuário genérico do sistema. Será usada como base para as subclasses específicas.
@@ -21,13 +24,15 @@ public abstract class Usuario {
     private String nome;
     private String email;
     private String senha;
-    private List<ObraLiteraria> emprestimosAtivos;
+    private int TipoUsuario = 0;
+    private List<Emprestimo> emprestimosAtivos;
     private boolean bloqueado;
 
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(String nome, String email, String senha, int TipoUsuario) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.TipoUsuario = TipoUsuario;
         this.emprestimosAtivos = new ArrayList<>();
         this.bloqueado = false;
     }
@@ -44,28 +49,78 @@ public abstract class Usuario {
         return this.bloqueado;
     }
 
-    public abstract void realizarEmprestimo(ObraLiteraria obra);
+    public void realizarDevolucao(ObraLiteraria obra) {
+        for (Emprestimo emprestimo : this.emprestimosAtivos) {
+            if (emprestimo.getObra().equals(obra)) {
+                emprestimo.setDevolucaoRealizada();
+                obra.atualizarQuantidade(1);
+                System.out.printf("A obra %s não está mais emprestada para %s.\n", emprestimo.getUsuario().getNome(), this.nome);
+                return;
+            }
+        }
 
-    public abstract void realizarDevolucao(ObraLiteraria obra);
+        System.out.printf("%s não possui a obra %s emprestada.\n", this.nome, obra.getTitulo());
+    }
+
+    public void realizarEmprestimo(ObraLiteraria obra) {
+        Emprestimo novoEmprestimo = new Emprestimo(this, obra);
+        this.emprestimosAtivos.add(novoEmprestimo);
+        obra.atualizarQuantidade(-1);
+    }
+
+    public boolean validacaoEmprestimo(ObraLiteraria obra) {
+        if (this.bloqueado) {
+            System.out.printf("%s está bloqueado por atraso.\n", this.nome);
+            return false;
+        }
+
+        for (Emprestimo emprestimo : this.emprestimosAtivos) {
+            if (emprestimo.getObra().equals(obra)) {
+                System.out.printf("%s já possui a obra %s emprestada.\n", this.nome, obra.getTitulo());
+                return false;
+            }
+        }
+
+        if (obra.getQuantidadeDisponivel() == 0) {
+            System.out.printf("A obra %s não está disponível para empréstimo.\n", obra.getTitulo());
+            return false;
+        }
+
+        if (this.TipoUsuario == 1 && this.emprestimosAtivos.size() >= 2) {
+            System.out.printf("%s já possui 2 obras emprestadas.\n", this.nome);
+            return false;
+        }
+
+        if (this.TipoUsuario == 2 && this.emprestimosAtivos.size() >= 10) {
+            System.out.printf("%s já possui 10 obras emprestadas.\n", this.nome);
+            return false;
+        }
+
+        return true;
+    }
 
     public String getNome() {
-        return nome;
+        return this.nome;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public String getSenha() {
-        return senha;
+        return this.senha;
     }
 
-    public List<ObraLiteraria> getEmprestimosAtivos() {
-        return emprestimosAtivos;
+    public int getTipoUsuario() {
+        return this.TipoUsuario;
+    }
+
+    public List<Emprestimo> getEmprestimosAtivos() {
+        return this.emprestimosAtivos;
     }
 
     public boolean isBloqueado() {
-        return bloqueado;
+        return this.bloqueado;
     }
 
     public void setBloqueado(boolean bloqueado) {
