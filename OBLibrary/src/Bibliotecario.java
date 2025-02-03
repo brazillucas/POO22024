@@ -35,13 +35,15 @@ public class Bibliotecario extends Usuario {
         return devolucoesRealizadas;
     }
 
-    public void cadastrarUsuario(Usuario usuario, Biblioteca biblioteca) {
+    public void cadastrarUsuario(Biblioteca biblioteca) {
         // Código para cadastrar um novo usuário no sistema
         System.out.println("=== CADASTRO DE NOVO USUÁRIO ===");
-        String novoNome = Entrada.solicitarEntradaValida("Digite o nome do usuário: ", "^[aAzZ]", "Nome Inválido");
+        String novoNome = Entrada.solicitarEntradaValida("Digite o nome do usuário: ", "^[a-zA-Z ]+$", "Nome Inválido");
         String novoEmail = Entrada.solicitarEmail();
         String novaSenha = Entrada.solicitarSenha();
         int tipoNovoUsuario = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o tipo de usuário \n1 - Aluno\n2 - Professor\n3 - Bibliotecario): ", "^[1-2]$", "Tipo de Usuário Inválido"));
+
+        Usuario usuario = null;
 
         if (tipoNovoUsuario == 1) {
             String matricula = Entrada.solicitarEntradaValida("Digite a matrícula do aluno: ", "^[0-9]{6}$", "Matrícula Inválida");
@@ -67,7 +69,7 @@ public class Bibliotecario extends Usuario {
     public void registrarDevolucao(Usuario usuario, ObraLiteraria obra) {
         usuario.realizarDevolucao(obra);
         if (usuario.verificarBloqueio()) {
-            usuario.setBloqueado(true);
+            usuario.setBloqueado(false);
         }
         devolucoesRealizadas++;
     }
