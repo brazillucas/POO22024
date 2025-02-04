@@ -22,7 +22,7 @@ public class Entrada {
             Console console = System.console();
             String senha;
             if (console != null) {
-                char[] senhaArray = console.readPassword("Senha: ");
+                char[] senhaArray = console.readPassword("Senha: (Modelo: 4-8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial): ");
                 senha = new String(senhaArray);
             } else {
                 System.out.print("Senha: ");
@@ -37,7 +37,22 @@ public class Entrada {
     }
 
     public static String solicitarEmail() {
-        String email = solicitarEntradaValida("Digite o email do usuário: ", "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", "Email Inválido");
+        String email = solicitarEntradaValida("Digite o email do usuário (Modelo: usuario@provedor.com): ", "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", "Email Inválido");
         return email;
+    }
+
+    public static void limparTela() {
+        System.out.println("\033\143");
+    }
+
+    public static void aguardarEnter() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Pressione Enter para continuar...");
+        scanner.nextLine();
+    }
+
+    public static void finalizarFuncao() {
+        aguardarEnter();
+        limparTela();
     }
 }
