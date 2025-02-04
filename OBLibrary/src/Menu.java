@@ -22,8 +22,9 @@ public class Menu {
         }
         System.out.println("Bem-vindo, " + usuario.getNome() + "!");
         System.out.println("1 - Realizar Empréstimo");
-        System.out.println("2 - Realizar Devolução");
-        System.out.println("3 - Verificar Empréstimos Ativos");
+        System.out.println("2 - Verificar Empréstimos Ativos");
+        System.out.println("3 - Verificar Bloqueio");
+        System.out.println("4 - Consultar Obras (ID ou Título)");
         System.out.println("0 - Logout");
     }
 
@@ -33,6 +34,7 @@ public class Menu {
         System.out.println("1 - Cadastrar Usuário");
         System.out.println("2 - Registrar Devolução");
         System.out.println("3 - Gerar Relatórios");
+        System.out.println("4 - Consultar Obras (ID ou Título)");
         System.out.println("0 - Logout");
     }
 
