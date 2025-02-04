@@ -1,16 +1,3 @@
-/**
- * 5. Classe Bibliotecario (Herda de Usuario)
-    Responsabilidade: Representa um bibliotecário responsável por operações administrativas.
-
-    Atributos Adicionais:
-    telefone (String): Telefone do bibliotecário.
-    devolucoesRealizadas (int): Número total de devoluções realizadas pelo bibliotecário.
-    Métodos:
-    cadastrarUsuario(Usuario usuario): Cadastra novos usuários no sistema.
-    registrarDevolucao(Usuario usuario, ObraLiteraria obra): Registra a devolução de uma obra e desbloqueia o usuário, se necessário.
-    gerarRelatorios(): Gera relatórios de obras emprestadas e usuários com atrasos.
- */
-
 public class Bibliotecario extends Usuario {
     private String telefone;
     private int devolucoesRealizadas;
@@ -31,8 +18,16 @@ public class Bibliotecario extends Usuario {
         return telefone;
     }
 
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
     public int getDevolucoesRealizadas() {
         return devolucoesRealizadas;
+    }
+
+    public void incrementaDevolucoesRealizadas() {
+        this.devolucoesRealizadas++;
     }
 
     public void cadastrarUsuario(Biblioteca biblioteca) {
@@ -41,44 +36,49 @@ public class Bibliotecario extends Usuario {
         String novoNome = Entrada.solicitarEntradaValida("Digite o nome do usuário: ", "^[a-zA-Z ]+$", "Nome Inválido");
         String novoEmail = Entrada.solicitarEmail();
         String novaSenha = Entrada.solicitarSenha();
-        int tipoNovoUsuario = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o tipo de usuário \n1 - Aluno\n2 - Professor\n3 - Bibliotecario): ", "^[1-2]$", "Tipo de Usuário Inválido"));
+        int tipoNovoUsuario = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o tipo de usuário \n1 - Aluno\n2 - Professor\n3 - Bibliotecario: ", "^[1-2]$", "Tipo de Usuário Inválido"));
 
         Usuario usuario = null;
 
-        if (tipoNovoUsuario == 1) {
-            String matricula = Entrada.solicitarEntradaValida("Digite a matrícula do aluno: ", "^[0-9]{6}$", "Matrícula Inválida");
-
-            String curso = Entrada.solicitarEntradaValida("Digite o curso do aluno: ", "^[a-zA-Z ]+$", "Curso Inválido");
-
-            usuario = new Aluno(novoNome, novoEmail, novaSenha, matricula, curso);
-        } else if (tipoNovoUsuario == 2) {
-            String departamento = Entrada.solicitarEntradaValida("Digite o departamento do professor: ", "^[a-zA-Z ]+$", "Departamento Inválido");
-
-            usuario = new Professor(novoNome, novoEmail, novaSenha, departamento);
-        } else if(tipoNovoUsuario == 3) {
-            String novoTel = Entrada.solicitarEntradaValida("Digite o telefone do bibliotecário: ", "^[0-9]{8,9}$", "Telefone Inválido");
-
-            usuario = new Bibliotecario(novoNome, novoEmail, novaSenha, novoTel);
-        } else {
-            System.out.println("Tipo de usuário inválido.");
+        switch (tipoNovoUsuario) {
+            case 1:
+                String matricula = Entrada.solicitarEntradaValida("Digite a matrícula do aluno: ", "^[0-9]{6}$", "Matrícula Inválida");
+                String curso = Entrada.solicitarEntradaValida("Digite o curso do aluno: ", "^[a-zA-Z ]+$", "Curso Inválido");
+                usuario = new Aluno(novoNome, novoEmail, novaSenha, matricula, curso);
+                break;
+            case 2:
+                String departamento = Entrada.solicitarEntradaValida("Digite o departamento do professor: ", "^[a-zA-Z ]+$", "Departamento Inválido");
+                usuario = new Professor(novoNome, novoEmail, novaSenha, departamento);
+                break;
+            case 3:
+                String novoTel = Entrada.solicitarEntradaValida("Digite o telefone do bibliotecário: ", "^[0-9]{8,9}$", "Telefone Inválido");
+                usuario = new Bibliotecario(novoNome, novoEmail, novaSenha, novoTel);
+                break;
+            default:
+                System.out.println("Tipo de usuário inválido.");
+                break;
         }
 
-        biblioteca.cadastrarUsuario(usuario);
-    }
-
-    public void registrarDevolucao(Usuario usuario, ObraLiteraria obra) {
-        usuario.realizarDevolucao(obra);
-        if (usuario.verificarBloqueio()) {
-            usuario.setBloqueado(false);
-        }
-        devolucoesRealizadas++;
+        biblioteca.adicionarUsuario(usuario);
+        System.out.println("Usuário cadastrado com sucesso!");
+        biblioteca.salvarUsuariosArquivo();
     }
 
     public void gerarRelatorios(Biblioteca biblioteca) {
-        System.out.println("=== RELATÓRIO DE OBRAS EMPRESTADAS ===");
-        biblioteca.gerarRelatorioObrasEmprestadas();
-        System.out.println("=== RELATÓRIO DE USUÁRIOS COM ATRASO ===");
-        biblioteca.gerarRelatorioUsuariosComAtraso();
+        if (biblioteca.getEmprestimosAtivos()) {
+            System.out.println("=== RELATÓRIO DE OBRAS EMPRESTADAS ===");
+            biblioteca.gerarRelatorioObrasEmprestadas();
+        } else {
+            System.out.println("Nenhuma obra emprestada no momento.");
+        }
+
+        if (biblioteca.getUsuariosComAtraso()) {
+            System.out.println("=== RELATÓRIO DE USUÁRIOS COM ATRASO ===");
+            biblioteca.gerarRelatorioUsuariosComAtraso();
+        } else {
+            System.out.println("Nenhum usuário com atraso no momento.");
+        }
     }
+
 
 }
