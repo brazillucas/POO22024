@@ -13,6 +13,7 @@
  */
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class Emprestimo {
@@ -21,6 +22,7 @@ public class Emprestimo {
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucaoPrevista;
     private LocalDate dataDevolucaoRealizada;
+    private boolean emprestimoAtivo;
     private boolean atrasado;
 
     // Construtor para empréstimos realizados no sistema
@@ -29,29 +31,24 @@ public class Emprestimo {
         this.obra = obra;
         this.dataEmprestimo = LocalDate.now();
         this.dataDevolucaoPrevista = LocalDate.now().plusDays(usuario.getTipoUsuario() == 1 ? 7 : 14);
+        this.emprestimoAtivo = true;
+        this.atrasado = false;
     }
-    // Construtor para carregamento de empréstimos abertos a partir de arquivo
-    public Emprestimo(Usuario usuario, ObraLiteraria obra, LocalDate dataEmprestimo) {
-        this.usuario = usuario;
-        this.obra = obra;
-        this.dataEmprestimo = dataEmprestimo;
-        this.dataDevolucaoPrevista = LocalDate.now().plusDays(usuario.getTipoUsuario() == 1 ? 7 : 14);
-    }
-
+    
     // Construtor para carregamento de empréstimos finalizado a partir de arquivo
-    public Emprestimo(Usuario usuario, ObraLiteraria obra, LocalDate dataEmprestimo, LocalDate dataDevolucaoPrevista) {
+    public Emprestimo(Usuario usuario, ObraLiteraria obra, LocalDate dataEmprestimo, LocalDate dataDevolucaoRealizada) {
         this.usuario = usuario;
         this.obra = obra;
         this.dataEmprestimo = dataEmprestimo;
-        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
-    }
-    // Construtor para carregamento de empréstimos finalizado a partir de arquivo
-    public Emprestimo(Usuario usuario, ObraLiteraria obra, LocalDate dataEmprestimo, LocalDate dataDevolucaoPrevista, LocalDate dataDevolucaoRealizada) {
-        this.usuario = usuario;
-        this.obra = obra;
-        this.dataEmprestimo = dataEmprestimo;
-        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
+        this.dataDevolucaoPrevista = dataEmprestimo.plusDays(usuario.getTipoUsuario() == 1 ? 7 : 14);
         this.dataDevolucaoRealizada = dataDevolucaoRealizada;
+        if (dataDevolucaoRealizada != null) {
+            this.atrasado = dataDevolucaoPrevista.isBefore(dataDevolucaoRealizada);
+            this.emprestimoAtivo = false;
+        } else {
+            this.atrasado = LocalDate.now().isAfter(dataDevolucaoPrevista);
+            this.emprestimoAtivo = true;
+        }
     }
 
     public boolean verificarAtraso() {
@@ -71,6 +68,13 @@ public class Emprestimo {
         return dataEmprestimo;
     }
 
+    public boolean getAtrasado() {
+        return atrasado;
+    }
+    public void setAtrasado(boolean atrasado) {
+        this.atrasado = atrasado;
+    }
+
     public LocalDate getDataDevolucaoPrevista() {
         return dataDevolucaoPrevista;
     }
@@ -80,10 +84,47 @@ public class Emprestimo {
         if (verificarAtraso()) {
             this.atrasado = true;
         }
+        this.emprestimoAtivo = false;
+        this.obra.atualizarQuantidade(1);
     }
 
     public LocalDate getDataDevolucaoRealizada() {
         return dataDevolucaoRealizada;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    public void setObra(ObraLiteraria obra) {
+        this.obra = obra;
+    }
+    public void setDataEmprestimo(LocalDate dataEmprestimo) {
+        this.dataEmprestimo = dataEmprestimo;
+    }
+    public void setDataDevolucaoPrevista(LocalDate dataDevolucaoPrevista) {
+        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
+    }
+
+    public boolean getEmprestimoAtivo() {
+        return emprestimoAtivo;
+    }
+
+    public void setEmprestimoAtivo(boolean emprestimoAtivo) {
+        this.emprestimoAtivo = emprestimoAtivo;
+    }
+
+    public int getDiasAtraso() {
+        return  (int) (LocalDate.now().toEpochDay() - this.dataDevolucaoPrevista.toEpochDay() );
+    }
+
+    @Override
+    public String toString() {
+        return "Emprestimo{" +
+                "usuario:" + usuario +
+                " | obra:" + obra +
+                " | dataEmprestimo:" + dataEmprestimo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                " | dataDevolucaoPrevista:" + dataDevolucaoPrevista.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                " | atrasado=" + atrasado +
+                '}';
     }
 
 }
