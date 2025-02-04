@@ -1,0 +1,53 @@
+                                       ┌──────────────────────────────────────────────────┐             
+                                       │Biblioteca                                        │             
+                                       ├──────────────────────────────────────────────────┤             
+                                       │- usuarios: List<Usuario>                         │             
+                                       │- obras: List<ObraLiteraria>                      │             
+                                       │- emprestimos: List<Emprestimo>                   │             
+                                       │+ carregarDados(): void                           │             
+                                       │+ salvarDados(): void                             │             
+                                       │+ loginUsuario(String, String): Usuario           │             
+                                       │+ realizarEmprestimo(ObraLiteraria, Usuario): void│             
+                                       └──────────────────────────────────────────────────┘             
+                                                                 |                                      
+                                                                 |                                      
+                                              ┌───────────────────────────────────┐                     
+                                              │Emprestimo                         │                     
+                                              ├───────────────────────────────────┤                     
+                                              │- usuario: Usuario                 │                     
+                                              │- obra: ObraLiteraria              │                     
+                                              │- dataEmprestimo: LocalDate        │                     
+                                              │- dataDevolucaoPrevista: LocalDate │                     
+                                              │- dataDevolucaoRealizada: LocalDate│                     
+                                              │- emprestimoAtivo: boolean         │                     
+                                              │- atrasado: boolean                │                     
+                                              │+ verificarAtraso(): boolean       │                     
+                                              │+ getObra(): ObraLiteraria         │                     
+                                              │+ getUsuario(): Usuario            │                     
+                                              └───────────────────────────────────┘                     
+                                                                                                        
+                   ┌─────────────────────────────────────────────┐                                      
+                   │Usuario                                      │                                      
+                   ├─────────────────────────────────────────────┤    ┌────────────────────────────────┐
+                   │- nome: String                               │    │ObraLiteraria                   │
+                   │- email: String                              │    ├────────────────────────────────┤
+                   │- senha: String                              │    │- id: int                       │
+                   │- TipoUsuario: int                           │    │- titulo: String                │
+                   │- emprestimosRealizados: List<Emprestimo>    │    │- autor: String                 │
+                   │- bloqueado: boolean                         │    │- quantidadeDisponivel: int     │
+                   │+ login(String, String): boolean             │    │- quantidadeTotal: int          │
+                   │+ logout(): void                             │    │+ consultarInformacoes(): String│
+                   │+ verificarBloqueio(): boolean               │    │+ atualizarQuantidade(int): void│
+                   │+ validacaoEmprestimo(ObraLiteraria): boolean│    └────────────────────────────────┘
+                   │+ verificarLimiteEmprestimos(): boolean      │                                      
+                   └─────────────────────────────────────────────┘                                      
+                                           |                                                            
+                                           |                                                            
+┌────────────────────────┐                                  ┌────────────────────────────────────────┐  
+│Aluno                   │  ┌───────────────────────────┐   │Bibliotecario                           │  
+├────────────────────────┤  │Professor                  │   ├────────────────────────────────────────┤  
+│- matricula: String     │  ├───────────────────────────┤   │- telefone: String                      │  
+│- curso: String         │  │- departamento: String     │   │- devolucoesRealizadas: int             │  
+│+ getMatricula(): String│  │+ getDepartamento(): String│   │+ getTelefone(): String                 │  
+│+ getCurso(): String    │  └───────────────────────────┘   │+ incrementaDevolucoesRealizadas(): void│  
+└────────────────────────┘                                  └────────────────────────────────────────┘  

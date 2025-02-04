@@ -1,0 +1,79 @@
+@startuml
+!theme bluegray
+abstract class Usuario {
+    - nome: String
+    - email: String
+    - senha: String
+    - TipoUsuario: int
+    - emprestimosRealizados: List<Emprestimo>
+    - bloqueado: boolean
+    + login(String, String): boolean
+    + logout(): void
+    + verificarBloqueio(): boolean
+    + validacaoEmprestimo(ObraLiteraria): boolean
+    + verificarLimiteEmprestimos(): boolean
+}
+
+class Aluno {
+    - matricula: String
+    - curso: String
+    + getMatricula(): String
+    + getCurso(): String
+}
+
+class Professor {
+    - departamento: String
+    + getDepartamento(): String
+}
+
+class Bibliotecario {
+    - telefone: String
+    - devolucoesRealizadas: int
+    + getTelefone(): String
+    + incrementaDevolucoesRealizadas(): void
+}
+
+class ObraLiteraria {
+    - id: int
+    - titulo: String
+    - autor: String
+    - quantidadeDisponivel: int
+    - quantidadeTotal: int
+    + consultarInformacoes(): String
+    + atualizarQuantidade(int): void
+}
+
+class Emprestimo {
+    - usuario: Usuario
+    - obra: ObraLiteraria
+    - dataEmprestimo: LocalDate
+    - dataDevolucaoPrevista: LocalDate
+    - dataDevolucaoRealizada: LocalDate
+    - emprestimoAtivo: boolean
+    - atrasado: boolean
+    + verificarAtraso(): boolean
+    + getObra(): ObraLiteraria
+    + getUsuario(): Usuario
+}
+
+class Biblioteca {
+    - usuarios: List<Usuario>
+    - obras: List<ObraLiteraria>
+    - emprestimos: List<Emprestimo>
+    + carregarDados(): void
+    + salvarDados(): void
+    + loginUsuario(String, String): Usuario
+    + realizarEmprestimo(ObraLiteraria, Usuario): void
+}
+
+Usuario <|-- Aluno
+Usuario <|-- Professor
+Usuario <|-- Bibliotecario
+
+Biblioteca "1" *-- "Muitos" Usuario
+Biblioteca "1" *-- "Muitos" ObraLiteraria
+Biblioteca "1" *-- "Muitos" Emprestimo
+
+Emprestimo "1" -- "1" Usuario
+Emprestimo "1" -- "1" ObraLiteraria
+@enduml
