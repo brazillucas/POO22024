@@ -1,0 +1,11 @@
+email;tituloObra;dataEmprestimo;dataDevolucaoRealizada
+l@obl.com;1;02/01/2025;null
+l@obl.com;2;01/01/2025;10/02/2025
+mmota@obl.com;533;01/02/2025;null
+mmota@obl.com;290;12/01/2025;15/01/2025
+mmota@obl.com;1520;24/01/2025;null
+mmota@obl.com;1677;10/01/2025;25/01/2025
+mmota@obl.com;963;05/01/2025;12/01/2025
+mmota@obl.com;6;15/01/2025;30/01/2025
+malu@obl.com;989;03/02/2025;null
+malu@obl.com;5000;03/02/2025;null

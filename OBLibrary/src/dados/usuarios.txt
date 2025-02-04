@@ -1,0 +1,5 @@
+tipo;nome;email;senha;atributo1;atributo2
+3;admin;admin@obl.com;1Adm.;12345678;6
+1;Lucas;l@obl.com;1User.;001010;Sistemas de Informacao
+2;Monique;mmota@obl.com;2User.;Administracao;null
+1;Malu;malu@obl.com;1Malu.;525869;Sistemas de Informacao
