@@ -39,7 +39,11 @@ public class ObraLiteraria {
     }
 
     public String consultarInformacoes() {
-        return "ID: " + id + "\nTítulo: " + titulo + "\nAutor: " + autor + "\nQuantidade disponível: " + quantidadeDisponivel + "\nQuantidade total: " + quantidadeTotal;
+        return "ID: " + id + " | Título: " + titulo + " | Autor: " + autor + " | Quantidade disponível: " + quantidadeDisponivel + " | Quantidade total: " + quantidadeTotal;
+    }
+
+    public int getQuantidadeDisponivel() {
+        return quantidadeDisponivel;
     }
 
     public void atualizarQuantidade(int quantidade) {
@@ -58,8 +62,20 @@ public class ObraLiteraria {
         return autor;
     }
 
-    public int getQuantidadeDisponivel() {
-        return quantidadeDisponivel;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public void setQuantidadeTotal(int quantidadeTotal) {
+        this.quantidadeTotal = quantidadeTotal;
     }
 
     public int getQuantidadeTotal() {
