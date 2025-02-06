@@ -71,9 +71,6 @@ public class Emprestimo {
     public boolean getAtrasado() {
         return atrasado;
     }
-    public void setAtrasado(boolean atrasado) {
-        this.atrasado = atrasado;
-    }
 
     public LocalDate getDataDevolucaoPrevista() {
         return dataDevolucaoPrevista;
@@ -91,25 +88,9 @@ public class Emprestimo {
     public LocalDate getDataDevolucaoRealizada() {
         return dataDevolucaoRealizada;
     }
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-    public void setObra(ObraLiteraria obra) {
-        this.obra = obra;
-    }
-    public void setDataEmprestimo(LocalDate dataEmprestimo) {
-        this.dataEmprestimo = dataEmprestimo;
-    }
-    public void setDataDevolucaoPrevista(LocalDate dataDevolucaoPrevista) {
-        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
-    }
 
     public boolean getEmprestimoAtivo() {
         return emprestimoAtivo;
-    }
-
-    public void setEmprestimoAtivo(boolean emprestimoAtivo) {
-        this.emprestimoAtivo = emprestimoAtivo;
     }
 
     public int getDiasAtraso() {
