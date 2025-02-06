@@ -25,7 +25,6 @@ public class Biblioteca {
     }
 
     public void carregarDados() {
-        // Código para carregar os dados do sistema a partir de arquivos .txt
         lerArquivoUsuarios();
 
         // Carregamento de obras
@@ -170,6 +169,20 @@ public class Biblioteca {
         }
         return null;
     }
+    
+    public Usuario getUsuarioLogado() {
+        return this.usuarioLogado;
+    }
+    
+    public void logoutUsuario() {
+        // Encerrar a sessão do usuário atual
+        System.out.printf("Usuário %s desconectado.\n", this.usuarioLogado.getNome());
+        this.usuarioLogado = null;
+    }
+
+    public int getQuantUsuarios() {
+        return usuarios.size();
+    }
 
     public void realizarLogin(Menu menu) {
         String email = Entrada.solicitarEmail();
@@ -313,8 +326,6 @@ public class Biblioteca {
         if(this.usuarioLogado instanceof Bibliotecario bibliotecario) {
             bibliotecario.incrementaDevolucoesRealizadas();
         }
-
-        // System.out.printf("%s não possui a obra %s emprestada.\n", usuario.getNome(), obra.getTitulo());
     }
 
     public void realizarEmprestimo(ObraLiteraria obra, Usuario usuario) {
@@ -371,26 +382,11 @@ public class Biblioteca {
         }
     }
 
-    public int getQuantUsuarios() {
-        return usuarios.size();
-    }
-
-    public void logoutUsuario() {
-        // Código para encerrar a sessão do usuário atual
-        System.out.printf("Usuário %s desconectado.\n", this.usuarioLogado.getNome());
-        this.usuarioLogado = null;
-    }
-
-    public Usuario getUsuarioLogado() {
-        return this.usuarioLogado;
-    }
-
     public void adicionarUsuario(Usuario usuario) {
         this.usuarios.add(usuario);
     }
 
     public ObraLiteraria selecionarObra() {
-        // Código para selecionar uma obra disponível
         exibirObrasDisponiveis();
         int idObra = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o código da obra desejada: ", "^[0-9]+$", "Código Inválido"));
 
@@ -405,7 +401,6 @@ public class Biblioteca {
     }
 
     public ObraLiteraria buscarObra(int id) {
-        // Código para buscar uma obra pelo título
         for (ObraLiteraria obra : obras) {
             if (obra.getId() == id) {
                 return obra;
@@ -435,8 +430,6 @@ public class Biblioteca {
     }
 
     public void gerarRelatorioObrasEmprestadas() {
-        // Código para gerar relatório de obras emprestadas
-
         for (Emprestimo emprestimo : emprestimos) {
             if (emprestimo.getEmprestimoAtivo()) {
                 System.out.println("Usuário: " + emprestimo.getUsuario().getNome() + " | Obra: " + emprestimo.getObra().getId() + " | " + emprestimo.getObra().getTitulo() + " | Data de empréstimo: " + emprestimo.getDataEmprestimo().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " | Previsão de Entrega: " + emprestimo.getDataDevolucaoPrevista().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n");
@@ -445,7 +438,6 @@ public class Biblioteca {
     }
 
     public void gerarRelatorioUsuariosComAtraso() {
-        // Código para gerar relatório de usuários com atraso
         for (Emprestimo emprestimo : emprestimos) {
             if (emprestimo.getAtrasado() && emprestimo.getEmprestimoAtivo()) {
                 System.out.println("Usuário: " + emprestimo.getUsuario().getNome() + " | Obra: " + emprestimo.getObra().getId() + " | " + emprestimo.getObra().getTitulo() + " | Previsao de Entrada: " + emprestimo.getDataDevolucaoPrevista().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " | Dias de Atraso: " + emprestimo.getDiasAtraso() + "\n");
@@ -455,7 +447,6 @@ public class Biblioteca {
     }
 
     public void fechamentoSistema() {
-        // Código para salvar os dados do sistema em arquivos
         System.out.println("Salvando relatórios...");
 
         // Salvamento de usuários
