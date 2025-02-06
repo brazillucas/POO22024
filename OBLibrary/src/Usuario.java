@@ -23,12 +23,12 @@ public abstract class Usuario {
         return this.email.equals(email) && this.senha.equals(senha);
     }
 
-    public void logout() {
-    
-    }
-
     public boolean verificarBloqueio() {
         return this.bloqueado;
+    }
+
+    public void setBloqueado(boolean bloqueado) {
+        this.bloqueado = bloqueado;
     }
 
     public boolean validacaoEmprestimo(ObraLiteraria obra) {
@@ -117,27 +117,4 @@ public abstract class Usuario {
             }
         }
     }
-
-    public boolean estaBloqueado() {
-        return this.bloqueado;
-    }
-
-    public void setBloqueado(boolean bloqueado) {
-        this.bloqueado = bloqueado;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    
-
 }
