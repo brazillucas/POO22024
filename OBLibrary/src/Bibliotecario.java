@@ -14,14 +14,6 @@ public class Bibliotecario extends Usuario {
         this.devolucoesRealizadas = devolucoesRealizadas;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public int getDevolucoesRealizadas() {
         return devolucoesRealizadas;
     }
