@@ -13,6 +13,8 @@ Com estes problemas em vista, foi pensado o desenvolvimento de uma ferramenta qu
 
 O sistema deverá atender, ao final do seu desenvolvimento, os três tipos de pedidos citados anteriormente, pois são os mais urgentes e recorrentes na empresa. Sendo inicialmente atendido o pedido de almoxarifado.
 
+O sistema trabalhará apenas com o usuário administrador inicialmente. Ou seja, apesar de haver tela de login, só haverá um usuário no sistema, que terá acesso a todos os recursos.
+
 Para o correto funcionamento o sistema deve, primeiramente, permitir os cadastros por parte do administrador.
 Esses cadastro são:
 - Cadastro de Itens
@@ -71,14 +73,38 @@ Ou seja, o usuário pode selecionar uma data inicial e uma data  final para visu
 O sistema poderá exibir itens pedidos para cada funcionário, informando qual a data de realização do pedido daquele item e qual o tipo daquele pedido.
 
 ### Cadastro de Atores
-O sistema deve ler arquivos com os nomes dos funcionários e dos setores selecionáveis para os pedidos.
+O sistema deve ler arquivos com os nomes dos funcionários e dos setores selecionáveis para os pedidos a partir de um arquivo csv.
+
 #### Setor
-Cada setor conterá um nome, funcionários e seus pedidos.
+Cada setor conterá:
+- um nome
+- funcionários
+- os pedidos direcionados àquele setor
 
 ##### Funcionário
-Cada funcionário terá um nome, uma matrícula, um setor, sua data de admissão, o tamanho do uniforme, os pedidos que contém itens para ele.
+Cada funcionário terá:
+- matrícula
+- nome
+- setor
+- cargo
+- data de admissão
+- tamanho do uniforme
+
+- os pedidos que contém itens para ele
+
 ##### Cargo do funcionário
-O funcionário deve ser subclasses para cada setor, pois funcionários de setores diferentes possuem características diferentes, como, por exemplo, o tamanho de bota, o tamanho de avental, etc.
+O funcionário deve ser subclasses para cada setor, pois funcionários de setores diferentes possuem características diferentes, como, por exemplo:
+- tamanho de EPI
+    - Avental
+    - Bota
 
 ## Geração de Planilhas Para Novos Pedidos
 Como função final, é esperado que o sistema seja capaz de exportar um pedido em formato de planilha para que seja enviada por e-mail para a devida confirmação daquela solicitação junto ao setor responsável.
+
+### Planilha de Uniformes
+A planilha de saída para uniformes deve conter:
+- Matrícula do funcionário
+- Nome do funcionário
+- Setor
+- Admissão
+- 
