@@ -54,6 +54,7 @@ Itens possuem as seguintes informações
 
 ### Cadastro de Pedidos
 Pedidos serão realizados informando:
+ - **número do pedido** (gerado automaticamente)
 - tipo de pedido que será iniciado (ao iniciar o pedido, o sistema deve perguntar qual o tipo de pedido será realizado)
 - **item**
 - **quantidade**
@@ -101,9 +102,14 @@ Ou seja, o usuário pode selecionar uma data inicial e uma data  final para visu
 
 #### Listagem Por Funcionário
 O sistema poderá exibir itens pedidos para cada funcionário, informando qual a data de realização do pedido daquele item e qual o tipo daquele pedido.
+- Ao digitar o número de matrícula do funcionário, o sistema deve exibir os itens pedidos para aquele funcionário e o número do pedido.
+
+#### Consulta por Número de Pedido
+O sistema deve permitir que o usuário consulte um pedido específico, informando o número do pedido.
+- O sistema deve exibir os itens pedidos naquele pedido, a data de realização e o tipo do pedido (substituindo o número salvo no banco de dados pelo tipo por extenso correspondente).
 
 ### Cadastro de Atores
-O sistema deve ler arquivos com os nomes dos funcionários e dos setores selecionáveis para os pedidos a partir de um arquivo csv.
+O sistema deve ler arquivos com os nomes dos funcionários e dos setores selecionáveis para os pedidos a partir de um arquivo csv e salvar no banco de dados.
 
 #### Setor
 Cada setor conterá:
@@ -126,10 +132,10 @@ Cada funcionário terá:
 ##### Função do funcionário
 O funcionário deve conter uma característica **cargo**, pois funcionários de setores diferentes possuem características diferentes, como, por exemplo:
 - tamanho de EPI:
-	- AÇOUGUEIRO(A),	BALCONISTA DE AÇOUGUE,	AUXILIAR DE PADARIA,	ATENDENTE DE FRIOS,	OPERADOR DE CAMARA,	ENCARREGADO(A) DE FRIOS:
+	- AÇOUGUEIRO(A), BALCONISTA DE AÇOUGUE, AUXILIAR DE PADARIA, ATENDENTE DE FRIOS, OPERADOR DE CAMARA, ENCARREGADO(A) DE FRIOS:
 		- Avental
 		- calçado
-	- REPOSITOR (A),	AUXILIAR DE DEPÓSITO,	FISCAL DE LOJA,	ENCARREGADO DE DEPÓSITO,	CONFERENTE,	ENCARREGADO(A) DE HORTIFRUTI,	ENCARREGADO(A) DE LOJA,	EMBALADOR(A),	AUX. DE REPOS. DE MERCADORIAS,	APRENDIZ DE VENDEDOR DE COMERCIO VAREJISTA,	AUXILIAR DE LOJA,	AGENTE PREVENÇÃO DE PERDAS, ORIENTADOR DE TRAF. P/ ESTACIONAMENTO:
+	- REPOSITOR(A), AUXILIAR DE DEPÓSITO, FISCAL DE LOJA, ENCARREGADO DE DEPÓSITO, CONFERENTE, ENCARREGADO(A) DE HORTIFRUTI, ENCARREGADO(A) DE LOJA, EMBALADOR(A), AUX. DE REPOS. DE MERCADORIAS, APRENDIZ DE VENDEDOR DE COMERCIO VAREJISTA, AUXILIAR DE LOJA, AGENTE PREVENÇÃO DE PERDAS, ORIENTADOR DE TRAF. P/ ESTACIONAMENTO:
 		- calçado
 	- ORIENTADOR DE TRAF. P/ ESTACIONAMENTO:
 		- calçado
