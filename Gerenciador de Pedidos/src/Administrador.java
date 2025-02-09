@@ -28,13 +28,18 @@ public class Administrador extends Funcionario {
     private String senha;
     private boolean alterouSenha;
 
-    public Administrador(int matricula, String nome, int setor, int funcao, LocalDate dataAdmissao, String lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos, String senha, boolean alterouSenha) {
+    public Administrador(int matricula, String nome, int setor,
+                        FuncaoFuncionario funcao, LocalDate dataAdmissao,
+                        int lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos, String senha, boolean alterouSenha) {
         super(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidos);
         this.senha = senha;
         this.alterouSenha = alterouSenha;
     }
 
-    public Administrador(int matricula, String nome, int setor, int funcao, LocalDate dataAdmissao, String lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos) {
+    public Administrador(int matricula, String nome, int setor,
+                        FuncaoFuncionario funcao, LocalDate dataAdmissao,
+                        int lojaTrabalho, String tamanhoUniforme,
+                        List<Integer> pedidos) {
         super(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidos);
         this.senha = String.valueOf(matricula).substring(4);
         this.alterouSenha = false;
