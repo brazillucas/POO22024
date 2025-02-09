@@ -26,6 +26,10 @@ public class SistemaDeLogin {
     }
     
     public Administrador autenticar(String matricula, String senha) {
+        // Criptografar a senha
+        Criptografia criptografia = new Criptografia(senha, Criptografia.SHA256);
+        senha = criptografia.criptografar();
+        
         Administrador admin = usuariosCadastrados.get(matricula);
         if (admin != null && admin.getSenha().equals(senha)) {
             return admin;
