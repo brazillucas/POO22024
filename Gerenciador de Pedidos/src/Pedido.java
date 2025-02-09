@@ -2,49 +2,42 @@
  * Atributos:
  * numeroPedido (gerado automaticamente)
  * tipoPedido (Enum | Uniforme, EPI, Almoxarifado)
- * itens (lista de IDs dos itens pedidos)
+ * itens (lista de ItemPedido)
  * quantidade
  * setorDestino (código do setor | para almoxarifado)
  * funcionarioDestino (a matrícula do funcionário | para uniformes e EPI)
  * dataPedido
  * 
  * Métodos:
- * adicionarItem(int idItem, int quantidade)
- * removerItem(int idItem)
+ * adicionarItem(ItemPedido itemPedido)
+ * removerItem(int itemId)
  * salvarNoBancoDados()
  * exportarPlanilha(String formato)
  */
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido {
     private int numeroPedido;
     private TipoPedido tipoPedido;
-    private List<Integer> itens;
-    private int quantidade;
-    private int setorDestino;
-    private int  funcionarioDestino;
+    private List<ItemPedido> itensPedido;
     private LocalDate dataPedido;
 
-    public Pedido(int numeroPedido, TipoPedido tipoPedido, List<Integer> itens, int quantidade, int setorDestino, int funcionarioDestino, LocalDate dataPedido) {
+    // Construtores
+    public Pedido(int numeroPedido, TipoPedido tipoPedido) {
         this.numeroPedido = numeroPedido;
         this.tipoPedido = tipoPedido;
-        this.itens = itens;
-        this.quantidade = quantidade;
-        this.setorDestino = setorDestino;
-        this.funcionarioDestino = funcionarioDestino;
-        this.dataPedido = dataPedido;
+        this.itensPedido = new ArrayList<>();
+        this.dataPedido = LocalDate.now();
     }
 
-    public Pedido(int numeroPedido, TipoPedido tipoPedido, List<Integer> itens, int quantidade, int setorDestino, int funcionarioDestino) {
+    public Pedido(int numeroPedido, TipoPedido tipoPedido, LocalDate dataPedido) {
         this.numeroPedido = numeroPedido;
         this.tipoPedido = tipoPedido;
-        this.itens = itens;
-        this.quantidade = quantidade;
-        this.setorDestino = setorDestino;
-        this.funcionarioDestino = funcionarioDestino;
-        this.dataPedido = LocalDate.now();
+        this.itensPedido = new ArrayList<>();
+        this.dataPedido = dataPedido;
     }
 
     // Getters e Setters
@@ -64,36 +57,12 @@ public class Pedido {
         this.tipoPedido = tipoPedido;
     }
 
-    public List<Integer> getItens() {
-        return itens;
+    public List<ItemPedido> getItens() {
+        return itensPedido;
     }
 
-    public void setItens(List<Integer> itens) {
-        this.itens = itens;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public int getSetorDestino() {
-        return setorDestino;
-    }
-
-    public void setSetorDestino(int setorDestino) {
-        this.setorDestino = setorDestino;
-    }
-
-    public int getFuncionarioDestino() {
-        return funcionarioDestino;
-    }
-
-    public void setFuncionarioDestino(int funcionarioDestino) {
-        this.funcionarioDestino = funcionarioDestino;
+    public void setItens(List<ItemPedido> itensPedido) {
+        this.itensPedido = itensPedido;
     }
 
     public LocalDate getDataPedido() {
@@ -106,21 +75,49 @@ public class Pedido {
 
     // Métodos
 
-    public void adicionarItem(int idItem, int quantidade) {
-        this.itens.add(idItem);
-        this.quantidade += quantidade;
+    // Adicionar item ao pedido
+    public void adicionarItem(int itemId, int quantidade, int setorDestino, int funcionarioDestino) {
+        ItemPedido itemPedido = new ItemPedido(itemId, quantidade, setorDestino, funcionarioDestino);
+        itensPedido.add(itemPedido);
     }
 
-    public void removerItem(int item) {
-        this.itens.remove(item);
+    // Remover item do pedido
+    public void removerItem(int itemId) {
+        itensPedido.removeIf(ip -> ip.getItemId() == itemId);
     }
 
+    // Recuperar detalhes completos dos itens do pedido
+    public List<Item> getDetalhesItensPedido() {
+        List<Item> detalhesItens = new ArrayList<>();
+        for (ItemPedido itemPedido : itensPedido) {
+            Item item = BancoDeDados.buscarItemPorId(itemPedido.getItemId());
+            if (item != null) {
+                detalhesItens.add(item);
+            }
+        }
+        return detalhesItens;
+    }
+
+    // Salvar pedido no banco de dados
     public void salvarNoBancoDados() {
-        // Salva o pedido no banco de dados
+        BancoDeDados.salvarPedido(this);
     }
 
-    public void exportarPlanilha(String formato) {
-        // Exporta o pedido em formato de planilha
+    // Exportar pedido para planilha
+    public void exportarPlanilha(String caminho) {
+        if (null != tipoPedido) switch (tipoPedido) {
+            case UNIFORME:
+                PlanilhaHandler.exportarUniformes(this.itensPedido, caminho);
+                break;
+            case EPI:
+                PlanilhaHandler.exportarEPI(this.itensPedido, caminho);
+                break;
+            case ALMOXARIFADO:
+                PlanilhaHandler.exportarAlmoxarifado(this.itensPedido, caminho);
+                break;
+            default:
+                break;
+        }
     }
 
 }
