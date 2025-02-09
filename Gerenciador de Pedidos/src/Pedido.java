@@ -27,13 +27,24 @@ public class Pedido {
     private int  funcionarioDestino;
     private LocalDate dataPedido;
 
-    public Pedido(TipoPedido tipoPedido, List<Integer> itens, int quantidade, int setorDestino, int funcionarioDestino, LocalDate dataPedido) {
+    public Pedido(int numeroPedido, TipoPedido tipoPedido, List<Integer> itens, int quantidade, int setorDestino, int funcionarioDestino, LocalDate dataPedido) {
+        this.numeroPedido = numeroPedido;
         this.tipoPedido = tipoPedido;
         this.itens = itens;
         this.quantidade = quantidade;
         this.setorDestino = setorDestino;
         this.funcionarioDestino = funcionarioDestino;
         this.dataPedido = dataPedido;
+    }
+
+    public Pedido(int numeroPedido, TipoPedido tipoPedido, List<Integer> itens, int quantidade, int setorDestino, int funcionarioDestino) {
+        this.numeroPedido = numeroPedido;
+        this.tipoPedido = tipoPedido;
+        this.itens = itens;
+        this.quantidade = quantidade;
+        this.setorDestino = setorDestino;
+        this.funcionarioDestino = funcionarioDestino;
+        this.dataPedido = LocalDate.now();
     }
 
     // Getters e Setters
