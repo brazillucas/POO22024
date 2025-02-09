@@ -1,6 +1,7 @@
 /*
  * Setor
  * Atributos:
+ * id
  * nome
  * funcionarios (matricula dos funcionarios | lista de funcionários pertencentes ao setor)
  * pedidos (número dos pedidos | lista de pedidos direcionados ao setor)
@@ -12,17 +13,34 @@
 import java.util.List;
 
 public class Setor {
+    // Atributos
+    private int id;
     private String nome;
     private List<Integer> funcionarios;
     private List<Integer> pedidos;
 
-    public Setor(String nome, List<Integer> funcionarios, List<Integer> pedidos) {
+    // Construtores
+    public Setor(int id, String nome, List<Integer> funcionarios, List<Integer> pedidos) {
+        this.id = id;
         this.nome = nome;
         this.funcionarios = funcionarios;
         this.pedidos = pedidos;
     }
 
+    public Setor(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
     // Getters e Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getNome() {
         return nome;
     }
