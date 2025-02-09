@@ -1,12 +1,12 @@
 # Sistema De Gerenciamento De Pedidos
 
 
-No dia a dia no trabalho são feitos diversos pedidos compartilhados, como uniformes, epi e almoxarifado.
-No entanto, o sistema padrão só permite fazer o pedido e não definir para quem ou qual setor serão direcionados os itens.
+No dia a dia no trabalho são feitos diversos pedidos compartilhados, como uniformes, EPI e almoxarifado.
+No entanto, o sistema padrão só permite fazer o pedido e não permite definir para qual funcionário ou setor serão direcionados os itens.
 
-Os pedidos de uniformes e epi, por exemplo, são pré-digitados em planilhas, mas isso impede que sejam centralizados para rápida consulta posterior.
+Os pedidos de uniformes e EPI, por exemplo, são pré-digitados em planilhas, mas isso impede que sejam centralizados para rápida consulta posterior.
 
-Com estes problemas em vista, foi pensado o desenvolvimento de uma ferramenta que permita atribuir os itens de cada pedido às pessoas ou setores que os receberão.
+Com estes problemas em vista, foi pensado o desenvolvimento de uma ferramenta que permita atribuir os itens de cada pedido às pessoas ou setores que os receberão como trabalho final da disciplina de programação orientada a objetos utilizando java.
 
 
 ## Funções
@@ -17,14 +17,14 @@ O sistema trabalhará apenas com o usuário administrador inicialmente. Ou seja,
 
 Para o correto funcionamento o sistema deve, primeiramente, permitir os cadastros por parte do administrador.
 Esses cadastro são:
-- Cadastro de Itens (Consultando arquivo csv)
+- Cadastro de Itens (Consultando arquivo CSV)
   - Cadastro de Uniformes
   - Cadastro de EPI
   - Cadastro de Itens de Almoxarifado
-- Cadastro de Atores (Consultando arquivo csv)
+- Cadastro de Atores (Consultando arquivo CSV)
 	- Cadastro de Setores
 	- Cadastro de Funcionários
-- Cadastro de Pedidos (Consultando arquivo csv ou manualmente)
+- Cadastro de Pedidos (Consultando arquivo CSV ou manualmente)
   - Cadastro de Pedidos de Uniformes
   - Cadastro de Pedidos de EPI
   - Cadastro de Pedidos de Almoxarifado
@@ -38,7 +38,7 @@ Esses cadastro são:
     - Planilha de Almoxarifado
 
 ### Cadastro de Itens
-O cadastro de itens será feito automaticamente consultado o banco de dados que conterá a informação de qual o tipo de pedido está sendo lida (almoxarifado, epi ou uniformes).
+O cadastro de itens será feito automaticamente consultado o banco de dados que conterá a informação de qual o tipo de pedido está sendo lida (almoxarifado, EPI ou uniformes).
 Também será necessário permitir atualizar a lista de itens para o pedido.
 
 Itens possuem as seguintes informações
@@ -109,7 +109,7 @@ O sistema deve permitir que o usuário consulte um pedido específico, informand
 - O sistema deve exibir os itens pedidos naquele pedido, a data de realização e o tipo do pedido (substituindo o número salvo no banco de dados pelo tipo por extenso correspondente).
 
 ### Cadastro de Atores
-O sistema deve ler arquivos com os nomes dos funcionários e dos setores selecionáveis para os pedidos a partir de um arquivo csv e salvar no banco de dados.
+O sistema deve ler arquivos com os nomes dos funcionários e dos setores selecionáveis para os pedidos a partir de um arquivo CSV e salvar no banco de dados.
 
 #### Setor
 Cada setor conterá:
