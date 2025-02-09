@@ -30,6 +30,10 @@ public class Bibliotecario extends Usuario {
         String novaSenha = Entrada.solicitarSenha();
         int tipoNovoUsuario = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o tipo de usuário \n1 - Aluno\n2 - Professor\n3 - Bibliotecario: ", "^[1-2]$", "Tipo de Usuário Inválido"));
 
+        // Criptografar a senha
+        Criptografia criptografia = new Criptografia(novaSenha, Criptografia.SHA256);
+        novaSenha = criptografia.criptografar();
+
         Usuario usuario = null;
 
         switch (tipoNovoUsuario) {
@@ -70,6 +74,10 @@ public class Bibliotecario extends Usuario {
         } else {
             System.out.println("Nenhum usuário com atraso no momento.");
         }
+    }
+
+    public String getTelefone() {
+        return telefone;
     }
 
 

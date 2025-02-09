@@ -161,6 +161,9 @@ public class Biblioteca {
     }
 
     public Usuario loginUsuario(String email, String senha) {
+        Criptografia criptografia = new Criptografia(senha, Criptografia.SHA256);
+        senha = criptografia.criptografar();
+        
         for (Usuario usuarioTemp : usuarios) {
             if (usuarioTemp.login(email, senha)) {
                 this.usuarioLogado = usuarioTemp;
