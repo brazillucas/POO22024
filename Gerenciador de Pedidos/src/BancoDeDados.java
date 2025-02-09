@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BancoDeDados {
     
-    public void salvarPedido(Pedido pedido) {
+    public static void salvarPedido(Pedido pedido) {
         // Salva o pedido no banco de dados
     }
 
@@ -40,5 +40,9 @@ public class BancoDeDados {
     public List<Funcionario> carregarFuncionarios() {
         // Carrega os funcionários do banco de dados
         return new ArrayList<>();
+    }
+
+    public static Item buscarItemPorId(int itemId) {
+        throw new UnsupportedOperationException("Unimplemented method 'buscarItemPorId'");
     }
 }
