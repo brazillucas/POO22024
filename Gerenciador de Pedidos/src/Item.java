@@ -17,32 +17,32 @@
  */
 
 public abstract class Item {
-    protected String codigo;
-    protected String descricao;
+    protected int codigo;
+    protected String nome;
     protected TipoItem tipo; // Uniforme, EPI, Almoxarifado
 
     // Construtor
-    public Item(String codigo, String descricao, TipoItem tipo) {
+    public Item(int codigo, String nome, TipoItem tipo) {
         this.codigo = codigo;
-        this.descricao = descricao;
+        this.nome = nome;
         this.tipo = tipo;
     }
 
     // Getters e Setters
-    public String getCodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getNome() {
+        return nome;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public TipoItem getTipo() {

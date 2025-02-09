@@ -1,20 +1,20 @@
 public class Uniforme extends Item {
-    private String setorDestino;
+    private int setorDestino;
     private String tamanho;
 
     // Construtor
-    public Uniforme(String codigo, String descricao, TipoItem tipo, String setorDestino, String tamanho) {
-        super(codigo, descricao, tipo);
+    public Uniforme(int codigo, String nome, int setorDestino, String tamanho) {
+        super(codigo, nome, TipoItem.UNIFORME);
         this.setorDestino = setorDestino;
         this.tamanho = tamanho;
     }
 
     // Getters e Setters
-    public String getSetorDestino() {
+    public int getSetorDestino() {
         return setorDestino;
     }
 
-    public void setSetorDestino(String setorDestino) {
+    public void setSetorDestino(int setorDestino) {
         this.setorDestino = setorDestino;
     }
 
@@ -29,7 +29,7 @@ public class Uniforme extends Item {
     // Implementação do método abstrato
     @Override
     public void exibirDetalhes() {
-        System.out.println("Uniforme - Código: " + codigo + ", Descrição: " + descricao +
+        System.out.println("Uniforme - Código: " + codigo + ", Nome: " + nome +
                 ", Setor Destino: " + setorDestino + ", Tamanho: " + tamanho);
     }
 }

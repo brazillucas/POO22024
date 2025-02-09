@@ -1,22 +1,28 @@
 public class EPI extends Item {
-    private String setorDestino;
+    private int setorDestino;
     private String tamanho;
     private String ca; // Certificado de Aprovação
 
     // Construtor
-    public EPI(String codigo, String descricao, TipoItem tipo, String setorDestino, String tamanho, String ca) {
-        super(codigo, descricao, tipo);
+    public EPI(int codigo, String nome, int setorDestino, String tamanho, String ca) {
+        super(codigo, nome, TipoItem.EPI);
         this.setorDestino = setorDestino;
         this.tamanho = tamanho;
         this.ca = ca;
     }
 
+    public EPI(int codigo, String nome, String tamanho, String ca) {
+        super(codigo, nome, TipoItem.EPI);
+        this.tamanho = tamanho;
+        this.ca = ca;
+    }
+
     // Getters e Setters
-    public String getSetorDestino() {
+    public int getSetorDestino() {
         return setorDestino;
     }
 
-    public void setSetorDestino(String setorDestino) {
+    public void setSetorDestino(int setorDestino) {
         this.setorDestino = setorDestino;
     }
 
@@ -39,7 +45,7 @@ public class EPI extends Item {
     // Implementação do método abstrato
     @Override
     public void exibirDetalhes() {
-        System.out.println("EPI - Código: " + codigo + ", Descrição: " + descricao +
+        System.out.println("EPI - Código: " + codigo + ", Nome: " + nome +
                 ", Setor Destino: " + setorDestino + ", Tamanho: " + tamanho + ", CA: " + ca);
     }
 }

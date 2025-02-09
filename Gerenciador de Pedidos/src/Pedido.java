@@ -57,7 +57,7 @@ public class Pedido {
         this.tipoPedido = tipoPedido;
     }
 
-    public List<ItemPedido> getItens() {
+    public List<ItemPedido> getItensPedido() {
         return itensPedido;
     }
 

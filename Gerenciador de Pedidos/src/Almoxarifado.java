@@ -2,13 +2,13 @@ public class Almoxarifado extends Item {
     // Não possui atributos adicionais específicos
 
     // Construtor
-    public Almoxarifado(String codigo, String descricao, TipoItem tipo) {
-        super(codigo, descricao, tipo);
+    public Almoxarifado(int codigo, String nome) {
+        super(codigo, nome, TipoItem.ALMOXARIFADO);
     }
 
     // Implementação do método abstrato
     @Override
     public void exibirDetalhes() {
-        System.out.println("Almoxarifado - Código: " + codigo + ", Descrição: " + descricao);
+        System.out.println("Almoxarifado - Código: " + getCodigo() + ", Nome: " + getNome());
     }
 }
