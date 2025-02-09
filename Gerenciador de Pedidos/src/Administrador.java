@@ -62,10 +62,12 @@ public class Administrador extends Funcionario {
     // Métodos
     public void cadastrarItem(Item item) {
         // Implementação do método
+        BancoDeDados.cadastrarItem(item);
     }
 
     public void cadastrarSetor(Setor setor) {
         // Implementação do método
+        
     }
 
     public void cadastrarFuncionario(Funcionario funcionario) {

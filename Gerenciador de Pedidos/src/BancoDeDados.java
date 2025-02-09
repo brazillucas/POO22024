@@ -71,6 +71,19 @@ public class BancoDeDados {
         }
     }
     
+    // Cadastrar um item no banco de dados
+    public static void cadastrarItem(Item item) {
+        String sql = "INSERT INTO Itens (nome, tipo, tamanho, setor_id, ca) VALUES (?, ?, ?, ?, ?)";
+        if(item instanceof Uniforme uniforme) {
+            ConexaoBD.executarUpdate(sql, uniforme.getNome(), uniforme.getTipo(), uniforme.getTamanho(), uniforme.getSetorDestino(), null);
+        } else if(item instanceof EPI epi) {
+            ConexaoBD.executarUpdate(sql, epi.getNome(), epi.getTipo(), epi.getTamanho(), epi.getSetorDestino(), epi.getCa());
+        } else if(item instanceof Almoxarifado almoxarifado) {
+            ConexaoBD.executarUpdate(sql, almoxarifado.getNome(), almoxarifado.getTipo(), null, null);
+        }
+
+    }
+
     // Carrega os itens do banco de dados
     public List<Item> carregarItens() {
         String sql = "SELECT * " +
