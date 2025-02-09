@@ -11,31 +11,31 @@ import java.util.List;
 
 public class PlanilhaHandler {
     
-    public void exportarUniformes(List<Item> itens, String caminhoArquivo) {
+    public static void exportarUniformes(List<ItemPedido> itens, String caminhoArquivo) {
         // Exporta os itens de uniformes para uma planilha
         List<String> dados = new ArrayList<>();
-        for (Item item : itens) {
-            dados.add(item.toString());
+        for (ItemPedido itemPedido : itens) {
+            dados.add(itemPedido.toString());
         }
         CSVHandler csvHandler = new CSVHandler();
         csvHandler.escreverCSV(caminhoArquivo, dados);
     }
 
-    public void exportarEPI(List<Item> itens, String caminhoArquivo) {
+    public static void exportarEPI(List<ItemPedido> itens, String caminhoArquivo) {
         // Exporta os itens de EPI para uma planilha
         List<String> dados = new ArrayList<>();
-        for (Item item : itens) {
-            dados.add(item.toString());
+        for (ItemPedido itemPedido : itens) {
+            dados.add(itemPedido.toString());
         }
         CSVHandler csvHandler = new CSVHandler();
         csvHandler.escreverCSV(caminhoArquivo, dados);
     }
 
-    public void exportarAlmoxarifado(List<Item> itens, String caminhoArquivo) {
+    public static void exportarAlmoxarifado(List<ItemPedido> itens, String caminhoArquivo) {
         // Exporta os itens do almoxarifado para uma planilha
         List<String> dados = new ArrayList<>();
-        for (Item item : itens) {
-            dados.add(item.toString());
+        for (ItemPedido itemPedido : itens) {
+            dados.add(itemPedido.toString());
         }
         CSVHandler csvHandler = new CSVHandler();
         csvHandler.escreverCSV(caminhoArquivo, dados);
