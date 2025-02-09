@@ -21,14 +21,25 @@ public class Funcionario {
     private int matricula;
     private String nome;
     private int setor;
-    private int funcao;
+    private FuncaoFuncionario funcao;
     private LocalDate dataAdmissao;
-    private String lojaTrabalho;
+    private int lojaTrabalho;
     private String tamanhoUniforme;
     @SuppressWarnings("FieldMayBeFinal")
     private List<Integer> pedidos;
 
-    public Funcionario(int matricula, String nome, int setor, int funcao, LocalDate dataAdmissao, String lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos) {
+    // Construtores
+    public Funcionario(int matricula, String nome, int setor, FuncaoFuncionario funcao, LocalDate dataAdmissao, int lojaTrabalho, String tamanhoUniforme) {
+        this.matricula = matricula;
+        this.nome = nome;
+        this.setor = setor;
+        this.funcao = funcao;
+        this.dataAdmissao = dataAdmissao;
+        this.lojaTrabalho = lojaTrabalho;
+        this.tamanhoUniforme = tamanhoUniforme;
+    }
+
+    public Funcionario(int matricula, String nome, int setor, FuncaoFuncionario funcao, LocalDate dataAdmissao, int lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos) {
         this.matricula = matricula;
         this.nome = nome;
         this.setor = setor;
@@ -64,11 +75,11 @@ public class Funcionario {
         this.setor = setor;
     }
 
-    public int getFuncao() {
+    public FuncaoFuncionario getFuncao() {
         return funcao;
     }
 
-    public void setFuncao(int funcao) {
+    public void setFuncao(FuncaoFuncionario funcao) {
         this.funcao = funcao;
     }
 
@@ -80,11 +91,11 @@ public class Funcionario {
         this.dataAdmissao = dataAdmissao;
     }
 
-    public String getLojaTrabalho() {
+    public int getLojaTrabalho() {
         return lojaTrabalho;
     }
 
-    public void setLojaTrabalho(String lojaTrabalho) {
+    public void setLojaTrabalho(int lojaTrabalho) {
         this.lojaTrabalho = lojaTrabalho;
     }
 
