@@ -1,3 +1,6 @@
+
+import java.time.LocalDate;
+
 /*
  * Filtro
  * Atributos:
@@ -6,13 +9,13 @@
  * Métodos:
  * aplicarFiltro(List<Pedido> pedidos)
  */
-import java.util.List;
-
-public class Filtro {
+public class Filtro <T> {
     private String tipoFiltro;
-    private String valorFiltro;
+    private T valorFiltro;
+    private LocalDate dataInicial;
+    private LocalDate dataFinal;
 
-    public Filtro(String tipoFiltro, String valorFiltro) {
+    public Filtro(String tipoFiltro, T valorFiltro) {
         this.tipoFiltro = tipoFiltro;
         this.valorFiltro = valorFiltro;
     }
@@ -22,7 +25,7 @@ public class Filtro {
         return tipoFiltro;
     }
 
-    public String getValorFiltro() {
+    public T getValorFiltro() {
         return valorFiltro;
     }
 
@@ -30,12 +33,24 @@ public class Filtro {
         this.tipoFiltro = tipoFiltro;
     }
 
-    public void setValorFiltro(String valorFiltro) {
+    public void setValorFiltro(T valorFiltro) {
         this.valorFiltro = valorFiltro;
     }
 
-    public List<Pedido> aplicarFiltro(List<Pedido> pedidos) {
-
-        return pedidos;
+    public LocalDate getDataInicial() {
+        return dataInicial;
     }
+
+    public void setDataInicial(LocalDate dataInicial) {
+        this.dataInicial = dataInicial;
+    }
+
+    public LocalDate getDataFinal() {
+        return dataFinal;
+    }
+
+    public void setDataFinal(LocalDate dataFinal) {
+        this.dataFinal = dataFinal;
+    }
+
 }
