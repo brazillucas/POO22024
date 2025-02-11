@@ -58,6 +58,7 @@ public class BancoDeDados {
         return -1; // Retorna -1 em caso de erro
     }
 
+    // Atualizar um item no banco de dados
     public void atualizarItem(Item item) {
         if (item instanceof Uniforme uniforme) {
             String sql = "UPDATE Itens SET nome = ?, tipo = ?, tamanho = ?, setor_id = ? WHERE id = ?";
@@ -141,6 +142,12 @@ public class BancoDeDados {
         return setores;
     }
 
+    // Cadastrar um novo funcionário no banco de dados
+    public static void cadastrarFuncionario(Funcionario funcionario) {
+        String sql = "INSERT INTO Funcionarios (matricula, nome, setor_id, funcao, data_admissao, loja_trabalho, tamanho_uniforme) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        ConexaoBD.executarUpdate(sql, funcionario.getMatricula(), funcionario.getNome(), funcionario.getSetor(), funcionario.getFuncao().toString(), funcionario.getDataAdmissao(), funcionario.getLojaTrabalho(), funcionario.getTamanhoUniforme());
+    }
+
     // Carrega os funcionários do banco de dados
     public List<Funcionario> carregarFuncionarios() {
         String sql = "SELECT * FROM Funcionarios";
@@ -196,6 +203,54 @@ public class BancoDeDados {
         }
 
         return null; // Retorna null se o item não for encontrado
+    }
+
+    // Listar todos os pedidos
+    public static List<Pedido> listarPedidos() {
+        List<Pedido> pedidos = new ArrayList<>();
+        String sql = "SELECT numero_pedido, tipo_pedido, data_pedido FROM Pedidos";
+        ResultSet resultado = ConexaoBD.executarQuery(sql);
+
+        try {
+            while (resultado.next()) {
+                int numeroPedido = resultado.getInt("numero_pedido");
+                String tipoPedido = resultado.getString("tipo_pedido");
+                LocalDate dataPedido = resultado.getDate("data_pedido").toLocalDate();
+
+                // Criar o objeto Pedido
+                Pedido pedido = new Pedido(numeroPedido, TipoPedido.valueOf(tipoPedido), dataPedido);
+
+                pedidos.add(pedido);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar os pedidos: " + e.getMessage());
+        }
+
+        return pedidos;
+    }
+
+    // Listar pedidos por número do pedido
+    public static List<Pedido> listarPedidosPorNumero(int numeroPedido) {
+        List<Pedido> pedidos = new ArrayList<>();
+        String sql = "SELECT numero_pedido, tipo_pedido, data_pedido FROM Pedidos WHERE numero_pedido = ?";
+        ResultSet resultado = ConexaoBD.executarQuery(sql, numeroPedido);
+
+        try {
+            while (resultado.next()) {
+                int numero = resultado.getInt("numero_pedido");
+                String tipo = resultado.getString("tipo_pedido");
+                LocalDate dataPedido = resultado.getDate("data_pedido").toLocalDate();
+
+                // Criar o objeto Pedido
+                Pedido pedido = new Pedido(numero, TipoPedido.valueOf(tipo), dataPedido);
+
+                pedidos.add(pedido);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar os pedidos: " + e.getMessage());
+        }
+
+        return pedidos;
     }
 
     // Listar pedidos por matrícula do funcionário
