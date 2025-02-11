@@ -61,29 +61,43 @@ public class Administrador extends Funcionario {
 
     // Métodos
     public void cadastrarItem(Item item) {
-        // Implementação do método
         BancoDeDados.cadastrarItem(item);
     }
 
-    public void cadastrarSetor(Setor setor) {
-        // Implementação do método
-        
-    }
-
     public void cadastrarFuncionario(Funcionario funcionario) {
-        // Implementação do método
+        BancoDeDados.cadastrarFuncionario(funcionario);
     }
 
-    public void realizarPedido(Pedido pedido) {
-        // Implementação do método
+    public void salvarPedido(Pedido pedido) {
+        BancoDeDados.salvarPedido(pedido);
     }
 
-    public void consultarPedidos(Filtro filtro) {
-        // Implementação do método
+    public void consultarPedidos(Filtro<?> filtro) {
+        /*
+         * O método consulta:
+         * - Pedidos por setor 1
+         * - Pedidos por período 1
+         * - Pedidos por funcionário 1
+         * - Pedidos por número do pedido
+         * - Todos os itens
+         */
+        if (filtro.getTipoFiltro().equals("Setor") && filtro.getValorFiltro() instanceof Setor setor) {
+            BancoDeDados.listarPedidosPorSetor(setor.getId());
+        } else if (filtro.getTipoFiltro().equals("Período")) {
+            BancoDeDados.listarPedidosPorPeriodo(filtro.getDataInicial(), filtro.getDataFinal());
+            
+        } else if (filtro.getTipoFiltro().equals("Funcionário") && filtro.getValorFiltro() instanceof Integer matricula) {
+            BancoDeDados.listarPedidosPorFuncionario(matricula);
+        } else if (filtro.getTipoFiltro().equals("Número do Pedido") && filtro.getValorFiltro() instanceof Integer numeroPedido) {
+            BancoDeDados.listarPedidosPorNumero(numeroPedido);
+        } else {
+            BancoDeDados.listarPedidos();
+        }
     }
 
     public void alterarSenha(String novaSenha) {
-        // Implementação do método
+        this.senha = novaSenha;
+        this.alterouSenha = true;
     }
 
 }
