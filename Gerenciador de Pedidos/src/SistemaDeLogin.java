@@ -14,36 +14,36 @@
  * Remove um administrador do sistema com base na matrícula.
  *  */
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SistemaDeLogin {
     @SuppressWarnings("FieldMayBeFinal")
-    private Map<String, Administrador> usuariosCadastrados;
-    
+    private List<Administrador> usuariosCadastrados;
+
     public SistemaDeLogin() {
-        usuariosCadastrados = new HashMap<>();
+        usuariosCadastrados = new ArrayList<>();
     }
-    
-    public Administrador autenticar(String matricula, String senha) {
+
+    public Administrador autenticar(int matricula, String senha) {
         // Criptografar a senha
         Criptografia criptografia = new Criptografia(senha, Criptografia.SHA256);
         senha = criptografia.criptografar();
-        
-        Administrador admin = usuariosCadastrados.get(matricula);
-        if (admin != null && admin.getSenha().equals(senha)) {
-            return admin;
+
+        for (Administrador admin : usuariosCadastrados) {
+            if (admin.getMatricula() == matricula && admin.getSenha().equals(senha)) {
+                return admin;
+            }
         }
         return null;
     }
-    
+
     public void adicionarAdministrador(Administrador admin) {
-        usuariosCadastrados.put(String.valueOf(admin.getMatricula()), admin);
-    }
-    
-    public void removerAdministrador(String matricula) {
-        usuariosCadastrados.remove(matricula);
+        usuariosCadastrados.add(admin);
     }
 
+    public void removerAdministrador(int matricula) {
+        usuariosCadastrados.removeIf(admin -> admin.getMatricula() == matricula);
+    }
 }
 
