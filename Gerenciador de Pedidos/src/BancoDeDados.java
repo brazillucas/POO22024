@@ -120,6 +120,12 @@ public class BancoDeDados {
         return itens;
     }
 
+    // Cadastrar um setor no banco de dados
+    public static void cadastrarSetor(Setor setor) {
+        String sql = "INSERT INTO Setores (nome) VALUES (?)";
+        ConexaoBD.executarUpdate(sql, setor.getNome());
+    }
+    
     // Carregar setores do banco de dados
     public List<Setor> carregarSetores() {
         String sql = "SELECT * FROM Setores";
