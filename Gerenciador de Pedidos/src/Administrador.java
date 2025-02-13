@@ -28,6 +28,7 @@ public class Administrador extends Funcionario {
     private String senha;
     private boolean alterouSenha;
 
+    // Construtores
     public Administrador(int matricula, String nome, int setor,
                         FuncaoFuncionario funcao, LocalDate dataAdmissao,
                         int lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos, String senha, boolean alterouSenha) {
@@ -64,6 +65,10 @@ public class Administrador extends Funcionario {
         BancoDeDados.cadastrarItem(item);
     }
 
+    public void cadastrarSetor(Setor setor) {
+        BancoDeDados.cadastrarSetor(setor);
+    }
+    
     public void cadastrarFuncionario(Funcionario funcionario) {
         BancoDeDados.cadastrarFuncionario(funcionario);
     }
