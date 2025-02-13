@@ -20,16 +20,11 @@ public class CSVHandler {
         // Lê os dados do arquivo CSV
         List<String> dados = new ArrayList<>();
 
-        
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 // Processa a linha
                 dados.add(linha);
-                
-                // Adiciona os dados à lista
-
-
             }
         } catch (IOException e) {
             System.err.println("Erro ao ler o arquivo CSV: " + e.getMessage());
@@ -39,7 +34,6 @@ public class CSVHandler {
 
     public void escreverCSV(String caminhoArquivo, List<?> dados) {
         // Escreve os dados no arquivo CSV
-        
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(caminhoArquivo)))) {
             for (Object dado : dados) {
                 writer.println(dado.toString());
