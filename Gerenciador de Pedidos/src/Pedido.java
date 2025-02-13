@@ -104,16 +104,16 @@ public class Pedido {
     }
 
     // Exportar pedido para planilha
-    public void exportarPlanilha(String caminho) {
+    public void exportarPlanilha(String caminhoArquivo, int numeroLoja) {
         if (null != tipoPedido) switch (tipoPedido) {
             case UNIFORME:
-                PlanilhaHandler.exportarUniformes(this.itensPedido, caminho);
+                PlanilhaHandler.exportarUniformes(this.itensPedido, caminhoArquivo, numeroLoja);
                 break;
             case EPI:
-                PlanilhaHandler.exportarEPI(this.itensPedido, caminho);
+                PlanilhaHandler.exportarEPI(this.itensPedido, caminhoArquivo, numeroLoja);
                 break;
             case ALMOXARIFADO:
-                PlanilhaHandler.exportarAlmoxarifado(this.itensPedido, caminho);
+                PlanilhaHandler.exportarAlmoxarifado(this, caminhoArquivo, numeroLoja);
                 break;
             default:
                 break;
