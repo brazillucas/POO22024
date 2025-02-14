@@ -39,14 +39,15 @@ public class Criptografia {
             byte[] hash = messageDigest.digest(
                 informacao.getBytes(StandardCharsets.UTF_8));
                 hexString = new StringBuilder(2 * hash.length);
-                for(int i = 0; i < hash.length; i++) {
-                    String hex = Integer.toHexString(0xff & hash[i]);
-                    if(hex.length() == 1) {
-                        hexString.append('0');
-                    }
-                    hexString.append(hex);
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
                 }
+                hexString.append(hex);
+            }
         } catch (NoSuchAlgorithmException e) {
+            System.err.println("Algoritmo de criptografia não encontrado.");
         }
 
         return hexString.toString().toUpperCase();

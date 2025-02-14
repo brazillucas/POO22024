@@ -28,7 +28,7 @@ public class Entrada {
                 System.out.print("Senha: ");
                 senha = scanner.nextLine();
             }
-            if (senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{4,8}$")) {
+            if (senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{4,8}$")) {
                 return senha;
             } else {
                 System.out.println("Senha inválida! Tente novamente.");
@@ -37,8 +37,7 @@ public class Entrada {
     }
 
     public static String solicitarEmail() {
-        String email = solicitarEntradaValida("Digite o email do usuário (Modelo: usuario@provedor.com): ", "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", "Email Inválido");
-        return email;
+        return solicitarEntradaValida("Digite o email do usuário (Modelo: usuario@provedor.com): ", "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", "Email Inválido");
     }
 
     public static void limparTela() {
