@@ -17,10 +17,21 @@ public class App {
     Pedido pedido = new Pedido(1, TipoPedido.UNIFORME, LocalDate.now());
 
     // Adicionar itens ao pedido usando seus IDs
-    pedido.adicionarItem(camisaPoloId, 5, -1, funcionarioJoao.getMatricula()); // 5 camisas polo para João
-    pedido.adicionarItem(luvasProtecaoId, 10, setorProducao.getId(), -1); // 10 luvas de proteção para o setor Produção
+    pedido.adicionarItem(camisaPoloId, 5, 1, -1, funcionarioJoao.getMatricula()); // 5 camisas polo para João
+    pedido.adicionarItem(luvasProtecaoId, 10, 1, setorProducao.getId(), -1); // 10 luvas de proteção para o setor Produção
 
 
+
+    pedido.removerItem(camisaPoloId);
+    pedido.adicionarItem(camisaPoloId, 5, 1, -1, funcionarioJoao.getMatricula());
+    pedido.adicionarItem(luvasProtecaoId, 10, setorProducao.getId(), -1, -1);
+
+
+    System.out.println("Detalhes do Pedido:");
+    System.out.println("Número do Pedido: " + pedido.getNumeroPedido());
+    System.out.println("Tipo de Pedido: " + pedido.getTipoPedido());
+    System.out.println("Itens: " + pedido.getItensPedido());
+    System.out.println("Data do Pedido: " + pedido.getDataPedido());
 
         // // Criação de um objeto do tipo Funcionario
         // Funcionario funcionario = new Funcionario(123, "João", 1, 1, LocalDate.of(2021, 1, 1), "Loja 1", "M", new ArrayList<>(Arrays.asList(1, 2, 3)));
