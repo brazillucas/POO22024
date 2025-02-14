@@ -64,7 +64,7 @@ public class ConexaoBD {
     public static ResultSet executarQuery(String sql, Object... parametros) {
         Connection conexao = null;
         PreparedStatement stmt = null;
-        ResultSet rs = null;
+        ResultSet resultado = null;
 
         try {
             conexao = conectar();
@@ -75,7 +75,7 @@ public class ConexaoBD {
                 stmt.setObject(i + 1, parametros[i]);
             }
 
-            rs = stmt.executeQuery();
+            resultado = stmt.executeQuery();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         } finally {
@@ -89,6 +89,6 @@ public class ConexaoBD {
             fecharConexao(conexao);
         }
 
-        return rs; // O ResultSet deve ser fechado pelo chamador
+        return resultado; // O ResultSet deve ser fechado pelo chamador
     }
 }
