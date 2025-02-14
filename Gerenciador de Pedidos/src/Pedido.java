@@ -76,8 +76,8 @@ public class Pedido {
     // Métodos
 
     // Adicionar item ao pedido
-    public void adicionarItem(int itemId, int quantidade, int setorDestino, int funcionarioDestino) {
-        ItemPedido itemPedido = new ItemPedido(itemId, quantidade, setorDestino, funcionarioDestino);
+    public void adicionarItem(int itemId, int quantidade, int numeroPedido, int setorDestino, int funcionarioDestino) {
+        ItemPedido itemPedido = new ItemPedido(itemId, quantidade, numeroPedido, setorDestino, funcionarioDestino);
         itensPedido.add(itemPedido);
     }
 
@@ -107,13 +107,13 @@ public class Pedido {
     public void exportarPlanilha(String caminhoArquivo, int numeroLoja) {
         if (null != tipoPedido) switch (tipoPedido) {
             case UNIFORME:
-                PlanilhaHandler.exportarUniformes(this.itensPedido, caminhoArquivo, numeroLoja);
+                // PlanilhaHandler.exportarUniformes(this.itensPedido, caminhoArquivo, numeroLoja);
                 break;
             case EPI:
-                PlanilhaHandler.exportarEPI(this.itensPedido, caminhoArquivo, numeroLoja);
+                // PlanilhaHandler.exportarEPI(this.itensPedido, caminhoArquivo, numeroLoja);
                 break;
             case ALMOXARIFADO:
-                PlanilhaHandler.exportarAlmoxarifado(this, caminhoArquivo, numeroLoja);
+                // PlanilhaHandler.exportarAlmoxarifado(this, caminhoArquivo, numeroLoja);
                 break;
             default:
                 break;
