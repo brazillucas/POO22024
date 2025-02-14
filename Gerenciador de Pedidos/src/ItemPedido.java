@@ -15,13 +15,15 @@
     @SuppressWarnings("FieldMayBeFinal")
     private int itemId; // ID do item no banco de dados
     private int quantidade;
+    private int numero_pedido;
     private int setorDestino; // Para almoxarifado
     private int funcionarioDestino; // Para uniformes e EPI
 
     // Construtor
-    public ItemPedido(int itemId, int quantidade, int setorDestino, int funcionarioDestino) {
+    public ItemPedido(int itemId, int quantidade, int numero_pedido, int setorDestino, int funcionarioDestino) {
         this.itemId = itemId;
         this.quantidade = quantidade;
+        this.numero_pedido = numero_pedido;
         this.setorDestino = setorDestino;
         this.funcionarioDestino = funcionarioDestino;
     }
@@ -37,6 +39,14 @@
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public int getNumeroPedido() {
+        return this.numero_pedido;
+    }
+
+    public void setNumeroPedido(int numero_pedido) {
+        this.numero_pedido = numero_pedido;
     }
 
     public int getSetorDestino() {
