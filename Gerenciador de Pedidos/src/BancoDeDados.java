@@ -32,10 +32,11 @@ public class BancoDeDados {
 
         // Salvar os itens do pedido
         for (ItemPedido itemPedido : pedido.getItensPedido()) {
-            sql = "INSERT INTO Itens_Pedido (pedido_id, item_id, quantidade, setor_id, funcionario_matricula) VALUES (?, ?, ?, ?, ?)";
+            sql = "INSERT INTO Itens_Pedido (pedido_id, item_id, numero_pedido, quantidade, setor_id, funcionario_matricula) VALUES (?, ?, ?, ?, ?, ?)";
             ConexaoBD.executarUpdate(sql,
                     numeroPedido,
                     itemPedido.getItemId(),
+                    itemPedido.getNumeroPedido(),
                     itemPedido.getQuantidade(),
                     itemPedido.getSetorDestino() != 0 ? itemPedido.getSetorDestino() : 0, // Usar 0 para "nulo"
                     itemPedido.getFuncionarioDestino() != 0 ? itemPedido.getFuncionarioDestino() : 0); // Usar 0 para "nulo"
@@ -181,6 +182,35 @@ public class BancoDeDados {
         return funcionarios;
     }
 
+    // Carregar funcionário por matrícula
+    public Funcionario buscarFuncionarioPorMatricula(int matricula) {
+        String sql = "SELECT * FROM Funcionarios WHERE matricula = ?";
+        ResultSet resultado = ConexaoBD.executarQuery(sql, matricula);
+
+        try {
+            if (resultado.next()) {
+                String nome = resultado.getString("nome");
+                int setor = resultado.getInt("setor_id");
+                FuncaoFuncionario funcao = FuncaoFuncionario.valueOf(resultado.getString("funcao"));
+                LocalDate dataAdmissao = resultado.getDate("data_admissao").toLocalDate();
+                int lojaTrabalho = resultado.getInt("loja_trabalho");
+                String tamanhoUniforme = resultado.getString("tamanho_uniforme");
+
+                return new Funcionario(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao carregar o funcionário: " + e.getMessage());
+        }
+
+        return null; // Retorna null se o funcionário não for encontrado
+    }
+
+    // Cadastrar ItemPedido
+    public static void cadastrarItemPedido(ItemPedido itemPedido) {
+        String sql = "INSERT INTO Itens_Pedido (pedido_id, item_id, quantidade, setor_id, funcionario_matricula) VALUES (?, ?, ?, ?, ?)";
+        ConexaoBD.executarUpdate(sql, itemPedido.getNumeroPedido(), itemPedido.getItemId(), itemPedido.getQuantidade(), itemPedido.getSetorDestino(), itemPedido.getFuncionarioDestino());
+    }
+
     // Buscar um item pelo ID
     public static Item buscarItemPorId(int itemId) {
         String sql = "SELECT * FROM Itens WHERE id = ?";
@@ -209,6 +239,44 @@ public class BancoDeDados {
         }
 
         return null; // Retorna null se o item não for encontrado
+    }
+
+    // Buscar um pedido pelo número
+    public static Pedido buscarPedidoPorNumero(int numeroPedido) {
+        // Buscar os dados do pedido
+        // Seleciona os dados do pedido, procura pelos dados dos itens a partir da relação Itens_Pedido
+        String sql = "SELECT numero_pedido, tipo_pedido, data_pedido FROM Pedidos WHERE numero_pedido = ?";
+
+        ResultSet resultado = ConexaoBD.executarQuery(sql, numeroPedido);
+
+        try {
+            if (resultado.next()) {
+                String tipoPedido = resultado.getString("tipo_pedido");
+                LocalDate dataPedido = resultado.getDate("data_pedido").toLocalDate();
+
+                Pedido pedido = new Pedido(numeroPedido, TipoPedido.valueOf(tipoPedido), dataPedido);
+
+                // Buscar os itens do pedido
+                sql = "SELECT item_id, quantidade, setor_id, funcionario_matricula FROM Itens_Pedido WHERE numero_pedido = ?";
+                ResultSet itensResultado = ConexaoBD.executarQuery(sql, numeroPedido);
+
+                while (itensResultado.next()) {
+                    int itemId = itensResultado.getInt("item_id");
+                    int quantidade = itensResultado.getInt("quantidade");
+                    int numero_pedido = itensResultado.getInt("numero_pedido");
+                    int setorId = itensResultado.getInt("setor_id");
+                    int funcionarioMatricula = itensResultado.getInt("funcionario_matricula");
+
+                    pedido.adicionarItem(itemId, quantidade, numero_pedido, setorId, funcionarioMatricula);
+                }
+
+                return pedido;
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar o pedido: " + e.getMessage());
+        }
+
+        return null; // Retorna null se o pedido não for encontrado
     }
 
     // Listar todos os pedidos
