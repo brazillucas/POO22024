@@ -3,36 +3,46 @@ import java.util.Scanner;
 
 public class Entrada {
 
+    @SuppressWarnings("ConvertToTryWithResources")
     public static String solicitarEntradaValida(String mensagem, String regex, String mensagemErro) {
         Scanner scanner = new Scanner(System.in);
-        while(true) {
-            System.out.print(mensagem);
-            String entrada = scanner.nextLine();
-            if (entrada.matches(regex)) {
-                return entrada;
-            } else {
-                System.out.printf("%s! Tente novamente.\n", mensagemErro);
+        try {
+            while (true) {
+                System.out.print(mensagem);
+                String entrada = scanner.nextLine();
+                if (entrada.matches(regex)) {
+                    return entrada;
+                } else {
+                    System.out.printf("%s! Tente novamente.\n", mensagemErro);
+                }
             }
+        } finally {
+            scanner.close();
         }
     }
 
+    @SuppressWarnings("ConvertToTryWithResources")
     public static String solicitarSenha() {
         Scanner scanner = new Scanner(System.in);
-        while(true) {
-            Console console = System.console();
-            String senha;
-            if (console != null) {
-                char[] senhaArray = console.readPassword("Senha: (Modelo: 4-8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial): ");
-                senha = new String(senhaArray);
-            } else {
-                System.out.print("Senha: ");
-                senha = scanner.nextLine();
+        try {
+            while (true) {
+                Console console = System.console();
+                String senha;
+                if (console != null) {
+                    char[] senhaArray = console.readPassword("Senha: (Modelo: 4-8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial): ");
+                    senha = new String(senhaArray);
+                } else {
+                    System.out.print("Senha: ");
+                    senha = scanner.nextLine();
+                }
+                if (senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{4,8}$")) {
+                    return senha;
+                } else {
+                    System.out.println("Senha inválida! Tente novamente.");
+                }
             }
-            if (senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{4,8}$")) {
-                return senha;
-            } else {
-                System.out.println("Senha inválida! Tente novamente.");
-            }
+        } finally {
+            scanner.close();
         }
     }
 
@@ -45,7 +55,7 @@ public class Entrada {
     }
 
     public static void aguardarEnter() {
-        solicitarEntradaValida("Pressione Enter para continuar...","^$", "Você não pressionou Enter.");
+        solicitarEntradaValida("Pressione Enter para continuar...", "^$", "Você não pressionou Enter.");
     }
 
     public static void finalizarFuncao() {
