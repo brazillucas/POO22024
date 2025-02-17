@@ -20,16 +20,16 @@ import java.time.LocalDate;
 public class Funcionario {
     private int matricula;
     private String nome;
-    private int setor;
-    private FuncaoFuncionario funcao;
+    private int funcao;
     private LocalDate dataAdmissao;
     private int lojaTrabalho;
     private String tamanhoUniforme;
+    private int setor;
     @SuppressWarnings("FieldMayBeFinal")
     private List<Integer> pedidos;
 
     // Construtores
-    public Funcionario(int matricula, String nome, int setor, FuncaoFuncionario funcao, LocalDate dataAdmissao, int lojaTrabalho, String tamanhoUniforme) {
+    public Funcionario(int matricula, String nome, int setor, int funcao, LocalDate dataAdmissao, int lojaTrabalho, String tamanhoUniforme) {
         this.matricula = matricula;
         this.nome = nome;
         this.setor = setor;
@@ -39,7 +39,7 @@ public class Funcionario {
         this.tamanhoUniforme = tamanhoUniforme;
     }
 
-    public Funcionario(int matricula, String nome, int setor, FuncaoFuncionario funcao, LocalDate dataAdmissao, int lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos) {
+    public Funcionario(int matricula, String nome, int setor, int funcao, LocalDate dataAdmissao, int lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos) {
         this.matricula = matricula;
         this.nome = nome;
         this.setor = setor;
@@ -75,11 +75,11 @@ public class Funcionario {
         this.setor = setor;
     }
 
-    public FuncaoFuncionario getFuncao() {
+    public int getFuncao() {
         return funcao;
     }
 
-    public void setFuncao(FuncaoFuncionario funcao) {
+    public void setFuncao(int funcao) {
         this.funcao = funcao;
     }
 
