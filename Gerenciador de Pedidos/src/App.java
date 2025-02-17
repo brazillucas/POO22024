@@ -6,14 +6,14 @@ public class App {
         SistemaDeLogin sistemaLogin = new SistemaDeLogin();
 
         Menu menu = new Menu();
-        menu.exibirMenuPrincipal();
+        menu.exibirMenuIncial();
 
         String opc = Entrada.solicitarEntradaValida("Digite a opção desejada: ", "^[0-1]$", "Opção inválida. Digite apenas números.");
 
         while (!opc.equals("2")) {
             switch (opc) {
                 case "1":
-                    menu.exibirMenuAdministrador();
+                    menu.exibirMenuPrincipal();
                     break;
                 case "2":
                     System.out.println("Saindo...");
