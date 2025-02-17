@@ -23,31 +23,24 @@ public class Entrada {
 
     @SuppressWarnings("ConvertToTryWithResources")
     public static String solicitarSenha() {
+        @SuppressWarnings("resource")
         Scanner scanner = new Scanner(System.in);
-        try {
-            while (true) {
-                Console console = System.console();
-                String senha;
-                if (console != null) {
-                    char[] senhaArray = console.readPassword("Senha: (Modelo: 4-8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial): ");
-                    senha = new String(senhaArray);
-                } else {
-                    System.out.print("Senha: ");
-                    senha = scanner.nextLine();
-                }
-                if (senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{4,8}$")) {
-                    return senha;
-                } else {
-                    System.out.println("Senha inválida! Tente novamente.");
-                }
+        while (true) {
+            Console console = System.console();
+            String senha;
+            if (console != null) {
+                char[] senhaArray = console.readPassword("Senha: (Modelo: 4-8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial): ");
+                senha = new String(senhaArray);
+            } else {
+                System.out.print("Senha: ");
+                senha = scanner.nextLine();
             }
-        } finally {
-            scanner.close();
+            if (senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{4,8}$")) {
+                return senha;
+            } else {
+                System.out.println("Senha inválida! Tente novamente.");
+            }
         }
-    }
-
-    public static String solicitarEmail() {
-        return solicitarEntradaValida("Digite o email do usuário (Modelo: usuario@provedor.com): ", "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", "Email Inválido");
     }
 
     public static void limparTela() {
@@ -55,7 +48,10 @@ public class Entrada {
     }
 
     public static void aguardarEnter() {
-        solicitarEntradaValida("Pressione Enter para continuar...", "^$", "Você não pressionou Enter.");
+        System.out.println("Pressione ENTER para continuar...");
+        @SuppressWarnings("resource")
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
     }
 
     public static void finalizarFuncao() {
