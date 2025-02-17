@@ -81,6 +81,11 @@ public class Pedido {
         itensPedido.add(itemPedido);
     }
 
+    // Adiciona uma relação de itens ao pedido
+    public void adicionarItemPedido(ItemPedido itemPedido) {
+        itensPedido.add(itemPedido);
+    }
+
     // Remover item do pedido
     public void removerItem(int itemId) {
         itensPedido.removeIf(ip -> ip.getItemId() == itemId);
