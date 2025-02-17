@@ -7,15 +7,15 @@
  * 
  * Métodos:
  * cadastrarItem(Item item)
- * Permite o cadastro de novos itens no sistema.
+    * Permite o cadastro de novos itens no sistema.
  * cadastrarSetor(Setor setor)
- * Permite o cadastro de novos setores no sistema.
+    * Permite o cadastro de novos setores no sistema.
  * cadastrarFuncionario(Funcionario funcionario)
- * Permite o cadastro de novos funcionários no sistema.
+    * Permite o cadastro de novos funcionários no sistema.
  * realizarPedido(Pedido pedido)
- * Permite a criação e registro de novos pedidos no sistema.
+    * Permite a criação e registro de novos pedidos no sistema.
  * consultarPedidos(Filtro filtro)
- * Permite consultar pedidos com base em filtros específicos (setor, período, funcionário ou número do pedido).
+    * Permite consultar pedidos com base em filtros específicos (setor, período, funcionário ou número do pedido).
  * alterarSenha(String novaSenha)
  * Permite ao administrador alterar sua senha padrão.
  */
@@ -30,19 +30,27 @@ public class Administrador extends Funcionario {
 
     // Construtores
     public Administrador(int matricula, String nome, int setor,
-                        FuncaoFuncionario funcao, LocalDate dataAdmissao,
+                        int funcao, LocalDate dataAdmissao,
                         int lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos, String senha, boolean alterouSenha) {
         super(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidos);
-        this.senha = senha;
+        this.setSenha(senha);
         this.alterouSenha = alterouSenha;
     }
 
     public Administrador(int matricula, String nome, int setor,
-                        FuncaoFuncionario funcao, LocalDate dataAdmissao,
+                        int funcao, LocalDate dataAdmissao,
                         int lojaTrabalho, String tamanhoUniforme,
                         List<Integer> pedidos) {
         super(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidos);
-        this.senha = String.valueOf(matricula).substring(4);
+        this.setSenha(String.valueOf(matricula).substring(4));
+        this.alterouSenha = false;
+    }
+
+    public Administrador(int matricula, String nome, int setor,
+                        int funcao, LocalDate dataAdmissao,
+                        int lojaTrabalho, String tamanhoUniforme) {
+        super(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme);
+        this.setSenha(String.valueOf(matricula).substring(4));
         this.alterouSenha = false;
     }
 
@@ -55,8 +63,9 @@ public class Administrador extends Funcionario {
         return alterouSenha;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public final void setSenha(String senha) {
+        Criptografia criptografia = new Criptografia(senha, Criptografia.SHA256);
+        this.senha = criptografia.criptografar();
         this.alterouSenha = true;
     }
 
@@ -73,8 +82,12 @@ public class Administrador extends Funcionario {
         BancoDeDados.cadastrarFuncionario(funcionario);
     }
 
-    public void salvarPedido(Pedido pedido) {
-        BancoDeDados.salvarPedido(pedido);
+    public void salvarPedido(Pedido pedido, BancoDeDados bancoDeDados) {
+        bancoDeDados.salvarPedido(pedido);
+    }
+
+    public void realizarPedido(Pedido pedido, BancoDeDados bancoDeDados) {
+        bancoDeDados.salvarPedido(pedido);
     }
 
     public void consultarPedidos(Filtro<?> filtro) {
@@ -86,23 +99,37 @@ public class Administrador extends Funcionario {
          * - Pedidos por número do pedido
          * - Todos os itens
          */
+        BancoDeDados banco = new BancoDeDados();
         if (filtro.getTipoFiltro().equals("Setor") && filtro.getValorFiltro() instanceof Setor setor) {
-            BancoDeDados.listarPedidosPorSetor(setor.getId());
+            banco.listarPedidosPorSetor(setor.getId());
         } else if (filtro.getTipoFiltro().equals("Período")) {
             BancoDeDados.listarPedidosPorPeriodo(filtro.getDataInicial(), filtro.getDataFinal());
             
         } else if (filtro.getTipoFiltro().equals("Funcionário") && filtro.getValorFiltro() instanceof Integer matricula) {
-            BancoDeDados.listarPedidosPorFuncionario(matricula);
+            banco.listarPedidosPorFuncionario(matricula);
         } else if (filtro.getTipoFiltro().equals("Número do Pedido") && filtro.getValorFiltro() instanceof Integer numeroPedido) {
-            BancoDeDados.listarPedidosPorNumero(numeroPedido);
+            banco.listarPedidosPorNumero(numeroPedido);
         } else {
-            BancoDeDados.listarPedidos();
+            banco.listarPedidos();
         }
     }
 
     public void alterarSenha(String novaSenha) {
         this.senha = novaSenha;
         this.alterouSenha = true;
+    }
+
+    @Override
+    public String toString() {
+        return "Administrador{" +
+                ", Matrícula=" + getMatricula() +
+                ", Nome='" + getNome() + '\'' +
+                ", Setor=" + getSetor() +
+                ", Função=" + getFuncao() +
+                ", Admissao=" + getDataAdmissao() +
+                ", Loja=" + getLojaTrabalho() +
+                ", pedidos=" + getPedidos() +
+                '}';
     }
 
 }
