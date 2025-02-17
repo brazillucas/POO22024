@@ -65,6 +65,11 @@ public class GerenciadorPedidos {
         this.csvHandler = new CSVHandler();
         this.planilhaHandler = new PlanilhaHandler();
         this.menu = new Menu();
+        this.itens = new ArrayList<>();
+        this.setores = new ArrayList<>();
+        this.funcoes = new ArrayList<>();
+        this.funcionarios = new ArrayList<>();
+        this.pedidos = new ArrayList<>();
     }
 
     public GerenciadorPedidos (Administrador admin) {
@@ -74,6 +79,11 @@ public class GerenciadorPedidos {
         this.csvHandler = new CSVHandler();
         this.planilhaHandler = new PlanilhaHandler();
         this.menu = new Menu();
+        this.itens = new ArrayList<>();
+        this.setores = new ArrayList<>();
+        this.funcoes = new ArrayList<>();
+        this.funcionarios = new ArrayList<>();
+        this.pedidos = new ArrayList<>();
     }
 
     // Getters e Setters
@@ -191,7 +201,7 @@ public class GerenciadorPedidos {
 
         // Exibe o menu principal
         System.out.println("Exibindo o menu principal...");
-        menu.exibirMenuIncial();
+        menu.exibirMenuPrincipal();
 
     }
 
