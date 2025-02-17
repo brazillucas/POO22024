@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ConexaoBD {
-    private static final String URL = "jdbc:sqlite:Gerenciador de Pedidos\\src\\Data\\GerenciadorPedidos.db"; // Caminho para o arquivo SQLite
+    private static final String URL = "jdbc:sqlite:src\\Data\\GerenciadorPedidos.db"; // Caminho para o arquivo SQLite
 
     // Método para obter uma conexão com o banco de dados
     public static Connection conectar() throws SQLException {
