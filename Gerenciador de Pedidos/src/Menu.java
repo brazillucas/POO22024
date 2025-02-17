@@ -23,17 +23,17 @@
  */
 public class Menu {
 
-    public void exibirMenuPrincipal() {
+    public void exibirMenuIncial() {
         System.out.println("Menu Principal");
         System.out.println("1. Acessar sistema");
         System.out.println("2. Sair");
     }
 
-    public void exibirMenuAdministrador() {
-        System.out.println("Menu Administrador");
-        System.out.println("1. Cadastrar Item");
-        System.out.println("2. Cadastrar Setor");
-        System.out.println("3. Cadastrar Funcionário");
+    public void exibirMenuPrincipal() {
+        System.out.println("Menu Principal");
+        System.out.println("1. Menu Item");
+        System.out.println("2. Menu Setor");
+        System.out.println("3. Menu Funcionário");
         System.out.println("4. Realizar Pedido");
         System.out.println("5. Consultar Pedidos");
         System.out.println("6. Alterar Senha");
@@ -65,12 +65,6 @@ public class Menu {
     public void exibirMenuItem() {
         System.out.println("Menu Item");
         System.out.println("1. Alterar Quantidade");
-        System.out.println("2. Sair");
-    }
-
-    public void exibirMenuRelatorio() {
-        System.out.println("Menu Relatório");
-        System.out.println("1. Gerar Relatório");
         System.out.println("2. Sair");
     }
 
