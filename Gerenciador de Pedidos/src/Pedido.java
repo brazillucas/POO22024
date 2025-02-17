@@ -86,7 +86,7 @@ public class Pedido {
         itensPedido.removeIf(ip -> ip.getItemId() == itemId);
     }
 
-    // Recuperar detalhes completos dos itens do pedido
+// Recuperar detalhes completos dos itens do pedido
     public List<Item> getDetalhesItensPedido() {
         List<Item> detalhesItens = new ArrayList<>();
         for (ItemPedido itemPedido : itensPedido) {
@@ -96,11 +96,6 @@ public class Pedido {
             }
         }
         return detalhesItens;
-    }
-
-    // Salvar pedido no banco de dados
-    public void salvarNoBancoDados() {
-        BancoDeDados.salvarPedido(this);
     }
 
     // Exportar pedido para planilha
