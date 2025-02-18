@@ -7,8 +7,10 @@
         "lib/commons-collections4-4.4.jar",
         "lib/commons-compress-1.21.jar",
         "lib/xmlbeans-5.1.1.jar",
-        "lib/curvesapi-1.07.jar"
+        "lib/curvesapi-1.07.jar",
+        "lib/sqlite-jdbc-3.49.0.0.jar"
     ],
-    "java.configuration.checkProjectResources": true
-    // "java.import.maven.enabled": true
+    "java.configuration.checkProjectResources": true,
+    "java.import.maven.enabled": true,
+    "java.configuration.projectImportReport.enabled": true
 }
