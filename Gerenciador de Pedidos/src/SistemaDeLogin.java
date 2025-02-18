@@ -45,5 +45,9 @@ public class SistemaDeLogin {
     public void removerAdministrador(int matricula) {
         usuariosCadastrados.removeIf(admin -> admin.getMatricula() == matricula);
     }
+
+    public void carregarAdministradores(List<Administrador> administradores) {
+        usuariosCadastrados.addAll(administradores);
+    }
 }
 

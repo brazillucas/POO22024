@@ -194,14 +194,54 @@ public class GerenciadorPedidos {
         this.funcoes = this.bancoDeDados.carregarFuncoes();
         this.funcionarios = this.bancoDeDados.carregarFuncionarios();
         this.pedidos = this.bancoDeDados.listarPedidos();
+        
+        // Carregar administradores
+        this.sistemaDeLogin.carregarAdministradores(this.bancoDeDados.carregarAdministradores());
 
         // Carregar dados do CSV
         System.out.println("Carregando dados do CSV...");
         carregarDadosCSV();
 
+        // Realizar login
+        realizarLogin();
+        if (this.administradorLogado == null) {
+            Entrada.aguardarEnter();
+            return;
+        }
+
         // Exibe o menu principal
         System.out.println("Exibindo o menu principal...");
         menu.exibirMenuPrincipal();
+
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada:", "[0-9]+", "Opção inválida"));
+
+        switch (opcao) {
+            case 1:
+                // Menu Item
+                menu.exibirMenuItem();
+                break;
+            case 2:
+                
+                menu.exibirMenuSetor();
+                break;
+            case 3:
+                menu.exibirMenuFuncao();
+                break;
+            case 4:
+                menu.exibirMenuPedido();
+                break;
+            case 5:
+                menu.exibirMenuFuncionario(getAdministradorLogado());
+                break;
+            case 6:
+                menu.exibirMenuConfiguracoes();
+                break;
+            case 7:
+                menu.exibirMenuSair();
+                break;
+            default:
+                throw new AssertionError();
+        }
 
     }
 
@@ -425,13 +465,33 @@ public class GerenciadorPedidos {
                 for (ItemPedido itemPedido : novoPedido.getItensPedido()) {
                     if (!pedidoExistente.getItensPedido().contains(itemPedido)) {
                         pedidoExistente.adicionarItemPedido(itemPedido);
+                        this.bancoDeDados.cadastrarItemPedido(itemPedido);
                     }
                 }
             } else {
                 this.pedidos.add(novoPedido);
+                this.bancoDeDados.salvarPedido(novoPedido);
             }
         }
     }
 
+    // Realizar login
+    public void realizarLogin() {
+        // Solicita a matrícula e a senha do administrador
+        int matricula = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula: ", "[0-9]+", "Matrícula inválida"));
+        String senha = Entrada.solicitarSenha();
+
+        // Autenticar o administrador
+        Administrador admin = this.sistemaDeLogin.autenticar(matricula, senha);
+
+        if (admin != null) {
+            // Se o login for bem-sucedido, exibe o menu principal
+            this.administradorLogado = admin;
+            this.getMenu().exibirMenuPrincipal();
+        } else {
+            // Se o login falhar, exibe uma mensagem de erro
+            System.out.println("Login ou senha inválidos. Tente novamente.");
+        }
+    }
 
 }
