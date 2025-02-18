@@ -25,18 +25,17 @@ public class BancoDeDados {
         // Recuperar o ID do pedido recém-criado
         int numeroPedido = obterUltimoNumeroPedido();
 
-        if(numeroPedido == -1) {
+        if (numeroPedido == -1) {
             System.err.println("Erro ao salvar pedido: não foi possível obter o número do pedido.");
             return;
         }
 
         // Salvar os itens do pedido
         for (ItemPedido itemPedido : pedido.getItensPedido()) {
-            sql = "INSERT INTO Itens_Pedido (pedido_id, item_id, numero_pedido, quantidade, setor_id, funcionario_matricula) VALUES (?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO Itens_Pedido (pedido_id, item_id, quantidade, setor_id, funcionario_matricula) VALUES (?, ?, ?, ?, ?)";
             ConexaoBD.executarUpdate(sql,
                     numeroPedido,
                     itemPedido.getItemId(),
-                    itemPedido.getNumeroPedido(),
                     itemPedido.getQuantidade(),
                     itemPedido.getSetorDestino() != 0 ? itemPedido.getSetorDestino() : 0, // Usar 0 para "nulo"
                     itemPedido.getFuncionarioDestino() != 0 ? itemPedido.getFuncionarioDestino() : 0); // Usar 0 para "nulo"
@@ -88,23 +87,21 @@ public class BancoDeDados {
 
     // Carrega os itens do banco de dados
     public List<Item> carregarItens() {
-        String sql = "SELECT * " +
-                     " FROM Itens i" +
-                     " LEFT JOIN Uniformes ON i.id = Uniformes.id" +
-                     " LEFT JOIN EPIs ON i.id = EPIs.id";
+        String sql = "SELECT id, nome, tipo, tamanho, ca, setor_id FROM Itens"; // Seleciona apenas as colunas necessárias
         ResultSet resultado = ConexaoBD.executarQuery(sql);
-
         List<Item> itens = new ArrayList<>();
-
+        
         try {
             while (resultado.next()) {
+                String tipo = resultado.getString("tipo");
                 int id = resultado.getInt("id");
                 String nome = resultado.getString("nome");
-                String tipo = resultado.getString("tipo");
                 String tamanho = resultado.getString("tamanho");
-                int setorId = resultado.getInt("setor_id");
-                String ca = resultado.getString("ca");
-
+                
+                // Verificar valores nulos
+                String ca = resultado.getObject("ca") != null ? resultado.getString("ca") : null;
+                int setorId = resultado.getObject("setor_id") != null ? resultado.getInt("setor_id") : 0;
+    
                 // Criar o objeto Item com base no tipo
                 if ("Uniforme".equalsIgnoreCase(tipo)) {
                     itens.add(new Uniforme(id, nome, setorId, tamanho)); // Passar o setorId corretamente
@@ -117,7 +114,7 @@ public class BancoDeDados {
         } catch (SQLException e) {
             System.err.println("Erro ao carregar os itens: " + e.getMessage());
         }
-
+        
         return itens;
     }
 
@@ -209,6 +206,63 @@ public class BancoDeDados {
         return funcionarios;
     }
 
+    // Carregar administradores do banco de dados
+    public List<Administrador> carregarAdministradores() {
+        String sql = "SELECT * FROM Administradores";
+        ResultSet resultado = ConexaoBD.executarQuery(sql);
+
+        List<Administrador> administradores = new ArrayList<>();
+
+        try {
+            while (resultado.next()) {
+                int matricula = resultado.getInt("matricula");
+                String nome = resultado.getString("nome");
+                String senha = resultado.getString("senha");
+                
+                sql = "SELECT * FROM Funcionarios WHERE matricula = ?";
+                ResultSet resultadoFuncionario = ConexaoBD.executarQuery(sql, matricula);
+                while (resultadoFuncionario.next()) {
+                    int setor = resultadoFuncionario.getInt("setor_id");
+                    int funcao = resultadoFuncionario.getInt("funcao");
+                    LocalDate dataAdmissao = resultadoFuncionario.getDate("data_admissao").toLocalDate();
+                    int lojaTrabalho = resultadoFuncionario.getInt("loja_trabalho");
+                    String tamanhoUniforme = resultadoFuncionario.getString("tamanho_uniforme");
+
+                    List<Integer> pedidosLista = new ArrayList<>();
+                    sql = "SELECT numero_pedido FROM Itens_Pedido WHERE funcionario_matricula = ?";
+                    ResultSet resultadoPedidos = ConexaoBD.executarQuery(sql, matricula);
+                    while (resultadoPedidos.next()) {
+                        pedidosLista.add(resultadoPedidos.getInt("numero_pedido"));
+                    }
+
+                    Administrador admin = new Administrador(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme,pedidosLista, senha,true);
+                    administradores.add(admin);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao carregar os administradores: " + e.getMessage());
+        }
+
+        return administradores;
+    }
+
+    public String obterSenhaHash(int matricula) {
+
+        String sql = "SELECT senha FROM Administradores WHERE matricula = ?";
+        ResultSet resultado = ConexaoBD.executarQuery(sql, matricula);
+
+        try {
+            if (resultado.next()) {
+                return resultado.getString("senha");
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao obter a senha: " + e.getMessage());
+        }
+
+        return null; // Retorna null se a senha não for encontrada
+
+    }
+
     // Carregar funcionário por matrícula
     public Funcionario buscarFuncionarioPorMatricula(int matricula) {
         String sql = "SELECT * FROM Funcionarios WHERE matricula = ?";
@@ -233,7 +287,7 @@ public class BancoDeDados {
     }
 
     // Cadastrar ItemPedido
-    public static void cadastrarItemPedido(ItemPedido itemPedido) {
+    public void cadastrarItemPedido(ItemPedido itemPedido) {
         String sql = "INSERT INTO Itens_Pedido (pedido_id, item_id, quantidade, setor_id, funcionario_matricula) VALUES (?, ?, ?, ?, ?)";
         ConexaoBD.executarUpdate(sql, itemPedido.getNumeroPedido(), itemPedido.getItemId(), itemPedido.getQuantidade(), itemPedido.getSetorDestino(), itemPedido.getFuncionarioDestino());
     }
