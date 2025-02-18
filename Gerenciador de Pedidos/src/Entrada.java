@@ -6,18 +6,14 @@ public class Entrada {
     @SuppressWarnings("ConvertToTryWithResources")
     public static String solicitarEntradaValida(String mensagem, String regex, String mensagemErro) {
         Scanner scanner = new Scanner(System.in);
-        try {
-            while (true) {
-                System.out.print(mensagem);
-                String entrada = scanner.nextLine();
-                if (entrada.matches(regex)) {
-                    return entrada;
-                } else {
-                    System.out.printf("%s! Tente novamente.\n", mensagemErro);
-                }
+        while (true) {
+            System.out.print(mensagem);
+            String entrada = scanner.nextLine();
+            if (entrada.matches(regex)) {
+                return entrada;
+            } else {
+                System.out.printf("%s! Tente novamente.\n", mensagemErro);
             }
-        } finally {
-            scanner.close();
         }
     }
 
@@ -29,13 +25,13 @@ public class Entrada {
             Console console = System.console();
             String senha;
             if (console != null) {
-                char[] senhaArray = console.readPassword("Senha: (Modelo: 4-8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial): ");
+                char[] senhaArray = console.readPassword("Senha (4-8 números): ");
                 senha = new String(senhaArray);
             } else {
                 System.out.print("Senha: ");
                 senha = scanner.nextLine();
             }
-            if (senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{4,8}$")) {
+            if (senha.matches("^\\d{4,8}$")) {
                 return senha;
             } else {
                 System.out.println("Senha inválida! Tente novamente.");
@@ -48,7 +44,7 @@ public class Entrada {
     }
 
     public static void aguardarEnter() {
-        System.out.println("Pressione ENTER para continuar...");
+        System.out.print("Pressione ENTER para continuar...");
         @SuppressWarnings("resource")
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
