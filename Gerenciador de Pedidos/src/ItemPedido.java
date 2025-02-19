@@ -27,6 +27,10 @@
         this.setorDestino = setorDestino;
         this.funcionarioDestino = funcionarioDestino;
     }
+    
+    public ItemPedido() {
+
+    }
 
     // Getters e Setters
     public int getItemId() {
