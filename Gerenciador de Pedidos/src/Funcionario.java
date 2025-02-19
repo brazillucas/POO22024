@@ -25,6 +25,7 @@ public class Funcionario {
     private int lojaTrabalho;
     private String tamanhoUniforme;
     private int setor;
+    private boolean ativo;
     @SuppressWarnings("FieldMayBeFinal")
     private List<Integer> pedidos;
 
@@ -37,9 +38,10 @@ public class Funcionario {
         this.dataAdmissao = dataAdmissao;
         this.lojaTrabalho = lojaTrabalho;
         this.tamanhoUniforme = tamanhoUniforme;
+        this.ativo = true;
     }
 
-    public Funcionario(int matricula, String nome, int setor, int funcao, LocalDate dataAdmissao, int lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos) {
+    public Funcionario(int matricula, String nome, int setor, int funcao, LocalDate dataAdmissao, int lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos, boolean ativo) {
         this.matricula = matricula;
         this.nome = nome;
         this.setor = setor;
@@ -48,6 +50,7 @@ public class Funcionario {
         this.lojaTrabalho = lojaTrabalho;
         this.tamanhoUniforme = tamanhoUniforme;
         this.pedidos = pedidos;
+        this.ativo = true;
     }
 
     // Getters e Setters
@@ -113,6 +116,14 @@ public class Funcionario {
 
     public void setPedidos(List<Integer> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     // Métodos
