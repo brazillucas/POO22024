@@ -220,7 +220,7 @@ public class GerenciadorPedidos {
         Entrada.limparTela();
         this.menu.exibirMenuPrincipal();
         // Exibe o menu principal
-        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada:", "[1-6]", "Opção inválida"));
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-6]", "Opção inválida"));
 
         switch (opcao) {
             case 1:
@@ -268,39 +268,76 @@ public class GerenciadorPedidos {
 
     // Consultar itens
     private void consultaItens() {
+        Entrada.limparTela();
         this.menu.exibirConsultaItens();
-        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada:", "[0-5]+", "Opção inválida"));
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[0-5]+", "Opção inválida"));
 
         switch (opcao) {
             case 1:
                 // Consultar todos os itens
-                for (Item item : this.itens) {
-                    item.exibirDetalhes();
-                }   break;
-            case 2:
-                // Consultar itens por setor
-                int idSetor = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor: ", "[0-9]+", "ID inválido"));
-                for (Item item : this.itens) {
-                    if (item instanceof Uniforme uniforme && uniforme.getSetorDestino() == idSetor) {
-                        item.exibirDetalhes();
-                    } else if (item instanceof EPI epi && epi.getSetorDestino() == idSetor) {
+                if (this.itens.isEmpty()) {
+                    System.out.println("Nenhum item cadastrado.");
+                } else {
+                    for (Item item : this.itens) {
                         item.exibirDetalhes();
                     }
                 }
+                Entrada.aguardarEnter();
+                menuItem();
+                break;
+            case 2:
+                // Consultar itens por setor
+                int idSetor = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor: ", "[0-9]+", "ID inválido"));
+                int exibidos = 0;
+                boolean setorEncontrado = false;
+                for (Setor setorConsulta : this.setores) {
+                    if (setorConsulta.getId() == idSetor) {
+                        System.out.printf("Setor: %s\n", setorConsulta.getNome());
+                        setorEncontrado = true;
+                    }
+                }
+                if (!setorEncontrado) {
+                    System.out.println("Setor não encontrado.");
+                    Entrada.aguardarEnter();
+                    menuItem();
+                    return;
+                }
+                for (Item item : this.itens) {
+                    if (item instanceof Uniforme uniforme && uniforme.getSetorDestino() == idSetor) {
+                        item.exibirDetalhes();
+                        exibidos++;
+                    } else if (item instanceof EPI epi && epi.getSetorDestino() == idSetor) {
+                        item.exibirDetalhes();
+                        exibidos++;
+                    }
+                }
+                if (exibidos == 0) {
+                    System.out.println("Nenhum item encontrado para o setor informado.");
+                }
+                Entrada.aguardarEnter();
+                menuItem();
                 break;
             case 3:
                 // Consultar itens por ID
                 int idItem = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do item: ", "[0-9]+", "ID inválido"));
+                int itensEncontrados = 0;
                 for (Item item : this.itens) {
                     if (item.getCodigo() == idItem) {
                         item.exibirDetalhes();
+                        itensEncontrados++;
                     }
                 }
+                if (itensEncontrados == 0) {
+                    System.out.println("Item não encontrado.");
+                }
+                Entrada.aguardarEnter();
+                menuItem();
                 break;
             case 4:
                 menuItem();
                 break;
         }
+        Entrada.aguardarEnter();
     }
 
     // Importar itens
@@ -340,7 +377,7 @@ public class GerenciadorPedidos {
     // Cadastrar novo setor
     private void cadastrarSetor() {
         int id = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor: ", "[0-9]+", "ID inválido"));
-        String nome = Entrada.solicitarEntradaValida("Digite o nome do setor: ", "^[aA-zZ]$", "Nome inválido");
+        String nome = Entrada.solicitarEntradaValida("Digite o nome do setor: ", "^[a-zA-Z\\s]+$", "Nome inválido");
 
         Setor novoSetor = new Setor(id, nome);
         this.setores.add(novoSetor);
@@ -366,8 +403,8 @@ public class GerenciadorPedidos {
     // Menu Funcionário
     private void menuFuncionario() {
         Entrada.limparTela();
-        menu.exibirMenuFuncao();
-        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-3]", "Opção inválida"));
+        menu.exibirMenuFuncionario();
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-4]", "Opção inválida"));
 
         switch (opcao) {
             case 1:
@@ -391,7 +428,7 @@ public class GerenciadorPedidos {
     // Cadastrar funcionário
     private void cadastrarFuncionario() {
         int matricula = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário: ", "[0-9]+", "Matrícula inválida"));
-        String nome = Entrada.solicitarEntradaValida("Digite o nome do funcionário: ", "^[aA-zZ]$", "Nome inválido");
+        String nome = Entrada.solicitarEntradaValida("Digite o nome do funcionário: ", "^[a-zA-Z\\s]+$", "Nome inválido");
         int funcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID da função do funcionário: ", "[0-9]+", "ID inválido"));
 
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -432,7 +469,7 @@ public class GerenciadorPedidos {
         switch (opcao) {
             case 1:
                 // Atualizar nome do funcionário
-                String novoNome = Entrada.solicitarEntradaValida("Digite o novo nome do funcionário: ", "^[aA-zZ]$", "Nome inválido");
+                String novoNome = Entrada.solicitarEntradaValida("Digite o novo nome do funcionário: ", "^[a-zA-Z\\s]+$", "Nome inválido");
                 if (funcionario != null) {
                     funcionario.setNome(novoNome);
                     this.bancoDeDados.atualizarFuncionario(funcionario);
@@ -575,9 +612,10 @@ public class GerenciadorPedidos {
 
     // Consultar pedidos
     private void consultarPedidos(int opcao) {
+        Entrada.limparTela();
         // Consultar pedidos
-        menu.exibirConsultaPedidos();
         if (opcao == 0) {
+            menu.exibirConsultaPedidos();
             opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-5]", "Opção inválida"));
         }
 
@@ -667,6 +705,8 @@ public class GerenciadorPedidos {
                 menuSetor();
                 break;
         }
+
+        Entrada.aguardarEnter();
     }
 
     // Atualizar pedido
@@ -817,6 +857,7 @@ public class GerenciadorPedidos {
 
     // Fechar o programa
     private void logoutUsuario() {
+        Entrada.limparTela();
         menu.exibirMenuSair();
         if (Entrada.solicitarEntradaValida("Digite a opção desejada: ", "^[1-2]$", "Opção inválida").equals("1")) {
             System.out.println("Deslogando...");
