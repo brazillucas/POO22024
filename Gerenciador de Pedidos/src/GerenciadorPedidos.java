@@ -37,6 +37,7 @@
  */
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -196,7 +197,7 @@ public class GerenciadorPedidos {
         this.pedidos = this.bancoDeDados.listarPedidos();
         
         // Carregar administradores
-        this.sistemaDeLogin.carregarAdministradores(this.bancoDeDados.carregarAdministradores());
+        this.sistemaDeLogin.addTodosAdministradores(this.bancoDeDados.carregarAdministradores());
 
         // Carregar dados do CSV
         System.out.println("Carregando dados do CSV...");
@@ -209,40 +210,639 @@ public class GerenciadorPedidos {
             return;
         }
 
-        // Exibe o menu principal
-        System.out.println("Exibindo o menu principal...");
-        menu.exibirMenuPrincipal();
+        // Chama o fluxo principal do sistema
+        menuPrincipal();
 
-        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada:", "[0-9]+", "Opção inválida"));
+    }
+
+    private void menuPrincipal() {
+        // Limpar a tela
+        Entrada.limparTela();
+        this.menu.exibirMenuPrincipal();
+        // Exibe o menu principal
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada:", "[1-6]", "Opção inválida"));
 
         switch (opcao) {
             case 1:
                 // Menu Item
-                menu.exibirMenuItem();
+                menuItem();
                 break;
             case 2:
-                
-                menu.exibirMenuSetor();
+                menuSetor();
                 break;
             case 3:
-                menu.exibirMenuFuncao();
+                menuFuncionario();
                 break;
             case 4:
-                menu.exibirMenuPedido();
+                exibirMenuPedido();
                 break;
             case 5:
-                menu.exibirMenuFuncionario(getAdministradorLogado());
+                alterarSenha();
                 break;
             case 6:
-                menu.exibirMenuConfiguracoes();
+                logoutUsuario();
                 break;
-            case 7:
-                menu.exibirMenuSair();
+        }
+    }
+
+    private void menuItem() {
+        Entrada.limparTela();
+        menu.exibirMenuItem();
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-3]+", "Opção inválida"));
+
+        switch (opcao) {
+            case 1:
+                // Consultar itens
+                consultaItens();
                 break;
-            default:
-                throw new AssertionError();
+            case 2:
+                // Importar itens
+                importarItens();
+                break;
+            case 3:
+                menuPrincipal();
+                break;
         }
 
+    }
+
+    // Consultar itens
+    private void consultaItens() {
+        this.menu.exibirConsultaItens();
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada:", "[0-5]+", "Opção inválida"));
+
+        switch (opcao) {
+            case 1:
+                // Consultar todos os itens
+                for (Item item : this.itens) {
+                    item.exibirDetalhes();
+                }   break;
+            case 2:
+                // Consultar itens por setor
+                int idSetor = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor: ", "[0-9]+", "ID inválido"));
+                for (Item item : this.itens) {
+                    if (item instanceof Uniforme uniforme && uniforme.getSetorDestino() == idSetor) {
+                        item.exibirDetalhes();
+                    } else if (item instanceof EPI epi && epi.getSetorDestino() == idSetor) {
+                        item.exibirDetalhes();
+                    }
+                }
+                break;
+            case 3:
+                // Consultar itens por ID
+                int idItem = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do item: ", "[0-9]+", "ID inválido"));
+                for (Item item : this.itens) {
+                    if (item.getCodigo() == idItem) {
+                        item.exibirDetalhes();
+                    }
+                }
+                break;
+            case 4:
+                menuItem();
+                break;
+        }
+    }
+
+    // Importar itens
+    private void importarItens() {
+        System.out.println("Importando itens do Banco de Dados...");
+        verificarItensCarregados(this.bancoDeDados.carregarItens());
+        System.out.println("Importando itens do CSV...");
+        lerItensCSV();
+        System.out.println("Itens importados com sucesso!");
+        System.out.println("Retornando ao menu anterior!");
+        Entrada.aguardarEnter();
+        menuItem();
+    }
+
+    // Menu Setor
+    private void menuSetor() {
+        Entrada.limparTela();
+        menu.exibirMenuSetor();
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-3]", "Opção inválida"));
+
+        switch (opcao) {
+            case 1:
+                // Cadastrar novo setor
+                cadastrarSetor();
+                break;
+            case 2:
+                // Consultar pedidos
+                listarSetores();
+                break;
+            case 3:
+                // Voltar
+                menuPrincipal();
+                break;
+        }
+    }
+
+    // Cadastrar novo setor
+    private void cadastrarSetor() {
+        int id = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor: ", "[0-9]+", "ID inválido"));
+        String nome = Entrada.solicitarEntradaValida("Digite o nome do setor: ", "^[aA-zZ]$", "Nome inválido");
+
+        Setor novoSetor = new Setor(id, nome);
+        this.setores.add(novoSetor);
+        this.bancoDeDados.cadastrarSetor(novoSetor);
+        System.out.println("Setor cadastrado com sucesso!");
+        Entrada.aguardarEnter();
+        menuSetor();
+    }
+
+    // Listar setores
+    private void listarSetores() {
+        if (this.setores.isEmpty()) {
+            System.out.println("Nenhum setor cadastrado.");
+        } else {
+            for (Setor setor : this.setores) {
+                setor.exibirDetalhes();
+            }
+        }
+        Entrada.aguardarEnter();
+        menuSetor();
+    }
+
+    // Menu Funcionário
+    private void menuFuncionario() {
+        Entrada.limparTela();
+        menu.exibirMenuFuncao();
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-3]", "Opção inválida"));
+
+        switch (opcao) {
+            case 1:
+                // Cadastrar funcionário
+                cadastrarFuncionario();
+                break;
+            case 2:
+                // Consultar pedidos
+                consultarPedidos(5);
+                break;
+            case 3:
+                // Atualizar dados do funcionário
+                atualizarFuncionario();
+            case 4:
+                // Voltar
+                menuPrincipal();
+                break;
+        }
+    }
+
+    // Cadastrar funcionário
+    private void cadastrarFuncionario() {
+        int matricula = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário: ", "[0-9]+", "Matrícula inválida"));
+        String nome = Entrada.solicitarEntradaValida("Digite o nome do funcionário: ", "^[aA-zZ]$", "Nome inválido");
+        int funcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID da função do funcionário: ", "[0-9]+", "ID inválido"));
+
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataAdmissao = LocalDate.parse(Entrada.solicitarEntradaValida("Digite a data de admissão do funcionário (DD/MM/AAAA): ", "\\d{2}/\\d{2}/\\d{4}", "Data inválida"), formatador);
+        
+        int lojaTrabalho = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID da loja de trabalho do funcionário: ", "[0-9]+", "ID inválido"));
+        String tamanhoUniforme = Entrada.solicitarEntradaValida("Digite o tamanho do uniforme do funcionário: ", "^[aA-zZ]$", "Tamanho inválido");
+        int setorFuncionario = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor do funcionário: ", "[0-9]+", "ID inválido"));
+
+        Funcionario novoFuncionario = new Funcionario(matricula, nome, setorFuncionario, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme);
+        this.funcionarios.add(novoFuncionario);
+        this.bancoDeDados.cadastrarFuncionario(novoFuncionario);
+        
+        for (Setor setor : this.setores) {
+            if (setor.getId() == novoFuncionario.getSetor()) {
+                setor.adicionarFuncionario(novoFuncionario);
+            }
+        }
+        System.out.println("Funcionário cadastrado com sucesso!");
+        Entrada.aguardarEnter();
+        menuFuncionario();
+    }
+
+    // Atualizar dados do funcionário
+    private void atualizarFuncionario() {
+        int matricula = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário: ", "[0-9]+", "Matrícula inválida"));
+        Funcionario funcionario = this.bancoDeDados.buscarFuncionarioPorMatricula(matricula);
+
+        if (funcionario == null) {
+            System.out.println("Funcionário não encontrado.");
+            Entrada.aguardarEnter();
+            menuFuncionario();
+        }
+
+        menu.exibirMenuFuncionario(funcionario);
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-6]", "Opção inválida"));
+
+        switch (opcao) {
+            case 1:
+                // Atualizar nome do funcionário
+                String novoNome = Entrada.solicitarEntradaValida("Digite o novo nome do funcionário: ", "^[aA-zZ]$", "Nome inválido");
+                if (funcionario != null) {
+                    funcionario.setNome(novoNome);
+                    this.bancoDeDados.atualizarFuncionario(funcionario);
+                    System.out.println("Nome atualizado com sucesso!");
+                } else {
+                    System.out.println("Funcionário não encontrado.");
+                }
+                break;
+            case 2:
+                // Atualizar tamanho do uniforme do funcionário
+                String novoTamanho = Entrada.solicitarEntradaValida("Digite o novo tamanho do uniforme do funcionário: ", "^[aA-zZ]$", "Tamanho inválido");
+                if (funcionario != null) {
+                    funcionario.setTamanhoUniforme(novoTamanho);
+                    this.bancoDeDados.atualizarFuncionario(funcionario);
+                    System.out.println("Tamanho do uniforme atualizado com sucesso!");
+                } else {
+                    System.out.println("Funcionário não encontrado.");
+                }
+                break;
+            case 3:
+                // Atualizar setor do funcionário
+                int novoSetor = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o novo ID do setor do funcionário: ", "[0-9]+", "ID inválido"));
+                if (funcionario != null) {
+                    funcionario.setSetor(novoSetor);
+                    this.bancoDeDados.atualizarFuncionario(funcionario);
+                    for (Setor setor : this.setores) {
+                        if (setor.getId() == funcionario.getSetor()) {
+                            setor.adicionarFuncionario(funcionario);
+                        }
+                    }
+                    System.out.println("Setor atualizado com sucesso!");
+                } else {
+                    System.out.println("Funcionário não encontrado.");
+                }
+                break;
+            case 4:
+                // Atualizar função do funcionário
+                int novaFuncao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o novo ID da função do funcionário: ", "[0-9]+", "ID inválido"));
+                if (funcionario != null) {
+                    funcionario.setFuncao(novaFuncao);
+                    this.bancoDeDados.atualizarFuncionario(funcionario);
+                    for (Setor setor : this.setores) {
+                        if (setor.getId() == funcionario.getSetor()) {
+                            setor.adicionarFuncionario(funcionario);
+                        }
+                    }
+                    System.out.println("Função atualizada com sucesso!");
+                } else {
+                    System.out.println("Funcionário não encontrado.");
+                }
+                break;
+            case 5:
+                // Excluir funcionário
+                int matriculaExclusao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário: ", "[0-9]+", "Matrícula inválida"));
+                
+                Funcionario funcionarioExcluir = this.bancoDeDados.buscarFuncionarioPorMatricula(matriculaExclusao);
+
+                if (funcionarioExcluir != null) {
+                    this.bancoDeDados.excluirFuncionario(matriculaExclusao);
+                    System.out.println("Funcionário excluído com sucesso!");
+                } else {
+                    System.out.println("Funcionário não encontrado.");
+                }
+                break;
+            case 6:
+                // Voltar
+                menuFuncionario();
+                break;
+        }
+    }
+
+    // Menu Pedidos
+    private void exibirMenuPedido() {
+        Entrada.limparTela();
+        menu.exibirMenuPedido();
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-3]", "Opção inválida"));
+
+        switch (opcao) {
+            case 1:
+                // Realizar pedido
+                realizarPedido();
+                break;
+            case 2:
+                // Consultar pedidos
+                consultarPedidos(0);
+                break;
+            case 3:
+                // Atualizar pedido
+                atualizarPedido();
+                break;
+            case 4:
+                // Voltar
+                menuPrincipal();
+                break;
+        }
+    }
+
+    // Realizar pedido
+    private void realizarPedido() {
+        Entrada.limparTela();
+        // Realizar pedido
+        menu.exibirRealizarPedido();
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-4]", "Opção inválida"));
+
+        switch (opcao) {
+            case 1:
+                // Realizar pedido de itens
+                Pedido novoPedido = new Pedido(this.pedidos.size() + 1, TipoPedido.ALMOXARIFADO);
+
+                int opcaoItem;
+                do {
+                    opcaoItem = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do item que deseja adicionar ao pedido: ", "[0-9]+", "ID inválido"));
+                    Item item = this.bancoDeDados.buscarItemPorId(opcaoItem);
+
+                    int setorDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor de destino do item: ", "[0-9]+", "ID inválido"));
+                    int quantidade = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a quantidade do item: ", "[0-9]+", "Quantidade inválida"));
+                    if (item != null) {
+                        ItemPedido itemPedido = new ItemPedido(item.getCodigo(), quantidade, novoPedido.getNumeroPedido(), setorDestino, 0); //
+                        novoPedido.adicionarItemPedido(itemPedido);
+                    } else {
+                        System.out.println("Item não encontrado.");
+                    }
+                } while (opcaoItem != 0);
+
+                this.pedidos.add(novoPedido);
+                this.bancoDeDados.salvarPedido(novoPedido);
+                System.out.println("Pedido realizado com sucesso!");
+                break;
+            case 2:
+                // Realizar pedido de planilha
+                System.out.println("Realizar pedido de planilha");
+                break;
+            case 3:
+                // Voltar
+                exibirMenuPedido();
+                break;
+        }
+    }
+
+
+    // Consultar pedidos
+    private void consultarPedidos(int opcao) {
+        // Consultar pedidos
+        menu.exibirConsultaPedidos();
+        if (opcao == 0) {
+            opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-5]", "Opção inválida"));
+        }
+
+        List<Pedido> listPedidos;
+
+        switch (opcao) {
+            case 1:
+                // Consultar todos pedidos
+                listPedidos = this.bancoDeDados.listarPedidos();
+
+                if (listPedidos.isEmpty()) {
+                    System.out.println("Nenhum pedido encontrado.");
+                } else {
+                    for (Pedido pedido : listPedidos) {
+                            pedido.exibirDetalhesPedido();
+                    }
+                }
+                break;
+            case 2:
+                // Consultar pedido por ID
+                int idPedido = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do pedido: ", "[0-9]+", "ID inválido"));
+
+                Pedido consultaPedido = this.bancoDeDados.buscarPedidoPorNumero(idPedido);
+                if (consultaPedido != null) {
+                    consultaPedido.exibirDetalhesPedido();
+                } else {
+                    System.out.println("Pedido não encontrado.");
+                }
+
+                break;
+            case 3:
+                // Consultar pedidos por período
+                DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate dataInicio = LocalDate.parse(Entrada.solicitarEntradaValida("Digite a data de início (DD-MM-AAAA): ", "\\d{2}-\\d{2}-\\d{4}", "Data inválida"), formatoData);
+                LocalDate dataFim = LocalDate.parse(Entrada.solicitarEntradaValida("Digite a data de fim (DD-MM-AAAA): ", "\\d{2}-\\d{2}-\\d{4}", "Data inválida"), formatoData);
+
+                listPedidos = this.bancoDeDados.listarPedidosPorPeriodo(dataInicio, dataFim);
+
+
+                if (listPedidos.isEmpty()) {
+                    System.out.println("Nenhum pedido encontrado.");
+                } else {
+                    for (Pedido pedido : this.pedidos) {
+                        if (pedido.getDataPedido().isAfter(dataInicio) && pedido.getDataPedido().isBefore(dataFim)) {
+                            pedido.exibirDetalhesPedido();
+                        }
+                    }
+                }
+                break;
+            case 4:
+                // Consultar pedidos por setor
+                int idSetor = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor: ", "[0-9]+", "ID inválido"));
+
+                listPedidos = this.bancoDeDados.listarPedidosPorSetor(idSetor);
+
+                if(listPedidos.isEmpty()) {
+                    System.out.println("Nenhum pedido encontrado.");
+                } else {
+                    for (Pedido pedido : listPedidos) {
+                        for (ItemPedido itemPedido : pedido.getItensPedido()) {
+                            if (itemPedido.getSetorDestino() == idSetor) {
+                                pedido.exibirDetalhesPedido();
+                            }
+                        }
+                    }
+                }
+                break;
+            case 5:
+                // Consultar pedidos por funcionário
+                int matriculaFuncionario = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário: ", "[0-9]+", "Matrícula inválida"));
+
+                listPedidos = this.bancoDeDados.listarPedidosPorFuncionario(matriculaFuncionario);
+
+                if (listPedidos.isEmpty()) {
+                    System.out.println("Nenhum pedido encontrado.");
+                } else {
+                    for (Pedido pedido : listPedidos) {
+                        for (ItemPedido itemPedido : pedido.getItensPedido()) {
+                            if (itemPedido.getFuncionarioDestino() == matriculaFuncionario) {
+                                pedido.exibirDetalhesPedido();
+                            }
+                        }
+                    }
+                }
+                break;
+            case 6:
+                menuSetor();
+                break;
+        }
+    }
+
+    // Atualizar pedido
+    private void atualizarPedido() {
+        int idPedido = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do pedido: ", "[0-9]+", "ID inválido"));
+        Pedido pedido = this.bancoDeDados.buscarPedidoPorNumero(idPedido);
+
+        if (pedido == null) {
+            System.out.println("Pedido não encontrado.");
+            Entrada.aguardarEnter();
+            exibirMenuPedido();
+        }
+
+        menu.exibirMenuPedido(pedido);
+        int opcao = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a opção desejada: ", "[1-4]", "Opção inválida"));
+
+        switch (opcao) {
+            case 1:
+                // Adicionar item ao pedido
+                int novoItemId = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do novo item: ", "[0-9]+", "ID inválido"));
+                
+                Item novoItem = this.bancoDeDados.buscarItemPorId(novoItemId);
+                if (pedido != null && pedido.getTipoPedido() == TipoPedido.ALMOXARIFADO) {
+                    int setorDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor de destino do item: ", "[0-9]+", "ID inválido"));
+                    int quantidade = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a quantidade do item: ", "[0-9]+", "Quantidade inválida"));
+                    ItemPedido itemPedido = new ItemPedido(novoItem.getCodigo(), quantidade, pedido.getNumeroPedido(), setorDestino, 0);
+                    this.bancoDeDados.cadastrarItemPedido(itemPedido);
+                    pedido.adicionarItemPedido(itemPedido);
+                    break;
+
+                } else if(pedido != null && pedido.getTipoPedido() == TipoPedido.UNIFORME) {
+                    int funcionarioDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário de destino do item: ", "[0-9]+", "ID inválido"));
+                    int quantidade = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a quantidade do item: ", "[0-9]+", "Quantidade inválida"));
+                    ItemPedido itemPedido = new ItemPedido(novoItem.getCodigo(), quantidade, pedido.getNumeroPedido(), 0, funcionarioDestino);
+                    this.bancoDeDados.cadastrarItemPedido(itemPedido);
+                    pedido.adicionarItemPedido(itemPedido);
+
+                    break;
+                } else if(pedido != null && pedido.getTipoPedido() == TipoPedido.EPI) {
+                    int funcionarioDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário de destino do item: ", "[0-9]+", "ID inválido"));
+                    int setorDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor de destino do item: ", "[0-9]+", "ID inválido"));
+                    int quantidade = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a quantidade do item: ", "[0-9]+", "Quantidade inválida"));
+                    ItemPedido itemPedido = new ItemPedido(novoItem.getCodigo(), quantidade, pedido.getNumeroPedido(), setorDestino, funcionarioDestino);
+                    
+                    this.bancoDeDados.cadastrarItemPedido(itemPedido);
+                    // atualizar o ItemPedido do pedido
+                    pedido.adicionarItemPedido(itemPedido);
+
+                    break;
+                } else {
+                    System.out.println("Pedido não encontrado.");
+                }
+            case 2:
+                // Remover item do pedido
+                int idItemRemover = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do item a ser removido: ", "[0-9]+", "ID inválido"));
+
+                Item itemRemover = this.bancoDeDados.buscarItemPorId(idItemRemover);
+                if (pedido != null && pedido.getTipoPedido() == TipoPedido.ALMOXARIFADO) {
+                    int setorDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor de destino do item: ", "[0-9]+", "ID inválido"));
+                    int quantidade = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a quantidade do item: ", "[0-9]+", "Quantidade inválida"));
+                    ItemPedido itemPedido = new ItemPedido(itemRemover.getCodigo(), quantidade, pedido.getNumeroPedido(), setorDestino, 0);
+
+                    this.bancoDeDados.excluirItemPedido(itemPedido);
+                    pedido.removerItemPedido(itemPedido);
+
+                    break;
+
+                } else if (pedido != null && pedido.getTipoPedido() == TipoPedido.UNIFORME) {
+                    int funcionarioDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário de destino do item: ", "[0-9]+", "ID inválido"));
+                    int quantidade = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a quantidade do item: ", "[0-9]+", "Quantidade inválida"));
+                    ItemPedido itemPedido = new ItemPedido(itemRemover.getCodigo(), quantidade, pedido.getNumeroPedido(), 0, funcionarioDestino);
+
+                    this.bancoDeDados.excluirItemPedido(itemPedido);
+                    pedido.removerItemPedido(itemPedido);
+
+                    break;
+                } else if (pedido != null && pedido.getTipoPedido() == TipoPedido.EPI) {
+                    int funcionarioDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário de destino do item: ", "[0-9]+", "ID inválido"));
+                    int setorDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor de destino do item: ", "[0-9]+", "ID inválido"));
+                    int quantidade = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a quantidade do item: ", "[0-9]+", "Quantidade inválida"));
+                    ItemPedido itemPedido = new ItemPedido(itemRemover.getCodigo(), quantidade, pedido.getNumeroPedido(), setorDestino, funcionarioDestino);
+                    
+                    this.bancoDeDados.excluirItemPedido(itemPedido);
+                    // Remover o ItemPedido do pedido
+                    pedido.removerItemPedido(itemPedido);
+
+                    break;
+                } else {
+                    System.out.println("Pedido não encontrado.");
+                }
+                
+                break;
+            case 3:
+                // Atualizar setor de destino do pedido
+                int itemAtualizar = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o novo ID do item que deseja atualizar: ", "[0-9]+", "ID inválido"));
+
+                if (pedido != null && pedido.getTipoPedido() == TipoPedido.ALMOXARIFADO) {
+                    int setorDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor de destino do item: ", "[0-9]+", "ID inválido"));
+                    int quantidade = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a quantidade do item: ", "[0-9]+", "Quantidade inválida"));
+
+                    ItemPedido itemPedido = new ItemPedido(itemAtualizar, quantidade, pedido.getNumeroPedido(), setorDestino, 0);
+
+                    this.bancoDeDados.atualizarItemPedido(itemPedido);
+                    pedido.atualizarItemPedido(itemPedido);
+
+                    break;
+
+                } else if (pedido != null && pedido.getTipoPedido() == TipoPedido.UNIFORME) {
+                    int funcionarioDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário de destino do item: ", "[0-9]+", "ID inválido"));
+                    int quantidade = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a quantidade do item: ", "[0-9]+", "Quantidade inválida"));
+                    ItemPedido itemPedido = new ItemPedido(itemAtualizar, quantidade, pedido.getNumeroPedido(), 0, funcionarioDestino);
+
+                    this.bancoDeDados.atualizarItemPedido(itemPedido);
+                    pedido.atualizarItemPedido(itemPedido);
+
+                    break;
+                } else if (pedido != null && pedido.getTipoPedido() == TipoPedido.EPI) {
+                    int funcionarioDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula do funcionário de destino do item: ", "[0-9]+", "ID inválido"));
+                    int setorDestino = Integer.parseInt(Entrada.solicitarEntradaValida("Digite o ID do setor de destino do item: ", "[0-9]+", "ID inválido"));
+                    int quantidade = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a quantidade do item: ", "[0-9]+", "Quantidade inválida"));
+                    ItemPedido itemPedido = new ItemPedido(itemAtualizar, quantidade, pedido.getNumeroPedido(), setorDestino, funcionarioDestino);
+
+                    this.bancoDeDados.atualizarItemPedido(itemPedido);
+                    pedido.atualizarItemPedido(itemPedido);
+
+                    break;
+                } else {
+                    System.out.println("Pedido não encontrado.");
+                }
+                break;
+            case 4:
+                // Voltar
+                exibirMenuPedido();
+                break;
+        }
+
+    }
+
+    // Alterar senha
+    private void alterarSenha() {
+        String novaSenha = Entrada.solicitarSenha();
+        this.administradorLogado.setSenha(novaSenha);
+        this.bancoDeDados.atualizarSenhaAdministrador(this.administradorLogado);
+        System.out.println("Senha alterada com sucesso!");
+        Entrada.aguardarEnter();
+        menuPrincipal();
+    }
+
+    // Fechar o programa
+    private void logoutUsuario() {
+        menu.exibirMenuSair();
+        if (Entrada.solicitarEntradaValida("Digite a opção desejada: ", "^[1-2]$", "Opção inválida").equals("1")) {
+            System.out.println("Deslogando...");
+            this.administradorLogado = null;
+        } else {
+            menuPrincipal();
+        }
+    }
+    
+    // Realizar login
+    public void realizarLogin() {
+        // Solicita a matrícula e a senha do administrador
+        int matricula = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula: ", "[0-9]+", "Matrícula inválida"));
+        String senha = Entrada.solicitarSenha();
+
+        // Autenticar o administrador
+        Administrador admin = this.sistemaDeLogin.autenticar(matricula, senha);
+
+        if (admin != null) {
+            // Se o login for bem-sucedido, exibe o menu principal
+            this.administradorLogado = admin;
+            this.getMenu().exibirMenuPrincipal();
+        } else {
+            // Se o login falhar, exibe uma mensagem de erro
+            System.out.println("Login ou senha inválidos. Tente novamente.");
+        }
     }
 
     // Métodos
@@ -299,6 +899,10 @@ public class GerenciadorPedidos {
         }
 
         // Verifica se os itens carregados já existem na lista de itens
+        verificarItensCarregados(itensCarregados);
+    }
+
+    private void verificarItensCarregados(List<Item> itensCarregados) {
         for (Item novoItem : itensCarregados) {
             // Se não existir, adiciona à lista
             if (!this.itens.contains(novoItem)) {
@@ -384,13 +988,14 @@ public class GerenciadorPedidos {
             int lojaTrabalho = Integer.parseInt(dados[4]);
             String tamanhoUniforme = dados[5];
             int setor = Integer.parseInt(dados[6]);
+            boolean ativo = Boolean.parseBoolean(dados[7]);
             List<Integer> pedidosFuncionario = new ArrayList<>();
-            if (dados.length > 7) {
-                for (int i = 7; i < dados.length; i++) {
+            if (dados.length > 8) {
+                for (int i = 8; i < dados.length; i++) {
                     pedidosFuncionario.add(Integer.valueOf(dados[i]));
                 }
             }
-            Funcionario novoFuncionario = new Funcionario(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidosFuncionario);
+            Funcionario novoFuncionario = new Funcionario(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidosFuncionario, ativo);
             funcionariosCarregados.add(novoFuncionario);
         }
 
@@ -472,25 +1077,6 @@ public class GerenciadorPedidos {
                 this.pedidos.add(novoPedido);
                 this.bancoDeDados.salvarPedido(novoPedido);
             }
-        }
-    }
-
-    // Realizar login
-    public void realizarLogin() {
-        // Solicita a matrícula e a senha do administrador
-        int matricula = Integer.parseInt(Entrada.solicitarEntradaValida("Digite a matrícula: ", "[0-9]+", "Matrícula inválida"));
-        String senha = Entrada.solicitarSenha();
-
-        // Autenticar o administrador
-        Administrador admin = this.sistemaDeLogin.autenticar(matricula, senha);
-
-        if (admin != null) {
-            // Se o login for bem-sucedido, exibe o menu principal
-            this.administradorLogado = admin;
-            this.getMenu().exibirMenuPrincipal();
-        } else {
-            // Se o login falhar, exibe uma mensagem de erro
-            System.out.println("Login ou senha inválidos. Tente novamente.");
         }
     }
 
