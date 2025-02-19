@@ -86,7 +86,7 @@ public class Menu {
     public void exibirConsultaPedidos() {
         System.out.println("Consulta de Pedidos");
         System.out.println("1. Consultar todos os pedidos");
-        System.out.println("2. Consultar pedidos por ID'");
+        System.out.println("2. Consultar pedidos por ID");
         System.out.println("3. Consultar pedidos por período");
         System.out.println("4. Consultar pedidos por setor");
         System.out.println("5. Consultar pedidos por funcionário");
@@ -108,9 +108,9 @@ public class Menu {
     public void exibirMenuFuncionario() {
         System.out.println("Menu Funcionário");
         System.out.println("1. Cadastrar Funcionário");
-        System.out.println("3. Listar Pedido de Funcionário");
-        System.out.println("4. Atualizar Dados");
-        System.out.println("5. Voltar");
+        System.out.println("2. Listar Pedido de Funcionário");
+        System.out.println("3. Atualizar Dados");
+        System.out.println("4. Voltar");
     }
 
     public void exibirMenuFuncionario(Funcionario funcionario) {
