@@ -16,6 +16,7 @@
  */
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,16 +92,41 @@ public class Pedido {
         itensPedido.removeIf(ip -> ip.getItemId() == itemId);
     }
 
-// Recuperar detalhes completos dos itens do pedido
+    // Atualizar itemPedido
+    public void atualizarItemPedido(ItemPedido itemPedido) {
+        for (ItemPedido item : itensPedido) {
+            if (item.getItemId() == itemPedido.getItemId() && item.getNumeroPedido() == itemPedido.getNumeroPedido() && item.getSetorDestino() == itemPedido.getSetorDestino() && item.getFuncionarioDestino() == itemPedido.getFuncionarioDestino()) {
+                item.setQuantidade(itemPedido.getQuantidade());
+                item.setSetorDestino(itemPedido.getSetorDestino());
+                item.setFuncionarioDestino(itemPedido.getFuncionarioDestino());
+            }
+        }
+    }
+
+    // Remover itemPedido
+    public void removerItemPedido(ItemPedido itemPedido) {
+        itensPedido.remove(itemPedido);
+    }
+
+    // Recuperar detalhes completos dos itens do pedido
     public List<Item> getDetalhesItensPedido() {
+        BancoDeDados bancoDados = new BancoDeDados();
         List<Item> detalhesItens = new ArrayList<>();
         for (ItemPedido itemPedido : itensPedido) {
-            Item item = BancoDeDados.buscarItemPorId(itemPedido.getItemId());
+            Item item = bancoDados.buscarItemPorId(itemPedido.getItemId());
             if (item != null) {
                 detalhesItens.add(item);
             }
         }
         return detalhesItens;
+    }
+
+    // Exibir detalhes do pedido
+    public void exibirDetalhesPedido() {
+        System.out.printf("Nº Pedido: %d | Tipo: %s | Data: %s%n", 
+                        this.getNumeroPedido(), 
+                        this.getTipoPedido(), 
+                        this.getDataPedido().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
     // Exportar pedido para planilha
