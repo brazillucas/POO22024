@@ -103,7 +103,7 @@
      // Método para exportar planilha de EPI em CSV
      public static void exportarEPI(List<ItemPedido> itens, String caminhoArquivo, int numeroLoja) {
 
-        BancoDeDados bancoD = new BancoDeDados();
+        BancoDeDados bancoDados = new BancoDeDados();
 
         
 
@@ -119,9 +119,9 @@
              // Preencher os dados dos itens
              for (ItemPedido item : itens) {
                 // Pegar dados do banco de dados
-                Item itemData = BancoDeDados.buscarItemPorId(item.getItemId());
+                Item itemData = bancoDados.buscarItemPorId(item.getItemId());
                 
-                Funcionario funcionarioAtual = bancoD.buscarFuncionarioPorMatricula(item.getFuncionarioDestino());
+                Funcionario funcionarioAtual = bancoDados.buscarFuncionarioPorMatricula(item.getFuncionarioDestino());
 
                 if (funcionarioAtual == null) {
                     System.err.println("Funcionário não encontrado para matrícula: " + item.getFuncionarioDestino());
