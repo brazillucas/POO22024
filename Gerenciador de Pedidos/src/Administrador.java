@@ -32,8 +32,8 @@ public class Administrador extends Funcionario {
     public Administrador(int matricula, String nome, int setor,
                         int funcao, LocalDate dataAdmissao,
                         int lojaTrabalho, String tamanhoUniforme, List<Integer> pedidos, String senha, boolean alterouSenha) {
-        super(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidos);
-        this.setSenha(senha);
+        super(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidos, true);
+        this.senha = senha;
         this.alterouSenha = alterouSenha;
     }
 
@@ -41,7 +41,7 @@ public class Administrador extends Funcionario {
                         int funcao, LocalDate dataAdmissao,
                         int lojaTrabalho, String tamanhoUniforme,
                         List<Integer> pedidos) {
-        super(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidos);
+        super(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidos, true);
         this.setSenha(String.valueOf(matricula).substring(4));
         this.alterouSenha = false;
     }
@@ -70,16 +70,14 @@ public class Administrador extends Funcionario {
     }
 
     // Métodos
-    public void cadastrarItem(Item item) {
-        BancoDeDados.cadastrarItem(item);
-    }
-
     public void cadastrarSetor(Setor setor) {
-        BancoDeDados.cadastrarSetor(setor);
+        BancoDeDados banco = new BancoDeDados();
+        banco.cadastrarSetor(setor);
     }
     
     public void cadastrarFuncionario(Funcionario funcionario) {
-        BancoDeDados.cadastrarFuncionario(funcionario);
+        BancoDeDados bancoDeDados = new BancoDeDados();
+        bancoDeDados.cadastrarFuncionario(funcionario);
     }
 
     public void salvarPedido(Pedido pedido, BancoDeDados bancoDeDados) {
@@ -99,18 +97,18 @@ public class Administrador extends Funcionario {
          * - Pedidos por número do pedido
          * - Todos os itens
          */
-        BancoDeDados banco = new BancoDeDados();
+        BancoDeDados bancoDados = new BancoDeDados();
         if (filtro.getTipoFiltro().equals("Setor") && filtro.getValorFiltro() instanceof Setor setor) {
-            banco.listarPedidosPorSetor(setor.getId());
+            bancoDados.listarPedidosPorSetor(setor.getId());
         } else if (filtro.getTipoFiltro().equals("Período")) {
-            BancoDeDados.listarPedidosPorPeriodo(filtro.getDataInicial(), filtro.getDataFinal());
+            bancoDados.listarPedidosPorPeriodo(filtro.getDataInicial(), filtro.getDataFinal());
             
         } else if (filtro.getTipoFiltro().equals("Funcionário") && filtro.getValorFiltro() instanceof Integer matricula) {
-            banco.listarPedidosPorFuncionario(matricula);
+            bancoDados.listarPedidosPorFuncionario(matricula);
         } else if (filtro.getTipoFiltro().equals("Número do Pedido") && filtro.getValorFiltro() instanceof Integer numeroPedido) {
-            banco.listarPedidosPorNumero(numeroPedido);
+            bancoDados.listarPedidosPorNumero(numeroPedido);
         } else {
-            banco.listarPedidos();
+            bancoDados.listarPedidos();
         }
     }
 
