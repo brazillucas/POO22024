@@ -26,15 +26,19 @@ public class SistemaDeLogin {
     }
 
     public Administrador autenticar(int matricula, String senha) {
+        System.out.println("Autenticando usuário...");
         // Criptografar a senha
         Criptografia criptografia = new Criptografia(senha, Criptografia.SHA256);
-        senha = criptografia.criptografar();
-
+        String senhaCriptografada = criptografia.criptografar();
+    
         for (Administrador admin : usuariosCadastrados) {
-            if (admin.getMatricula() == matricula && admin.getSenha().equals(senha)) {
+            if (admin.getMatricula() == matricula && admin.getSenha().equals(senhaCriptografada)) {
+                System.out.println("Login bem-sucedido para: " + admin.getNome());
                 return admin;
             }
         }
+    
+        System.out.println("Login falhou!");
         return null;
     }
 
@@ -46,7 +50,7 @@ public class SistemaDeLogin {
         usuariosCadastrados.removeIf(admin -> admin.getMatricula() == matricula);
     }
 
-    public void carregarAdministradores(List<Administrador> administradores) {
+    public void addTodosAdministradores(List<Administrador> administradores) {
         usuariosCadastrados.addAll(administradores);
     }
 }
