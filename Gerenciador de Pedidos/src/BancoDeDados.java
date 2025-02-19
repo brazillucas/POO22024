@@ -9,9 +9,12 @@
  * carregarFuncionarios()
  */
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +46,7 @@ public class BancoDeDados {
     }
 
   // Buscar o último número de pedido inserido
-    private static int obterUltimoNumeroPedido() {
+    private int obterUltimoNumeroPedido() {
         String sql = "SELECT MAX(numero_pedido) AS ultimo_pedido FROM Pedidos";
         ResultSet resultado = ConexaoBD.executarQuery(sql);
 
@@ -73,7 +76,7 @@ public class BancoDeDados {
     }
     
     // Cadastrar um item no banco de dados
-    public static void cadastrarItem(Item item) {
+    public void cadastrarItem(Item item) {
         String sql = "INSERT INTO Itens (nome, tipo, tamanho, setor_id, ca) VALUES (?, ?, ?, ?, ?)";
         if(item instanceof Uniforme uniforme) {
             ConexaoBD.executarUpdate(sql, uniforme.getNome(), uniforme.getTipo(), uniforme.getTamanho(), uniforme.getSetorDestino(), null);
@@ -119,9 +122,9 @@ public class BancoDeDados {
     }
 
     // Cadastrar um setor no banco de dados
-    public static void cadastrarSetor(Setor setor) {
-        String sql = "INSERT INTO Setores (nome) VALUES (?)";
-        ConexaoBD.executarUpdate(sql, setor.getNome());
+    public void cadastrarSetor(Setor setor) {
+        String sql = "INSERT INTO Setores (id, nome) VALUES (?, ?)";
+        ConexaoBD.executarUpdate(sql, setor.getId(), setor.getNome());
     }
     
     // Carregar setores do banco de dados
@@ -147,7 +150,7 @@ public class BancoDeDados {
     }
 
     // Cadastrar uma função no banco de dados
-    public static void cadastrarFuncao(Funcoes funcao) {
+    public void cadastrarFuncao(Funcoes funcao) {
         String sql = "INSERT INTO Funcoes (id, nome) VALUES (?, ?)";
         ConexaoBD.executarUpdate(sql, funcao.getCodigo(), funcao.getNome());
     }
@@ -174,14 +177,26 @@ public class BancoDeDados {
     }
 
     // Cadastrar um novo funcionário no banco de dados
-    public static void cadastrarFuncionario(Funcionario funcionario) {
+    public void cadastrarFuncionario(Funcionario funcionario) {
         String sql = "INSERT INTO Funcionarios (matricula, nome, setor_id, funcao, data_admissao, loja_trabalho, tamanho_uniforme) VALUES (?, ?, ?, ?, ?, ?, ?)";
         ConexaoBD.executarUpdate(sql, funcionario.getMatricula(), funcionario.getNome(), funcionario.getSetor(), funcionario.getFuncao(), funcionario.getDataAdmissao(), funcionario.getLojaTrabalho(), funcionario.getTamanhoUniforme());
     }
 
+    // Atualizar um funcionário no banco de dados
+    public void atualizarFuncionario(Funcionario funcionario) {
+        String sql = "UPDATE Funcionarios SET nome = ?, setor_id = ?, funcao = ?, data_admissao = ?, loja_trabalho = ?, tamanho_uniforme = ? WHERE matricula = ?";
+        ConexaoBD.executarUpdate(sql, funcionario.getNome(), funcionario.getSetor(), funcionario.getFuncao(), funcionario.getDataAdmissao(), funcionario.getLojaTrabalho(), funcionario.getTamanhoUniforme(), funcionario.getMatricula());
+    }
+
+    // Excluir um funcionário do banco de dados
+    public void excluirFuncionario(int matricula) {
+        String sql = "UPDATE Funcionarios SET ativo = 0 WHERE matricula = ?";
+        ConexaoBD.executarUpdate(sql, matricula);
+    }
+
     // Carrega os funcionários do banco de dados
     public List<Funcionario> carregarFuncionarios() {
-        String sql = "SELECT * FROM Funcionarios";
+        String sql = "SELECT * FROM Funcionarios WHERE ativo = 1";
         ResultSet resultado = ConexaoBD.executarQuery(sql);
 
         List<Funcionario> funcionarios = new ArrayList<>();
@@ -192,7 +207,8 @@ public class BancoDeDados {
                 String nome = resultado.getString("nome");
                 int setor = resultado.getInt("setor_id");
                 int funcao = resultado.getInt("funcao");
-                LocalDate dataAdmissao = resultado.getDate("data_admissao").toLocalDate();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate dataAdmissao = LocalDate.parse(resultado.getString("data_admissao"), formatter);
                 int lojaTrabalho = resultado.getInt("loja_trabalho");
                 String tamanhoUniforme = resultado.getString("tamanho_uniforme");
 
@@ -209,58 +225,100 @@ public class BancoDeDados {
     // Carregar administradores do banco de dados
     public List<Administrador> carregarAdministradores() {
         String sql = "SELECT * FROM Administradores";
-        ResultSet resultado = ConexaoBD.executarQuery(sql);
+        ResultSet resultado = null;
+        Connection conexao = null;
 
         List<Administrador> administradores = new ArrayList<>();
 
         try {
+            // Obter a conexão e executar a query
+            conexao = ConexaoBD.conectar();
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+            resultado = stmt.executeQuery();
+
+            if (resultado == null || !resultado.isBeforeFirst()) {
+                System.err.println("Nenhum administrador encontrado na tabela Administradores.");
+                return administradores;
+            }
+
             while (resultado.next()) {
                 int matricula = resultado.getInt("matricula");
-                String nome = resultado.getString("nome");
-                String senha = resultado.getString("senha");
-                
-                sql = "SELECT * FROM Funcionarios WHERE matricula = ?";
-                ResultSet resultadoFuncionario = ConexaoBD.executarQuery(sql, matricula);
-                while (resultadoFuncionario.next()) {
-                    int setor = resultadoFuncionario.getInt("setor_id");
-                    int funcao = resultadoFuncionario.getInt("funcao");
-                    LocalDate dataAdmissao = resultadoFuncionario.getDate("data_admissao").toLocalDate();
-                    int lojaTrabalho = resultadoFuncionario.getInt("loja_trabalho");
-                    String tamanhoUniforme = resultadoFuncionario.getString("tamanho_uniforme");
+                String senha = resultado.getString("senha_hash");
 
-                    List<Integer> pedidosLista = new ArrayList<>();
-                    sql = "SELECT numero_pedido FROM Itens_Pedido WHERE funcionario_matricula = ?";
-                    ResultSet resultadoPedidos = ConexaoBD.executarQuery(sql, matricula);
-                    while (resultadoPedidos.next()) {
-                        pedidosLista.add(resultadoPedidos.getInt("numero_pedido"));
+                // Buscar informações adicionais do funcionário
+                String sqlFuncionario = "SELECT * FROM Funcionarios WHERE matricula = ?";
+                ResultSet resultadoFuncionario = null;
+
+                try (PreparedStatement stmtFuncionario = conexao.prepareStatement(sqlFuncionario)) {
+                    stmtFuncionario.setInt(1, matricula);
+                    resultadoFuncionario = stmtFuncionario.executeQuery();
+
+                    while (resultadoFuncionario.next()) {
+                        String nome = resultadoFuncionario.getString("nome");
+                        int setor = resultadoFuncionario.getInt("setor_id");
+                        int funcao = resultadoFuncionario.getInt("funcao");
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        LocalDate dataAdmissao = LocalDate.parse(resultadoFuncionario.getString("data_admissao"), formatter);
+                        int lojaTrabalho = resultadoFuncionario.getInt("loja_trabalho");
+                        String tamanhoUniforme = resultadoFuncionario.getString("tamanho_uniforme");
+
+                        // Buscar pedidos associados ao funcionário
+                        List<Integer> pedidosLista = new ArrayList<>();
+                        String sqlPedidos = "SELECT numero_pedido FROM Itens_Pedido WHERE funcionario_matricula = ?";
+                        ResultSet resultadoPedidos = null;
+
+                        try (PreparedStatement stmtPedidos = conexao.prepareStatement(sqlPedidos)) {
+                            stmtPedidos.setInt(1, matricula);
+                            resultadoPedidos = stmtPedidos.executeQuery();
+
+                            while (resultadoPedidos.next()) {
+                                pedidosLista.add(resultadoPedidos.getInt("numero_pedido"));
+                            }
+                        } finally {
+                            if (resultadoPedidos != null) {
+                                resultadoPedidos.close();
+                            }
+                        }
+
+                        // Criar o objeto Administrador
+                        Administrador admin = new Administrador(
+                            matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme, pedidosLista, senha, true
+                        );
+                        administradores.add(admin);
                     }
-
-                    Administrador admin = new Administrador(matricula, nome, setor, funcao, dataAdmissao, lojaTrabalho, tamanhoUniforme,pedidosLista, senha,true);
-                    administradores.add(admin);
+                } finally {
+                    if (resultadoFuncionario != null) {
+                        resultadoFuncionario.close();
+                    }
                 }
             }
         } catch (SQLException e) {
             System.err.println("Erro ao carregar os administradores: " + e.getMessage());
+        } finally {
+            // Fechar a conexão e o ResultSet principal
+            if (resultado != null) {
+                try {
+                    resultado.close();
+                } catch (SQLException e) {
+                    System.err.println("Erro ao fechar o ResultSet: " + e.getMessage());
+                }
+            }
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException e) {
+                    System.err.println("Erro ao fechar a conexão: " + e.getMessage());
+                }
+            }
         }
 
         return administradores;
     }
 
-    public String obterSenhaHash(int matricula) {
-
-        String sql = "SELECT senha FROM Administradores WHERE matricula = ?";
-        ResultSet resultado = ConexaoBD.executarQuery(sql, matricula);
-
-        try {
-            if (resultado.next()) {
-                return resultado.getString("senha");
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro ao obter a senha: " + e.getMessage());
-        }
-
-        return null; // Retorna null se a senha não for encontrada
-
+    // Atualizar senha de um administrador
+    public void atualizarSenhaAdministrador(Administrador admin) {
+        String sql = "UPDATE Administradores SET senha_hash = ? WHERE matricula = ?";
+        ConexaoBD.executarUpdate(sql, admin.getSenha(), admin.getMatricula());
     }
 
     // Carregar funcionário por matrícula
@@ -292,8 +350,20 @@ public class BancoDeDados {
         ConexaoBD.executarUpdate(sql, itemPedido.getNumeroPedido(), itemPedido.getItemId(), itemPedido.getQuantidade(), itemPedido.getSetorDestino(), itemPedido.getFuncionarioDestino());
     }
 
+    // Atualizar ItemPedido
+    public void atualizarItemPedido(ItemPedido itemPedido) {
+        String sql = "UPDATE Itens_Pedido SET quantidade = ?, setor_id = ?, funcionario_matricula = ? WHERE pedido_id = ? AND item_id = ?";
+        ConexaoBD.executarUpdate(sql, itemPedido.getQuantidade(), itemPedido.getSetorDestino(), itemPedido.getFuncionarioDestino(), itemPedido.getNumeroPedido(), itemPedido.getItemId());
+    }
+
+    // Excluir ItemPedido
+    public void excluirItemPedido(ItemPedido itemPedido) {
+        String sql = "DELETE FROM Itens_Pedido WHERE pedido_id = ? AND item_id = ? AND setor_id = ? AND funcionario_matricula = ?";
+        ConexaoBD.executarUpdate(sql, itemPedido.getNumeroPedido(), itemPedido.getItemId(), itemPedido.getSetorDestino(), itemPedido.getFuncionarioDestino());
+    }
+
     // Buscar um item pelo ID
-    public static Item buscarItemPorId(int itemId) {
+    public Item buscarItemPorId(int itemId) {
         String sql = "SELECT * FROM Itens WHERE id = ?";
         ResultSet resultado = ConexaoBD.executarQuery(sql, itemId);
 
@@ -323,7 +393,7 @@ public class BancoDeDados {
     }
 
     // Buscar um pedido pelo número
-    public static Pedido buscarPedidoPorNumero(int numeroPedido) {
+    public Pedido buscarPedidoPorNumero(int numeroPedido) {
         // Buscar os dados do pedido
         // Seleciona os dados do pedido, procura pelos dados dos itens a partir da relação Itens_Pedido
         String sql = "SELECT numero_pedido, tipo_pedido, data_pedido FROM Pedidos WHERE numero_pedido = ?";
@@ -463,7 +533,7 @@ public class BancoDeDados {
     }
 
     // Listar pedidos por período
-    public static List<Pedido> listarPedidosPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+    public List<Pedido> listarPedidosPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
         List<Pedido> pedidos = new ArrayList<>();
         String sql = "SELECT numero_pedido, tipo_pedido, data_pedido " +
                     "FROM Pedidos " +
@@ -489,7 +559,7 @@ public class BancoDeDados {
     }
 
     // Listar pedidos por tipo
-    public static List<Pedido> listarPedidosPorTipo(TipoPedido tipoPedido) {
+    public List<Pedido> listarPedidosPorTipo(TipoPedido tipoPedido) {
         List<Pedido> pedidos = new ArrayList<>();
         String sql = "SELECT numero_pedido, tipo_pedido, data_pedido " +
                     "FROM Pedidos " +
@@ -515,7 +585,7 @@ public class BancoDeDados {
     }
 
     // Listar pedidos por tipo e setor
-    public static List<Pedido> listarPedidosPorTipoESetor(TipoPedido tipoPedido, int idSetor) {
+    public List<Pedido> listarPedidosPorTipoESetor(TipoPedido tipoPedido, int idSetor) {
         List<Pedido> pedidos = new ArrayList<>();
         String sql = "SELECT p.numero_pedido, p.tipo_pedido, p.data_pedido " +
                     "FROM Pedidos p " +
@@ -542,7 +612,7 @@ public class BancoDeDados {
     }
 
     // Listar pedidos por tipo e período
-    public static List<Pedido> listarPedidosPorTipoEPeriodo(TipoPedido tipoPedido, LocalDate dataInicio, LocalDate dataFim) {
+    public List<Pedido> listarPedidosPorTipoEPeriodo(TipoPedido tipoPedido, LocalDate dataInicio, LocalDate dataFim) {
         List<Pedido> pedidos = new ArrayList<>();
         String sql = "SELECT numero_pedido, tipo_pedido, data_pedido " +
                     "FROM Pedidos " +
@@ -568,7 +638,7 @@ public class BancoDeDados {
     }
 
     // Listar pedidos por setor e período
-    public static List<Pedido> listarPedidosPorSetorEPeriodo(int idSetor, LocalDate dataInicio, LocalDate dataFim) {
+    public List<Pedido> listarPedidosPorSetorEPeriodo(int idSetor, LocalDate dataInicio, LocalDate dataFim) {
         List<Pedido> pedidos = new ArrayList<>();
         String sql = "SELECT p.numero_pedido, p.tipo_pedido, p.data_pedido " +
                     "FROM Pedidos p " +
