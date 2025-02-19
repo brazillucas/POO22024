@@ -75,4 +75,14 @@ public class Setor {
             System.out.println("Pedido: " + pedido);
         }
     }
+
+    public void adicionarPedido(int pedido) {
+        pedidos.add(pedido);
+    }
+
+    public void exibirDetalhes() {
+        System.out.printf("Setor - %s | ID: %d | Quant. Funcionários: %d\n", this.nome, this.id, this.funcionarios.size());
+    }
+
+
 }
