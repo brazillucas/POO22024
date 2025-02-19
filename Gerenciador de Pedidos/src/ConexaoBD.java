@@ -63,33 +63,24 @@ public class ConexaoBD {
 
     // Método para executar consultas que retornam resultados (SELECT)
     public static ResultSet executarQuery(String sql, Object... parametros) {
-        Connection conexao = null;
-        PreparedStatement stmt = null;
-        ResultSet resultado = null;
-
+        Connection conexao;
+        PreparedStatement stmt;
+        ResultSet resultadoBusca = null;
+    
         try {
             conexao = conectar();
             stmt = conexao.prepareStatement(sql);
-
+    
             // Substituir os parâmetros na consulta
             for (int i = 0; i < parametros.length; i++) {
                 stmt.setObject(i + 1, parametros[i]);
             }
-
-            resultado = stmt.executeQuery();
+    
+            resultadoBusca = stmt.executeQuery();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    System.err.println(e.getMessage());
-                }
-            }
-            fecharConexao(conexao);
+            System.err.println("Erro ao executar a query: " + e.getMessage());
         }
-
-        return resultado; // O ResultSet deve ser fechado pelo chamador
+    
+        return resultadoBusca;
     }
 }
